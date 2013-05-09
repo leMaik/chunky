@@ -41,6 +41,21 @@ import se.llbit.util.JSONifiable;
 public class Sky implements JSONifiable {
 
 	/**
+	 * Default sky light intensity
+	 */
+	public static final double DEFAULT_INTENSITY = 1;
+
+	/**
+	 * Maximum sky light intensity
+	 */
+	public static final double MAX_INTENSITY = 50;
+
+	/**
+	 * Minimum sky light intensity
+	 */
+	public static final double MIN_INTENSITY = 0.01;
+
+	/**
 	 * Sky rendering mode
 	 * @author Jesper Öqvist <jesper@llbit.se>
 	 */
@@ -82,6 +97,8 @@ public class Sky implements JSONifiable {
 	private final SceneDescription scene;
 	private double rotation = 0;
 	private boolean mirrored = true;
+
+	private double light = DEFAULT_INTENSITY;
 
 	// final to ensure that we don't do a lot of redundant re-allocation
 	private final Vector3d groundColor = new Vector3d(0, 0, 1);
@@ -365,4 +382,21 @@ public class Sky implements JSONifiable {
 		groundColor.y = groundColorObj.get("green").doubleValue(1);
 		groundColor.z = groundColorObj.get("blue").doubleValue(1);
 	}
+
+	/**
+	 * Set the sky light modifier
+	 * @param newValue
+	 */
+	public void setSkyLight(double newValue) {
+		light = newValue;
+		scene.refresh();
+	}
+
+	/**
+	 * @return Current sky light modifier
+	 */
+	public double getSkyLight() {
+		return light;
+	}
+
 }

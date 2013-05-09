@@ -245,9 +245,24 @@ public class RenderControls extends JDialog implements ViewListener,
 			set(renderMan.scene().getEmitterIntensity());
 		}
 	};
+	private final Adjuster skyLight = new Adjuster(
+			"Sky Light",
+			"Sky light intensity modifier",
+			Sky.MIN_INTENSITY,
+			Sky.MAX_INTENSITY) {
+		@Override
+		public void valueChanged(double newValue) {
+			renderMan.scene().sky().setSkyLight(newValue);
+		}
+
+		@Override
+		public void update() {
+			set(renderMan.scene().sky().getSkyLight());
+		}
+	};
 	private final Adjuster sunIntensity = new Adjuster(
-			"Sun intensity",
-			"Light intensity modifier for sun",
+			"Sun Intensity",
+			"Sunlight intensity modifier",
 			Sun.MIN_INTENSITY,
 			Sun.MAX_INTENSITY) {
 		@Override
@@ -1057,6 +1072,9 @@ public class RenderControls extends JDialog implements ViewListener,
 		sunIntensity.setLogarithmicMode();
 		sunIntensity.update();
 
+		skyLight.setLogarithmicMode();
+		skyLight.update();
+
 		sunAzimuth.update();
 
 		sunAltitude.update();
@@ -1071,18 +1089,21 @@ public class RenderControls extends JDialog implements ViewListener,
 				.addComponent(enableEmitters)
 				.addGroup(layout.createSequentialGroup()
 					.addGroup(layout.createParallelGroup()
+						.addComponent(skyLight.getLabel())
 						.addComponent(emitterIntensity.getLabel())
 						.addComponent(sunIntensity.getLabel())
 						.addComponent(sunAzimuth.getLabel())
 						.addComponent(sunAltitude.getLabel())
 					)
 					.addGroup(layout.createParallelGroup()
+						.addComponent(skyLight.getSlider())
 						.addComponent(emitterIntensity.getSlider())
 						.addComponent(sunIntensity.getSlider())
 						.addComponent(sunAzimuth.getSlider())
 						.addComponent(sunAltitude.getSlider())
 					)
 					.addGroup(layout.createParallelGroup()
+						.addComponent(skyLight.getField())
 						.addComponent(emitterIntensity.getField())
 						.addComponent(sunIntensity.getField())
 						.addComponent(sunAzimuth.getField())
@@ -1095,6 +1116,8 @@ public class RenderControls extends JDialog implements ViewListener,
 		);
 		layout.setVerticalGroup(layout.createSequentialGroup()
 			.addContainerGap()
+			.addGroup(skyLight.verticalGroup(layout))
+			.addPreferredGap(ComponentPlacement.UNRELATED)
 			.addComponent(enableEmitters)
 			.addPreferredGap(ComponentPlacement.RELATED)
 			.addGroup(emitterIntensity.verticalGroup(layout))
@@ -2191,6 +2214,7 @@ public class RenderControls extends JDialog implements ViewListener,
 		updateWidthField();
 		updateHeightField();
 		emitterIntensity.update();
+		skyLight.update();
 		sunIntensity.update();
 		sunAzimuth.update();
 		sunAltitude.update();
