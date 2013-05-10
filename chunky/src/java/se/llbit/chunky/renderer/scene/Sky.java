@@ -156,6 +156,7 @@ public class Sky implements JSONifiable {
 		skymap = other.skymap;
 		rotation = other.rotation;
 		mirrored = other.mirrored;
+		light = other.light;
 		groundColor.set(other.groundColor);
 	}
 
@@ -179,6 +180,7 @@ public class Sky implements JSONifiable {
 			return;
 		} else if (skymap == null) {
 			scene.sun().skylight(ray);
+			ray.color.scale(light);
 			ray.hit = true;
 			return;
 		}
@@ -196,6 +198,7 @@ public class Sky implements JSONifiable {
 		}
 		double phi = QuickMath.abs(FastMath.asin(ray.d.y));
 		skymap.getColor(theta / (2*Math.PI), (2 * phi / Math.PI), ray.color);
+		ray.color.scale(light);
 		ray.hit = true;
 	}
 
@@ -272,6 +275,7 @@ public class Sky implements JSONifiable {
 			double g = ray.color.y;
 			double b = ray.color.z;
 			getSkyDiffuseColor(ray, blackBelowHorizon);
+			ray.color.scale(light);
 			ray.color.x = ray.color.x + r;
 			ray.color.y = ray.color.y + g;
 			ray.color.z = ray.color.z + b;
@@ -360,6 +364,7 @@ public class Sky implements JSONifiable {
 		}
 		sky.add("skyYaw", rotation);
 		sky.add("skyMirrored", mirrored);
+		sky.add("skyLight", light);
 		JsonObject groundColorObj = new JsonObject();
 		groundColorObj.add("red", groundColor.x);
 		groundColorObj.add("green", groundColor.y);
@@ -376,6 +381,7 @@ public class Sky implements JSONifiable {
 		}
 		rotation = obj.get("skyYaw").doubleValue(0);
 		mirrored = obj.get("skyMirrored").boolValue(true);
+		light = obj.get("skyLight").doubleValue(DEFAULT_INTENSITY);
 
 		JsonObject groundColorObj = obj.get("groundColor").object();
 		groundColor.x = groundColorObj.get("red").doubleValue(1);
