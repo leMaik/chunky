@@ -177,29 +177,33 @@ public class Sky implements JSONifiable {
 	 */
 	public void getSkyDiffuseColor(Ray ray, boolean blackBelowHorizon) {
 		if (getGroundColor(ray, blackBelowHorizon)) {
-			return;
+			// TODO this is a mess and it needs to be cleaned up!
 		} else if (skymap == null) {
 			scene.sun().skylight(ray);
 			ray.color.scale(light);
 			ray.hit = true;
-			return;
+		} else {
+			double r = ray.d.z * ray.d.z + ray.d.x * ray.d.x;
+			double theta = 0;
+			if (r > Ray.EPSILON) {
+				theta = Math.asin(ray.d.z / Math.sqrt(r));
+			}
+			if (ray.d.x < 0) {
+				theta = Math.PI - theta;
+			}
+			theta += rotation;
+			if (theta > 2 * Math.PI || theta < 0) {
+				theta = theta % (2 * Math.PI);
+				if (theta < 0) {
+					theta += 2 * Math.PI;
+				}
+			}
+			double phi = Math.abs(Math.asin(ray.d.y));
+			skymap.getColor(theta / (2*Math.PI), (2 * phi / Math.PI), ray.color);
+			ray.hit = true;
 		}
-		double r = ray.d.z * ray.d.z + ray.d.x * ray.d.x;
-		double theta = 0;
-		if (r > Ray.EPSILON)
-			theta = FastMath.asin(ray.d.z / FastMath.sqrt(r));
-		if (ray.d.x < 0)
-			theta = Math.PI - theta;
-		theta += rotation;
-		if (theta > 2 * Math.PI || theta < 0) {
-			theta = theta % (2 * Math.PI);
-			if (theta < 0)
-				theta += 2 * Math.PI;
-		}
-		double phi = QuickMath.abs(FastMath.asin(ray.d.y));
-		skymap.getColor(theta / (2*Math.PI), (2 * phi / Math.PI), ray.color);
 		ray.color.scale(light);
-		ray.hit = true;
+		ray.color.w = 1;
 	}
 
 	private boolean getGroundColor(Ray ray, boolean blackBelowHorizon) {
@@ -262,6 +266,8 @@ public class Sky implements JSONifiable {
 			phi = 1 - phi;
 			skymap.getColorInterpolated(theta, phi, ray.color);
 		}
+		ray.color.scale(light);
+		ray.color.w = 1;
 	}
 
 	/**
@@ -275,7 +281,6 @@ public class Sky implements JSONifiable {
 			double g = ray.color.y;
 			double b = ray.color.z;
 			getSkyDiffuseColor(ray, blackBelowHorizon);
-			ray.color.scale(light);
 			ray.color.x = ray.color.x + r;
 			ray.color.y = ray.color.y + g;
 			ray.color.z = ray.color.z + b;
