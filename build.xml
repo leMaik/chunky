@@ -1,4 +1,5 @@
-<project name="Chunky" default="build">
+<project name="Chunky" default="build"
+	xmlns:fx="javafx:com.sun.javafx.tools.ant">
 
 	<!-- global build properties -->
 	<property name="home" location="${basedir}"/>
@@ -8,6 +9,29 @@
 	<property file="${lib.home}/build.properties" prefix="lib"/>
 	<property file="${launcher.home}/build.properties" prefix="launcher"/>
 	<property file="${releasetools.home}/build.properties" prefix="releasetools"/>
+
+	<target name="deploy">
+		<echo message="${java.home}/../lib/ant-javafx.jar"/>
+		<taskdef resource="com/sun/javafx/tools/ant/antlib.xml"
+			uri="javafx:com.sun.javafx.tools.ant"
+			classpath="${java.home}/../lib/ant-javafx.jar"/>
+		<echo message="${fx:javafx.ant.version}"/>
+		<fx:application id="Chunky" name="Chunky Launcher"
+			mainClass="se.llbit.chunky.launcher.ChunkyLauncher"/>
+		<fx:jar destfile="build/Chunky.jar">
+			<fx:application refid="Chunky"/>
+			<fileset dir="${launcher.bin.dir}"/>
+			<fileset dir="${lib.bin.dir}"/>
+		</fx:jar>
+		<fx:deploy width="200" height="200" nativeBundles="all"
+			outdir="build" outfile="chunky-test">
+			<fx:application refid="Chunky"/>
+			<fx:resources>
+				<fx:fileset dir="build" includes="*.jar"/>
+			</fx:resources>
+			<fx:info title="Chunky Launcher" vendor="llbit"/>
+		</fx:deploy>
+	</target>
 
 	<target name="clean" description="delete generated files">
 		<ant antfile="${chunky.home}/build.xml" target="clean"
@@ -268,4 +292,5 @@
 			<arg value="${chunky.res.dir}/Version.properties"/>
 		</exec>
 	</target>
+
 </project>
