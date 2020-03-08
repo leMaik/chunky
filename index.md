@@ -18,14 +18,14 @@ To get the fork instead of upstream Chunky, make sure that the _Update Site_ is 
 
 If you want to get the latest snapshots, make sure to tick the _Download snapshots_ checkbox before checking for updates.
 
-_More detailed instructions with screenshots are available [on this page](/installation)._
+_More detailed instructions with screenshots are available [on this page]({{ absolute_url }}installation)._
 
 ## Features
 
 - Improved Slime rendering
 - Supports all 1.15 honey-related blocks
 - Improved stairs rendering
-- Support for _most_ 1.14 blocks (see [the list of supported blocks](/supported-blocks))
+- Support for _most_ 1.14 blocks (see [the list of supported blocks]({{ absolute_url }}supported-blocks))
 
 ## Planned features
 
