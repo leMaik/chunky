@@ -27,8 +27,10 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 - [x] Cut red sandstone slab
 - [x] Stonecutter
 - [x] Grindstone
-- [ ] Lectern
-- [ ] Campfire
+- [x] Lectern
+- [ ] Lectern with book
+- [x] Campfire
+- [ ] Campfire with items
 - [ ] Scaffolding
 - [ ] Bell
 - [ ] Lantern
