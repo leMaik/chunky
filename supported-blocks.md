@@ -6,6 +6,11 @@ layout: default
 
 Here's a list of the newer blocks that Chunky currently supports. If something is missing, please [create a new issue](https://github.com/leMaik/chunky/issues) in the GitHub repository.
 
+## 1.13
+
+- [ ] Bubble columns
+- [x] All other blocks
+
 ## 1.14
 
 - [x] Barrel
@@ -33,7 +38,7 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 - [ ] Campfire with items
 - [ ] Scaffolding
 - [ ] Bell
-- [ ] Lantern
+- [x] Lantern
 
 ## 1.15
 
@@ -44,6 +49,37 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 
 ## 1.16
 
-Since this release is still in the snapshot phase, it's hard to keep up with the new blocks and items. The blocks will be added after the release.
+_Since this release is still in the snapshot phase, it's hard to keep up with the new blocks and items._
 
-- [ ] New sign types
+- [ ] Ancient debris
+- [ ] Basalt
+- [ ] Block of netherite
+- [ ] Fungus
+- [ ] Potted fungus
+- [ ] Nylium
+- [ ] Crimson and Warped planks
+- [ ] Crimson and Warped slabs
+- [ ] Crimson and Warped stairs
+- [ ] Crimson and Warped fences
+- [ ] Crimson and Warped fence gates
+- [ ] Crimson and Warped pressure plates
+- [ ] Crimson and Warped signs
+- [ ] Crimson and Warped buttons
+- [ ] Crimson and Warped doors
+- [ ] Crimson and Warped trapdoors
+- [ ] Crimson and Warped roots
+- [ ] Crimson and Warped stems
+- [ ] Crying obsidian
+- [ ] Crimson and Warped Hyphae
+- [ ] Stripped Crimson and Warped Hyphae
+- [ ] Nether gold ore
+- [ ] Nether sprouts
+- [ ] Shroomlight
+- [ ] Soul fire
+- [ ] Soul fire lantern
+- [ ] Soul fire torch
+- [ ] Soul soil
+- [ ] Target
+- [ ] Twisting vines
+- [ ] Warped wart block
+- [ ] Weeping vines
