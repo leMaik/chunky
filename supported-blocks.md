@@ -36,8 +36,8 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 - [ ] Lectern with book
 - [x] Campfire
 - [ ] Campfire with items
-- [ ] Scaffolding
-- [ ] Bell
+- [x] Scaffolding
+- [x] Bell
 - [x] Lantern
 
 ## 1.15
