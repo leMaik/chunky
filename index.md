@@ -1,9 +1,9 @@
 ---
 layout: default
 image:
-    path: /assets/img/og_image.jpg
-    width: 1200
-    height: 630
+  path: /assets/img/og_image.jpg
+  width: 1200
+  height: 630
 ---
 
 # Chunky for Minecraft 1.14+
@@ -26,12 +26,12 @@ _More detailed instructions with screenshots are available [on this page]({{ abs
 
 ## Features
 
-- Improved Slime rendering
+- Supports all 1.14 blocks
 - Supports all 1.15 honey-related blocks
+- Improved Slime rendering
 - Improved stairs rendering
-- Support for _most_ 1.14 blocks (see [the list of supported blocks]({{ absolute_url }}supported-blocks))
+- Map for 1.14+ worlds
 
 ## Planned features
 
-- Support _all_ 1.14 blocks
-- Support 1.16 blocks shortly after 1.16 is released
+- Support 1.16 blocks shortly after 1.16 is released (see [the list of supported blocks]({{ absolute_url }}supported-blocks))
