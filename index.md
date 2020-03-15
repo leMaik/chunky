@@ -12,7 +12,7 @@ Chunky is a Minecraft mapping and rendering tool. leMaik's Chunky is a fork of C
 
 ## Why did you fork Chunky?
 
-Originally created to add some 1.14 blocks, this fork quickly blew up and aims to provide full support for Minecraft 1.14 and 1.15 while also fixing long-standing upstream bugs. If [upstream Chunky](http://chunky.llbit.se) development continues one day, this fork might be merged into it.
+Originally created to add some 1.14 blocks, this fork quickly blew up to fully support Minecraft 1.14 and 1.15 while also fixing long-standing upstream bugs. If [upstream Chunky](http://chunky.llbit.se) development continues one day, this fork might be merged into it.
 
 ## Installation
 
