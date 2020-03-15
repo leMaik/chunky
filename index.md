@@ -1,5 +1,9 @@
 ---
 layout: default
+image:
+    path: /assets/img/og_image.jpg
+    width: 1200
+    height: 630
 ---
 
 # Chunky for Minecraft 1.14+
