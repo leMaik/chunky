@@ -53,6 +53,7 @@ _Since this release is still in the snapshot phase, it's hard to keep up with th
 
 - [ ] Ancient debris
 - [ ] Basalt
+- [ ] Polished basalt
 - [ ] Block of netherite
 - [ ] Fungus
 - [ ] Potted fungus
@@ -83,3 +84,4 @@ _Since this release is still in the snapshot phase, it's hard to keep up with th
 - [ ] Twisting vines
 - [ ] Warped wart block
 - [ ] Weeping vines
+- [ ] Respawn anchor
