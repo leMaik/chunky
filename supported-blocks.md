@@ -49,39 +49,40 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 
 ## 1.16
 
-_Since this release is still in the snapshot phase, this list might not be up to date._
+_Since this release is still in the snapshot phase, there might be a few blocks missing in this list._
 
-- [ ] Ancient debris
-- [ ] Basalt
-- [ ] Polished basalt
+- [x] Ancient debris
+- [x] Basalt
+- [x] Polished basalt
 - [x] Block of netherite
-- [ ] Fungus
-- [ ] Potted fungus
+- [x] Crimson and Warped fungus
+- [x] Potted Crimson and Warped fungus
 - [x] Crimson and Warped Nylium
-- [ ] Crimson and Warped planks
-- [ ] Crimson and Warped slabs
-- [ ] Crimson and Warped stairs
-- [ ] Crimson and Warped fences
-- [ ] Crimson and Warped fence gates
-- [ ] Crimson and Warped pressure plates
-- [ ] Crimson and Warped signs
-- [ ] Crimson and Warped buttons
-- [ ] Crimson and Warped doors
-- [ ] Crimson and Warped trapdoors
-- [ ] Crimson and Warped roots
-- [ ] Crimson and Warped stems
-- [ ] Crying obsidian
-- [ ] Crimson and Warped Hyphae
-- [ ] Stripped Crimson and Warped Hyphae
+- [x] Crimson and Warped planks
+- [x] Crimson and Warped slabs
+- [x] Crimson and Warped stairs
+- [x] Crimson and Warped fences
+- [x] Crimson and Warped fence gates
+- [x] Crimson and Warped pressure plates
+- [x] Crimson and Warped signs
+- [x] Crimson and Warped buttons
+- [x] Crimson and Warped doors
+- [x] Crimson and Warped trapdoors
+- [x] Crimson and Warped roots
+- [x] Crimson and Warped stems
+- [x] Stripped Crimson and Warped stems
+- [x] Crying obsidian
+- [x] Crimson and Warped Hyphae
+- [x] Stripped Crimson and Warped Hyphae
 - [x] Nether gold ore
-- [ ] Nether sprouts
+- [x] Nether sprouts
 - [x] Shroomlight
-- [ ] Soul fire
-- [ ] Soul fire lantern
-- [ ] Soul fire torch
+- [x] Soul fire
+- [x] Soul fire lantern
+- [x] Soul fire torch
 - [x] Soul soil
 - [x] Target
-- [ ] Twisting vines
 - [x] Warped wart block
-- [ ] Weeping vines
-- [ ] Respawn anchor
+- [x] Twisting vines
+- [x] Weeping vines
+- [x] Respawn anchor
