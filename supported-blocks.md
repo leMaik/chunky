@@ -49,15 +49,15 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 
 ## 1.16
 
-_Since this release is still in the snapshot phase, it's hard to keep up with the new blocks and items._
+_Since this release is still in the snapshot phase, this list might not be up to date._
 
 - [ ] Ancient debris
 - [ ] Basalt
 - [ ] Polished basalt
-- [ ] Block of netherite
+- [x] Block of netherite
 - [ ] Fungus
 - [ ] Potted fungus
-- [ ] Nylium
+- [x] Crimson and Warped Nylium
 - [ ] Crimson and Warped planks
 - [ ] Crimson and Warped slabs
 - [ ] Crimson and Warped stairs
@@ -73,15 +73,15 @@ _Since this release is still in the snapshot phase, it's hard to keep up with th
 - [ ] Crying obsidian
 - [ ] Crimson and Warped Hyphae
 - [ ] Stripped Crimson and Warped Hyphae
-- [ ] Nether gold ore
+- [x] Nether gold ore
 - [ ] Nether sprouts
-- [ ] Shroomlight
+- [x] Shroomlight
 - [ ] Soul fire
 - [ ] Soul fire lantern
 - [ ] Soul fire torch
-- [ ] Soul soil
-- [ ] Target
+- [x] Soul soil
+- [x] Target
 - [ ] Twisting vines
-- [ ] Warped wart block
+- [x] Warped wart block
 - [ ] Weeping vines
 - [ ] Respawn anchor
