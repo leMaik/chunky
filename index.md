@@ -28,6 +28,7 @@ _More detailed instructions with screenshots are available [on this page]({{ abs
 
 - Supports all 1.14 blocks
 - Supports all 1.15 honey-related blocks
+- Supports all 1.16 blocks (as of 20w13a)
 - Improved Slime rendering
 - Improved stairs rendering
 - Map for 1.14+ worlds

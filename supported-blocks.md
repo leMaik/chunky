@@ -86,3 +86,4 @@ _Since this release is still in the snapshot phase, there might be a few blocks 
 - [x] Twisting vines
 - [x] Weeping vines
 - [x] Respawn anchor
+- [x] Lodestone
