@@ -87,3 +87,24 @@ _Since this release is still in the snapshot phase, there might be a few blocks 
 - [x] Weeping vines
 - [x] Respawn anchor
 - [x] Lodestone
+- [ ] Blackstone
+- [ ] Blackstone slab
+- [ ] Blackstone stairs
+- [ ] Blackstone wall
+- [ ] Chiseled Nether bricks
+- [ ] Cracked Nether bricks
+- [ ] Gilded Blackstone
+- [ ] Polished Blackstone
+- [ ] Polished Blackstone slab
+- [ ] Polished Blackstone stairs
+- [ ] Polished Blackstone wall
+- [ ] Chiseled Polished Blackstone
+- [ ] Polished Blackstone Brick
+- [ ] Polished Blackstone Brick slab
+- [ ] Polished Blackstone Brick stairs
+- [ ] Polished Blackstone Brick wall
+- [ ] Cracked Polished Blackstone Bricks
+- [ ] Polished Blackstone button
+- [ ] Polished Blackstone pressure plate
+- [ ] Quartz bricks
+- [ ] Soul Campfire
