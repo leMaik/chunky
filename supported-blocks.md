@@ -87,10 +87,10 @@ _Since this release is still in the snapshot phase, there might be a few blocks 
 - [x] Weeping vines
 - [x] Respawn anchor
 - [x] Lodestone
-- [ ] Blackstone
-- [ ] Blackstone slab
-- [ ] Blackstone stairs
-- [ ] Blackstone wall
+- [x] Blackstone
+- [x] Blackstone slab
+- [x] Blackstone stairs
+- [x] Blackstone wall
 - [ ] Chiseled Nether bricks
 - [ ] Cracked Nether bricks
 - [ ] Gilded Blackstone
@@ -108,3 +108,5 @@ _Since this release is still in the snapshot phase, there might be a few blocks 
 - [ ] Polished Blackstone pressure plate
 - [ ] Quartz bricks
 - [ ] Soul Campfire
+- [x] New wall connections (`low` block state)
+- [ ] New wall connections (`tall` block state)
