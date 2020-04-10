@@ -79,7 +79,8 @@ _Since this release is still in the snapshot phase, there might be a few blocks 
 - [x] Soul fire
 - [x] Soul torch
 - [x] Soul lantern
-
+- [x] New wall connections (`low` instead of `true` block state)
+- [x] Vertical wall connections without gaps (`tall` block state)
 
 ### 20w09a
 - [x] Target block
@@ -122,6 +123,4 @@ _Since this release is still in the snapshot phase, there might be a few blocks 
 - [x] Polished Blackstone pressure plate
 - [x] Quartz bricks
 - [x] Soul Campfire
-- [x] New wall connections (`low` block state)
-- [ ] New wall connections (`tall` block state)
 - [x] Piglin banner pattern
