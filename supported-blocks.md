@@ -51,12 +51,11 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 
 _Since this release is still in the snapshot phase, there might be a few blocks missing in this list._
 
+### 20w06a
 - [x] Ancient debris
-- [x] Basalt
-- [x] Polished basalt
 - [x] Block of netherite
-- [x] Crimson and Warped fungus
-- [x] Potted Crimson and Warped fungus
+- [x] Basalt block
+- [x] Crimson and Warped stems
 - [x] Crimson and Warped Nylium
 - [x] Crimson and Warped planks
 - [x] Crimson and Warped slabs
@@ -68,25 +67,40 @@ _Since this release is still in the snapshot phase, there might be a few blocks 
 - [x] Crimson and Warped buttons
 - [x] Crimson and Warped doors
 - [x] Crimson and Warped trapdoors
-- [x] Crimson and Warped roots
-- [x] Crimson and Warped stems
 - [x] Stripped Crimson and Warped stems
+- [x] Nether sprouts
+- [x] Crimson and Warped roots
+- [x] Crimson and Warped fungus
+- [x] Potted Crimson and Warped fungus
+- [x] Warped wart block
+- [x] Weeping vines
+- [x] Shroomlight
+- [x] Soul soil
+- [x] Soul fire
+- [x] Soul torch
+- [x] Soul lantern
+
+
+### 20w09a
+- [x] Target block
 - [x] Crying obsidian
+
+### 20w10a
 - [x] Crimson and Warped Hyphae
 - [x] Stripped Crimson and Warped Hyphae
-- [x] Nether gold ore
-- [x] Nether sprouts
-- [x] Shroomlight
-- [x] Soul fire
-- [x] Soul fire lantern
-- [x] Soul fire torch
-- [x] Soul soil
-- [x] Target
-- [x] Warped wart block
+
+### 20w11a
 - [x] Twisting vines
-- [x] Weeping vines
+- [x] Nether gold ore
+
+### 20w12a
 - [x] Respawn anchor
+- [x] Polished basalt
+
+### 20w13a
 - [x] Lodestone
+
+### 20w15a
 - [x] Blackstone
 - [x] Blackstone slab
 - [x] Blackstone stairs
