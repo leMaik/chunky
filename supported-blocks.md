@@ -91,22 +91,23 @@ _Since this release is still in the snapshot phase, there might be a few blocks 
 - [x] Blackstone slab
 - [x] Blackstone stairs
 - [x] Blackstone wall
-- [ ] Chiseled Nether bricks
-- [ ] Cracked Nether bricks
-- [ ] Gilded Blackstone
-- [ ] Polished Blackstone
-- [ ] Polished Blackstone slab
-- [ ] Polished Blackstone stairs
-- [ ] Polished Blackstone wall
-- [ ] Chiseled Polished Blackstone
-- [ ] Polished Blackstone Brick
-- [ ] Polished Blackstone Brick slab
-- [ ] Polished Blackstone Brick stairs
-- [ ] Polished Blackstone Brick wall
-- [ ] Cracked Polished Blackstone Bricks
-- [ ] Polished Blackstone button
-- [ ] Polished Blackstone pressure plate
-- [ ] Quartz bricks
-- [ ] Soul Campfire
+- [x] Chiseled Nether bricks
+- [x] Cracked Nether bricks
+- [x] Gilded Blackstone
+- [x] Polished Blackstone
+- [x] Polished Blackstone slab
+- [x] Polished Blackstone stairs
+- [x] Polished Blackstone wall
+- [x] Chiseled Polished Blackstone
+- [x] Polished Blackstone bricks
+- [x] Polished Blackstone Brick slab
+- [x] Polished Blackstone Brick stairs
+- [x] Polished Blackstone Brick wall
+- [x] Cracked Polished Blackstone Bricks
+- [x] Polished Blackstone button
+- [x] Polished Blackstone pressure plate
+- [x] Quartz bricks
+- [x] Soul Campfire
 - [x] New wall connections (`low` block state)
 - [ ] New wall connections (`tall` block state)
+- [x] Piglin banner pattern
