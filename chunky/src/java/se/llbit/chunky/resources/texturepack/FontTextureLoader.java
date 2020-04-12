@@ -89,39 +89,82 @@ public class FontTextureLoader extends TextureLoader {
     }
 
     for (JsonValue fontDefinition : fontDefinitions) {
-      if (!fontDefinition.asObject().get("type").stringValue("").equals("bitmap")) {
-        continue;
-      }
-
-      BitmapImage spritemap;
-      String texture = fontDefinition.asObject().get("file").stringValue("").split(":")[1];
-      try (InputStream imageStream =
-          texturePack.getInputStream(
-              new ZipEntry(topLevelDir + "assets/minecraft/textures/" + texture))) {
-        spritemap = ImageLoader.read(imageStream);
-      } catch (IOException e) {
-        Log.error("Could not load font texture " + texture, e);
-        return false;
-      }
-
-      int width = spritemap.width / 16;
-      int height = fontDefinition.asObject().get("height").asInt(8);
-      int ascent =
-          fontDefinition
-              .asObject()
-              .get("ascent")
-              .asInt(7); // distance (from top) of the letter base
-
-      int x, y = 0;
-      for (JsonValue charactersLine : fontDefinition.asObject().get("chars").asArray()) {
-        x = 0;
-        for (char character : charactersLine.stringValue("").toCharArray()) {
-          if (!glyphs.containsKey(character)) {
-            loadGlyph(spritemap, x, y, character, width, height, ascent);
-          }
-          x++;
+      if (fontDefinition.asObject().get("type").stringValue("").equals("bitmap")) {
+        BitmapImage spritemap;
+        String texture = fontDefinition.asObject().get("file").stringValue("").split(":")[1];
+        try (InputStream imageStream =
+            texturePack.getInputStream(
+                new ZipEntry(topLevelDir + "assets/minecraft/textures/" + texture))) {
+          spritemap = ImageLoader.read(imageStream);
+        } catch (IOException e) {
+          Log.error("Could not load font texture " + texture, e);
+          return false;
         }
-        y++;
+
+        int width = spritemap.width / 16;
+        int height = fontDefinition.asObject().get("height").asInt(8);
+        int ascent =
+            fontDefinition
+                .asObject()
+                .get("ascent")
+                .asInt(7); // distance (from top) of the letter base
+
+        int x, y = 0;
+        for (JsonValue charactersLine : fontDefinition.asObject().get("chars").asArray()) {
+          x = 0;
+          for (char character : charactersLine.stringValue("").toCharArray()) {
+            if (!glyphs.containsKey(character)) {
+              loadGlyph(spritemap, x, y, character, width, height, ascent, -1, -1);
+            }
+            x++;
+          }
+          y++;
+        }
+      } else if (fontDefinition.asObject().get("type").stringValue("").equals("legacy_unicode")) {
+        String sizes = fontDefinition.asObject().get("sizes").stringValue("").split(":")[1];
+        String template = fontDefinition.asObject().get("template").stringValue("").split(":")[1];
+
+        try (InputStream sizesStream =
+            texturePack.getInputStream(new ZipEntry(topLevelDir + "assets/minecraft/" + sizes))) {
+          for (int page = 0x00; page <= 0xff; page++) {
+            BitmapImage spritemap = null;
+            try (InputStream imageStream =
+                texturePack.getInputStream(
+                    new ZipEntry(
+                        topLevelDir
+                            + "assets/minecraft/textures/"
+                            + String.format(template, String.format("%02d", page))))) {
+              if (imageStream != null) {
+                spritemap = ImageLoader.read(imageStream);
+              }
+            } catch (IOException e) {
+              Log.error("Could not load font texture", e);
+              return false;
+            }
+
+            for (int character = 0x00; character <= 0xff; character++) {
+              char unicodeCharacter = (char) (((page&0xff) << 8) | (character&0xff));
+              int col = character & 0x0f;
+              int row = (character & 0xf0) >> 4;
+              int xMinMax = sizesStream.read();
+              if (spritemap != null && !glyphs.containsKey(unicodeCharacter)) {
+                loadGlyph(
+                    spritemap,
+                    col,
+                    row,
+                    unicodeCharacter,
+                    16,
+                    16,
+                    15,
+                    (xMinMax & 0xf0) >> 4,
+                    xMinMax & 0x0f);
+              }
+            }
+          }
+        } catch (IOException e) {
+          Log.error("Could not load font sizes", e);
+          return false;
+        }
       }
     }
 
@@ -134,11 +177,20 @@ public class FontTextureLoader extends TextureLoader {
   }
 
   private static void loadGlyph(
-      BitmapImage spritemap, int x0, int y0, char ch, int width, int height, int ascent) {
+      BitmapImage spritemap,
+      int x0,
+      int y0,
+      char ch,
+      int width,
+      int height,
+      int ascent,
+      int xMin,
+      int xMax) {
     int xmin = width;
     int xmax = 0;
     int[] lines = new int[height];
     for (int i = 0; i < height; ++i) {
+      lines[i]=0;
       for (int j = 0; j < width; ++j) {
         int rgb = spritemap.getPixel(x0 * width + j, y0 * height + i);
         if (rgb != 0) {
@@ -152,6 +204,8 @@ public class FontTextureLoader extends TextureLoader {
         }
       }
     }
-    glyphs.put(ch, new Glyph(lines, xmin, xmax, width, height, ascent));
+    glyphs.put(
+        ch,
+        new Glyph(lines, xMin >= 0 ? xMin : xmin, xMax >= 0 ? xMax : xmax, width, height, ascent));
   }
 }
