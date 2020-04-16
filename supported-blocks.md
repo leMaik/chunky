@@ -85,7 +85,7 @@ _Since this release is still in the snapshot phase, there might be a few blocks 
 - [x] Target block
 - [x] Crying obsidian
 - [x] Potted Crimson and Warped fungus
-- [ ] Potted Crimson and Warped roots
+- [x] Potted Crimson and Warped roots
 
 ### 20w10a
 - [x] Crimson and Warped Hyphae
@@ -127,4 +127,4 @@ _Since this release is still in the snapshot phase, there might be a few blocks 
 - [x] Piglin banner pattern
 
 ### 20w16a
-- [ ] Chain
+- [x] Chain
