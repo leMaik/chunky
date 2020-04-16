@@ -71,7 +71,6 @@ _Since this release is still in the snapshot phase, there might be a few blocks 
 - [x] Nether sprouts
 - [x] Crimson and Warped roots
 - [x] Crimson and Warped fungus
-- [x] Potted Crimson and Warped fungus
 - [x] Warped wart block
 - [x] Weeping vines
 - [x] Shroomlight
@@ -85,6 +84,8 @@ _Since this release is still in the snapshot phase, there might be a few blocks 
 ### 20w09a
 - [x] Target block
 - [x] Crying obsidian
+- [x] Potted Crimson and Warped fungus
+- [ ] Potted Crimson and Warped roots
 
 ### 20w10a
 - [x] Crimson and Warped Hyphae
@@ -124,3 +125,6 @@ _Since this release is still in the snapshot phase, there might be a few blocks 
 - [x] Quartz bricks
 - [x] Soul Campfire
 - [x] Piglin banner pattern
+
+### 20w16a
+- [ ] Chain
