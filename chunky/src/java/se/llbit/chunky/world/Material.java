@@ -76,7 +76,7 @@ public abstract class Material {
   public boolean subSurfaceScattering = false;
 
   /** Base texture. */
-  public final Texture texture;
+  public Texture texture; // TODO this should be final again
 
   public boolean refractive = false;
 
