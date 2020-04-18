@@ -28,7 +28,7 @@ _More detailed instructions with screenshots are available [on this page]({{ abs
 
 - Supports all 1.14 blocks
 - Supports all 1.15 honey-related blocks
-- Supports all 1.16 blocks (as of 20w13a)
+- Supports all 1.16 blocks (as of 20w16a)
 - Improved Slime rendering
 - Improved stairs rendering
 - Map for 1.14+ worlds
@@ -36,3 +36,4 @@ _More detailed instructions with screenshots are available [on this page]({{ abs
 ## Planned features
 
 - Support 1.16 blocks shortly after 1.16 is released (see [the list of supported blocks]({{ absolute_url }}supported-blocks))
+- Support for custom block models from resource packs
