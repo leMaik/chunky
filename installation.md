@@ -9,7 +9,7 @@ layout: default
    If the launcher doesn't open with a double click make sure you have Java 8 installed first ([get it from here](https://java.com/download/)).
    Otherwise start it with the following command `--launcher`, e.g. `java -jar path/to/ChunkyLauncher.jar --launcher`
 
-   You can also use llbit's original launcher by following the steps below (v1.11) however for best compaitiblity is is recommended to updated the launcher provided above.
+   You can also use llbit's original launcher by following the steps below (v1.11) however for best compaitiblity it is recommended to updated the launcher provided above.
 
 2. Set the _Update Site_ to `https://chunkyupdate.lemaik.de/` (Should be set by default unless using llbit's launcher).
 
