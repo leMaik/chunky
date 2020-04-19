@@ -16,9 +16,9 @@ Originally created to add some 1.14 blocks, this fork quickly blew up to fully s
 
 ## Installation
 
-You'll need Chunky Launcher v1.11 or later or the forked version, which you can get [here](https://chunkyupdate.lemaik.de/ChunkyLauncher.jar).
+You'll need Chunky Launcher v1.11 or later, which you can get [here](https://chunkyupdate.lemaik.de/ChunkyLauncher.jar) (recommend updating).
 
-To get the fork instead of upstream Chunky, make sure that the _Update Site_ is set to `https://chunkyupdate.lemaik.de/`. Press _Check for update_ to get the latest version of Chunky.
+Make sure that the _Update Site_ is set to `https://chunkyupdate.lemaik.de/`. Press _Check for update_ to get the latest version of Chunky.
 
 If you want to get the latest snapshots, make sure to tick the _Download snapshots_ checkbox before checking for updates.
 
