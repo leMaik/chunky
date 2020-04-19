@@ -6,7 +6,7 @@ layout: default
 
 1. Open **Chunky Launcher v1.11** or later. If you don't have it yet, you can download the forked version [here](https://chunkyupdate.lemaik.de/ChunkyLauncher.jar).
 
-   If the launcher doesn't open with a double click make sure you have Java 8 installed first ([get it from here][https://java.com/download/]).
+   If the launcher doesn't open with a double click make sure you have Java 8 installed first ([get it from here](https://java.com/download/)).
    Otherwise start it with the following command `--launcher`, e.g. `java -jar path/to/ChunkyLauncher.jar --launcher`
 
    You can also use llbit's original launcher by selecting the Launcher Only download option [here](http://chunky.llbit.se/download.html) (v1.11 or later).
