@@ -41,6 +41,7 @@ import se.llbit.chunky.renderer.scene.Scene;
 import se.llbit.chunky.renderer.scene.SceneFactory;
 import se.llbit.chunky.renderer.scene.SceneManager;
 import se.llbit.chunky.renderer.scene.SynchronousSceneManager;
+import se.llbit.chunky.resources.MinecraftFinder;
 import se.llbit.chunky.resources.SettingsDirectory;
 import se.llbit.chunky.resources.TexturePackLoader;
 import se.llbit.chunky.ui.ChunkyFx;
@@ -106,8 +107,7 @@ public class Chunky {
     this.options = options;
     // registerBlockProvider(new MinecraftBlockProvider());
     try {
-      registerBlockProvider(new ResourcepackBlockProvider(
-        new File("/home/maik/.minecraft/versions/20w15a/20w15a.jar")));
+      registerBlockProvider(new ResourcepackBlockProvider(MinecraftFinder.getMinecraftJarNonNull()));
     } catch (IOException e) {
       Log.error("Could not load blocks", e);
     }
