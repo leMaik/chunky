@@ -22,7 +22,6 @@ import se.llbit.chunky.world.Material;
 import se.llbit.math.primitive.Primitive;
 import se.llbit.math.primitive.TexturedTriangle;
 
-
 /**
  * A quad.
  *
@@ -35,16 +34,12 @@ public class Quad {
   protected Vector3 yv = new Vector3();
   protected Vector4 uv = new Vector4();
 
-  /**
-   * Normal vector
-   */
+  /** Normal vector */
   public Vector3 n = new Vector3();
 
   protected double d, xvl, yvl;
 
-  /**
-   * Create new Quad by copying another quad and applying a transform.
-   */
+  /** Create new Quad by copying another quad and applying a transform. */
   public Quad(Quad other, Transform t) {
     o.set(other.o);
     o.x -= .5;
@@ -66,9 +61,7 @@ public class Quad {
     uv.set(other.uv);
   }
 
-  /**
-   * Create transformed Quad
-   */
+  /** Create transformed Quad */
   public Quad(Quad other, Matrix3 t) {
     o.set(other.o);
     o.x -= .5;
@@ -152,17 +145,15 @@ public class Quad {
     return false;
   }
 
-  /**
-   * @return Scaled copy of this quad
-   */
+  /** @return Scaled copy of this quad */
   public Quad getScaled(double scale) {
     Matrix3 transform = new Matrix3();
     transform.scale(scale);
     return new Quad(this, transform);
   }
 
-  public void addTriangles(Collection<Primitive> primitives, Material material,
-      Transform transform) {
+  public void addTriangles(
+      Collection<Primitive> primitives, Material material, Transform transform) {
     Vector3 c0 = new Vector3(o);
     Vector3 c1 = new Vector3();
     Vector3 c2 = new Vector3();
@@ -178,16 +169,25 @@ public class Quad {
     double u1 = uv.x + uv.y;
     double v0 = uv.z;
     double v1 = uv.z + uv.w;
-    primitives.add(new TexturedTriangle(c0, c2, c1, new Vector2(u0, v0), new Vector2(u0, v1),
-        new Vector2(u1, v0), material));
-    primitives.add(new TexturedTriangle(c1, c2, c3, new Vector2(u1, v0), new Vector2(u0, v1),
-        new Vector2(u1, v1), material));
+    primitives.add(
+        new TexturedTriangle(
+            c0, c2, c1, new Vector2(u0, v0), new Vector2(u0, v1), new Vector2(u1, v0), material));
+    primitives.add(
+        new TexturedTriangle(
+            c1, c2, c3, new Vector2(u1, v0), new Vector2(u0, v1), new Vector2(u1, v1), material));
   }
 
-  /**
-   * Build a transformed copy of this quad.
-   */
+  /** Build a transformed copy of this quad. */
   public Quad transform(Transform transform) {
     return new Quad(this, transform);
+  }
+
+  /** Check if this quad fits into a 1x1x1 cube. */
+  public boolean fitsInBlock() {
+    if (o.x < 0 || o.x > 1 || o.y < 0 || o.y > 1 || o.z < 0 || o.z > 1) return false;
+    Vector3 t = new Vector3(o);
+    t.add(xv);
+    t.add(yv);
+    return !(t.x < 0 || t.x > 1 || t.y < 0 || t.y > 1 || t.z < 0 || t.z > 1);
   }
 }
