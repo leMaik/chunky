@@ -76,8 +76,8 @@ _Since this release is still in the snapshot phase, there might be a few blocks 
 - [x] Shroomlight
 - [x] Soul soil
 - [x] Soul fire
-- [x] Soul torch
-- [x] Soul lantern
+- [x] Soul fire torch
+- [x] Soul fire lantern
 - [x] New wall connections (`low` instead of `true` block state)
 - [x] Vertical wall connections without gaps (`tall` block state)
 
@@ -128,3 +128,7 @@ _Since this release is still in the snapshot phase, there might be a few blocks 
 
 ### 20w16a
 - [x] Chain
+
+### 20w17a
+- [x] Soul torch (renamed soul fire torch)
+- [x] Soul lantern (renamed soul fire lantern)
