@@ -4,13 +4,14 @@ layout: default
 
 # Installation
 
-1. Open the Chunky launcher. If you don't have it yet, you can download the forked version [here](https://chunkyupdate.lemaik.de/ChunkyLauncher.jar).
+1. Open Chunky Launcher v1.11 or later. If you don't have it yet, you can download the most recent version [here](https://chunkyupdate.lemaik.de/ChunkyLauncher.jar).
 
-   If the launcher doesn't open, start it with `--launcher`, e.g. `java -jar path/to/ChunkyLauncher.jar --launcher`
+   If the launcher doesn't open with a double click make sure you have Java 8 installed first ([get it from here](https://www.java.com/en/download/manual.jsp) and use 64 bit if your OS is 64 bit).
+   Otherwise start it with the following command `--launcher`, e.g. `java -jar path/to/ChunkyLauncher.jar --launcher`
 
-   You can also use llbit's [original launcher](http://chunky.llbit.se/download.html) (v1.11 or later).
+   You can also use llbit's original launcher by following the steps below (v1.11) however for best compaitiblity it is recommended to updated the launcher provided above.
 
-2. Set the _Update Site_ to `https://chunkyupdate.lemaik.de/`.
+2. Set the _Update Site_ to `https://chunkyupdate.lemaik.de/` (Should be set by default unless using llbit's launcher).
 
    ![](/assets/img/chunky-step1.png)
 
