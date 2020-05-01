@@ -6,7 +6,7 @@ layout: default
 
 1. Download the latest Chunky Launcher from [here](https://chunkyupdate.lemaik.de/ChunkyLauncher.jar) and start it.
 
-   If the launcher doesn't open with a double click make sure you have Java 8 installed first [get it from here](https://www.java.com/en/download/manual.jsp). **Make sure that you use the 64-bit version of Java if you use a 64-bit operating system.**
+   If the launcher doesn't open with a double click make sure you have Java 8 installed first ([get it from here](https://www.java.com/en/download/manual.jsp)). **Make sure that you use the 64-bit version of Java if you use a 64-bit operating system.**
    
    Otherwise start it from the console, e.g. `java -jar path/to/ChunkyLauncher.jar --launcher`
 

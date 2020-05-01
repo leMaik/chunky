@@ -8,11 +8,7 @@ image:
 
 # Chunky for Minecraft 1.14+
 
-Chunky is a Minecraft mapping and rendering tool. leMaik's Chunky is a fork of Chunky that aims to add new features and fix old bugs. The main goal is to add support for new Minecraft versions.
-
-## Why did you fork Chunky?
-
-Originally created to add some 1.14 blocks, this fork quickly blew up to fully support Minecraft 1.14 and 1.15 while also fixing long-standing upstream bugs. If [upstream Chunky](http://chunky.llbit.se) development continues one day, this fork might be merged into it.
+Chunky is a Minecraft rendering tool that uses path tracing to create beautiful images of your buildings.
 
 ## Installation
 
@@ -35,3 +31,10 @@ _More detailed instructions with screenshots are available [on this page]({{ abs
 
 - Support 1.16 blocks shortly after 1.16 is released (see [the list of supported blocks]({{ absolute_url }}supported-blocks))
 - Support for custom block models from resource packs
+
+## What's up with _leMaik's Chunky_?
+
+Originally created to add some 1.14 blocks, [my fork](https://github.com/leMaik/chunky) quickly blew up to fully support Minecraft 1.14 and 1.15 while also fixing long-standing bugs.  
+Meanwhile, the fork was merged into [the original Chunky](http://chunky.llbit.se) and I continue development over there (via pull requests from the fork).
+
+However, the latest launcher versions, information on Chunky development and everything else will continue to be published on _this_ site.
