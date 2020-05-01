@@ -16,9 +16,7 @@ Originally created to add some 1.14 blocks, this fork quickly blew up to fully s
 
 ## Installation
 
-You'll need **Chunky Launcher v1.11** or later, which you can get [here](https://chunkyupdate.lemaik.de/ChunkyLauncher.jar).
-
-Make sure that the _Update Site_ is set to `https://chunkyupdate.lemaik.de/`. Press _Check for update_ to get the latest version of Chunky.
+Get the latest version of the Chunky launcher from [here](https://chunkyupdate.lemaik.de/ChunkyLauncher.jar) and start it. Press _Check for update_ to get the latest version of Chunky.
 
 If you want to get the latest snapshots, make sure to tick the _Download snapshots_ checkbox before checking for updates.
 
@@ -28,7 +26,7 @@ _More detailed instructions with screenshots are available [on this page]({{ abs
 
 - Supports all 1.14 blocks
 - Supports all 1.15 honey-related blocks
-- Supports all 1.16 blocks (up to 20w17a)
+- Supports all 1.16 blocks (up to 20w17a, see [the list of supported blocks]({{ absolute_url }}supported-blocks))
 - Improved Slime rendering
 - Improved stairs rendering
 - Map for 1.14+ worlds
