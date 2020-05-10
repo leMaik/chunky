@@ -930,6 +930,7 @@ public class Texture {
   protected int avgColor;
   private float[] avgColorLinear;
   private float[][] linear;
+  public NormalMap normalMap;
 
   private Image fxImage = null;
 

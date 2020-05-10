@@ -17,6 +17,7 @@
 package se.llbit.chunky.model;
 
 import se.llbit.chunky.block.Air;
+import se.llbit.chunky.resources.NormalMap;
 import se.llbit.chunky.resources.Texture;
 import se.llbit.math.AABB;
 import se.llbit.math.QuickMath;
@@ -45,16 +46,23 @@ public class TexturedBlockModel {
       float[] color;
       if (ray.n.z < 0) {
         color = texture[0].getColor(ray.u, ray.v);
+        NormalMap.apply(ray, texture[0]);
       } else if (ray.n.z > 0) {
         color = texture[1].getColor(ray.u, ray.v);
+        NormalMap.apply(ray, texture[1]);
       } else if (ray.n.x > 0) {
         color = texture[2].getColor(ray.u, ray.v);
+        NormalMap.apply(ray, texture[2]);
       } else if (ray.n.x < 0) {
         color = texture[3].getColor(ray.u, ray.v);
+        NormalMap.apply(ray, texture[3]);
       } else if (ray.n.y > 0) {
         color = texture[4].getColor(ray.u, 1 - ray.v);
+        ray.v = 1 - ray.v;
+        NormalMap.apply(ray, texture[4]);
       } else {
         color = texture[5].getColor(ray.u, ray.v);
+        NormalMap.apply(ray, texture[5]);
       }
 
       if (color[3] > Ray.EPSILON) {
@@ -81,16 +89,23 @@ public class TexturedBlockModel {
       float[] color;
       if (ray.n.z < 0) {
         color = texture[index[0]].getColor(ray.u, ray.v);
+        NormalMap.apply(ray, texture[index[0]]);
       } else if (ray.n.z > 0) {
         color = texture[index[1]].getColor(ray.u, ray.v);
+        NormalMap.apply(ray, texture[index[1]]);
       } else if (ray.n.x > 0) {
         color = texture[index[2]].getColor(ray.u, ray.v);
+        NormalMap.apply(ray, texture[index[2]]);
       } else if (ray.n.x < 0) {
         color = texture[index[3]].getColor(ray.u, ray.v);
+        NormalMap.apply(ray, texture[index[3]]);
       } else if (ray.n.y > 0) {
         color = texture[index[4]].getColor(ray.u, 1 - ray.v);
+        ray.v = 1 - ray.v;
+        NormalMap.apply(ray, texture[index[4]]);
       } else {
         color = texture[index[5]].getColor(ray.u, ray.v);
+        NormalMap.apply(ray, texture[index[5]]);
       }
 
       if (color[3] > Ray.EPSILON) {
@@ -118,6 +133,7 @@ public class TexturedBlockModel {
         ray.color.set(color);
         ray.distance += ray.tNext;
         ray.o.scaleAdd(ray.tNext, ray.d);
+        NormalMap.apply(ray, texture);
         return true;
       }
     }

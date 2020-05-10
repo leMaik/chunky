@@ -1,6 +1,7 @@
 package se.llbit.chunky.block;
 
 import se.llbit.chunky.renderer.scene.Scene;
+import se.llbit.chunky.resources.NormalMap;
 import se.llbit.chunky.resources.Texture;
 import se.llbit.math.AABB;
 import se.llbit.math.Ray;
@@ -24,8 +25,10 @@ public class GrassBlock extends MinecraftBlock {
         float[] color;
         if (ray.n.y > 0) {
           color = Texture.grassTop.getColor(ray.u, ray.v);
+          NormalMap.apply(ray, Texture.grassTop);
         } else {
           color = Texture.grassSide.getColor(ray.u, ray.v);
+          NormalMap.apply(ray, Texture.grassSide);
         }
         if (color[3] > Ray.EPSILON) {
           ray.color.set(color);
