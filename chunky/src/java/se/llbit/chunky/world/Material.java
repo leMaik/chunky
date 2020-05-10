@@ -38,7 +38,7 @@ public abstract class Material {
    * Set to true if there is a local intersection model
    * for this block.
    */
-  public boolean localIntersect = false;
+  public boolean localIntersect = true;
 
   /**
    * A block is opaque if it occupies an entire voxel

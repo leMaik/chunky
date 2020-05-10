@@ -17,6 +17,7 @@
 package se.llbit.chunky.resources.texturepack;
 
 import se.llbit.chunky.resources.BitmapImage;
+import se.llbit.chunky.resources.NormalMap;
 import se.llbit.chunky.resources.Texture;
 import se.llbit.resources.ImageLoader;
 
@@ -39,7 +40,8 @@ public class SimpleTexture extends TextureLoader {
     this.texture = texture;
   }
 
-  @Override protected boolean load(InputStream imageStream) throws IOException {
+  @Override
+  protected boolean load(InputStream imageStream) throws IOException {
     BitmapImage image = ImageLoader.read(imageStream);
 
     if (image.height > image.width) {
@@ -57,14 +59,26 @@ public class SimpleTexture extends TextureLoader {
     } else {
       texture.setTexture(image);
     }
+
     return true;
   }
 
-  @Override public boolean load(ZipFile texturePack, String topLevelDir) {
-    return load(topLevelDir + file, texturePack);
+  @Override
+  public boolean load(ZipFile texturePack, String topLevelDir) {
+    boolean loaded = load(topLevelDir + file, texturePack);
+    if (loaded) {
+      texture.normalMap = new NormalMap();
+      if (!new SimpleTexture(file + "_n", texture.normalMap).load(texturePack, topLevelDir)) {
+        texture.normalMap = null;
+      }else{
+        System.out.println("normal map found "+file);
+      }
+    }
+    return loaded;
   }
 
-  @Override public String toString() {
+  @Override
+  public String toString() {
     return "texture:" + file;
   }
 }

@@ -367,6 +367,9 @@ public class CauldronModel {
           ray.color.set(color);
           ray.t = ray.tNext;
           ray.n.set(quad.n);
+          if(tex[i].normalMap!=null) {
+            tex[i].normalMap.apply(ray);
+          }
           hit = true;
         }
       }
