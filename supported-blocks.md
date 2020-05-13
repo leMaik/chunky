@@ -39,6 +39,7 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 - [x] Scaffolding
 - [x] Bell
 - [x] Lantern
+- [ ] Jigsaw Block
 
 ## 1.15
 
@@ -101,6 +102,7 @@ _Since this release is still in the snapshot phase, there might be a few blocks 
 
 ### 20w13a
 - [x] Lodestone
+- [ ] Jigsaw Block (new orientations, joint type)
 
 ### 20w15a
 - [x] Blackstone
