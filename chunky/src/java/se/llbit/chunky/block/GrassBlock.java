@@ -5,16 +5,18 @@ import se.llbit.chunky.resources.NormalMap;
 import se.llbit.chunky.resources.Texture;
 import se.llbit.math.AABB;
 import se.llbit.math.Ray;
+import se.llbit.math.Vector3;
 
 public class GrassBlock extends MinecraftBlock {
-  private final static AABB aabb = new AABB(0, 1, 0, 1, 0, 1);
+  private static final AABB aabb = new AABB(0, 1, 0, 1, 0, 1);
 
   public GrassBlock() {
     super("grass_block", Texture.grassTop);
     localIntersect = true;
   }
 
-  @Override public boolean intersect(Ray ray, Scene scene) {
+  @Override
+  public boolean intersect(Ray ray, Scene scene) {
     ray.t = Double.POSITIVE_INFINITY;
     if (aabb.intersect(ray)) {
       if (ray.n.y == -1) {
@@ -25,10 +27,12 @@ public class GrassBlock extends MinecraftBlock {
         float[] color;
         if (ray.n.y > 0) {
           color = Texture.grassTop.getColor(ray.u, ray.v);
-          NormalMap.apply(ray, Texture.grassTop);
+          NormalMap.apply(ray, new Vector3(1, 0, 0), new Vector3(0, 0, 1), Texture.grassTop);
         } else {
           color = Texture.grassSide.getColor(ray.u, ray.v);
-          NormalMap.apply(ray, Texture.grassSide);
+          Vector3 xv = new Vector3();
+          xv.cross(ray.n, new Vector3(0, -1, 0));
+          NormalMap.apply(ray, xv, new Vector3(0, -1, 0), Texture.grassSide);
         }
         if (color[3] > Ray.EPSILON) {
           ray.color.set(color);

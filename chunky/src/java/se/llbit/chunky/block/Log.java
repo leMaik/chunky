@@ -1,6 +1,7 @@
 package se.llbit.chunky.block;
 
 import se.llbit.chunky.renderer.scene.Scene;
+import se.llbit.chunky.resources.NormalMap;
 import se.llbit.chunky.resources.Texture;
 import se.llbit.math.Quad;
 import se.llbit.math.Ray;
@@ -82,9 +83,7 @@ public class Log extends MinecraftBlock {
         ray.v = uv_x * u + (1 - uv_x) * ray.v;
         texture[textureIndex[direction][i]].getColor(ray);
         ray.n.set(side.n);
-        if(texture[textureIndex[direction][i]].normalMap!=null){
-          texture[textureIndex[direction][i]].normalMap.apply(ray);
-        }
+        NormalMap.apply(ray, side.xv, side.yv, texture[textureIndex[direction][i]]);
         ray.t = ray.tNext;
         hit = true;
       }
