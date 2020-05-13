@@ -31,14 +31,16 @@ import se.llbit.math.primitive.TexturedTriangle;
 public class Quad {
 
   protected Vector3 o = new Vector3();
-  protected Vector3 xv = new Vector3();
-  protected Vector3 yv = new Vector3();
+  public Vector3 xv = new Vector3();
+  public Vector3 yv = new Vector3();
   protected Vector4 uv = new Vector4();
 
   /**
    * Normal vector
    */
   public Vector3 n = new Vector3();
+
+  // TODO pre-calculate the TBN matrix used for normal mapping
 
   protected double d, xvl, yvl;
 

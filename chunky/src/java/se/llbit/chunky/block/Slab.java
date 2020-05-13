@@ -1,20 +1,22 @@
 package se.llbit.chunky.block;
 
 import se.llbit.chunky.renderer.scene.Scene;
+import se.llbit.chunky.resources.NormalMap;
 import se.llbit.chunky.resources.Texture;
 import se.llbit.math.AABB;
 import se.llbit.math.Ray;
+import se.llbit.math.Vector3;
 
 public class Slab extends MinecraftBlockTranslucent {
-  private final static AABB[] aabb = {
-      // Lower half-block.
-      new AABB(0, 1, 0, .5, 0, 1),
+  private static final AABB[] aabb = {
+    // Lower half-block.
+    new AABB(0, 1, 0, .5, 0, 1),
 
-      // Upper half-block.
-      new AABB(0, 1, .5, 1, 0, 1),
+    // Upper half-block.
+    new AABB(0, 1, .5, 1, 0, 1),
 
-      // Double slab.
-      new AABB(0, 1, 0, 1, 0, 1),
+    // Double slab.
+    new AABB(0, 1, 0, 1, 0, 1),
   };
 
   private final int half;
@@ -47,15 +49,18 @@ public class Slab extends MinecraftBlockTranslucent {
     this(name, texture, texture, type);
   }
 
-  @Override public boolean intersect(Ray ray, Scene scene) {
+  @Override
+  public boolean intersect(Ray ray, Scene scene) {
     ray.t = Double.POSITIVE_INFINITY;
     if (aabb[half].intersect(ray)) {
       if (ray.n.y != 0) {
         topTexture.getColor(ray);
-        topTexture.normalMap.apply(ray);
+        NormalMap.apply(ray, new Vector3(1, 0, 0), new Vector3(0, 0, 1), topTexture);
       } else {
         sideTexture.getColor(ray);
-        sideTexture.normalMap.apply(ray);
+        Vector3 xv = new Vector3();
+        xv.cross(ray.n, new Vector3(0, -1, 0));
+        NormalMap.apply(ray, xv, new Vector3(0, -1, 0), sideTexture);
       }
       ray.color.w = 1;
       ray.distance += ray.tNext;
@@ -65,7 +70,8 @@ public class Slab extends MinecraftBlockTranslucent {
     return false;
   }
 
-  @Override public String description() {
+  @Override
+  public String description() {
     return description;
   }
 }

@@ -17,6 +17,7 @@
 package se.llbit.chunky.model;
 
 import se.llbit.chunky.block.Water;
+import se.llbit.chunky.resources.NormalMap;
 import se.llbit.chunky.resources.Texture;
 import se.llbit.math.Quad;
 import se.llbit.math.Ray;
@@ -367,15 +368,14 @@ public class CauldronModel {
           ray.color.set(color);
           ray.t = ray.tNext;
           ray.n.set(quad.n);
-          if(tex[i].normalMap!=null) {
-            tex[i].normalMap.apply(ray);
-          }
+          NormalMap.apply(ray, quad.xv, quad.yv, tex[i]);
           hit = true;
         }
       }
     }
 
-    // TODO since this water is the same block, refraction is not taken into account – still better than no water
+    // TODO since this water is the same block, refraction is not taken into account – still better
+    // than no water
     Quad water = waterLevels[level];
     if (water != null && water.intersect(ray)) {
       if (!stillWater) {

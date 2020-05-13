@@ -481,7 +481,9 @@ public class Octree {
           continue;
         }
       } else if (!currentBlock.isSameMaterial(prevBlock) && currentBlock != Air.INSTANCE) {
-        TexturedBlockModel.getIntersectionColor(ray);
+        // TexturedBlockModel.getIntersectionColor(ray);
+        // TODO this slows down rendering but is required for normal maps
+        currentBlock.intersect(ray, scene);
         return true;
       }
 

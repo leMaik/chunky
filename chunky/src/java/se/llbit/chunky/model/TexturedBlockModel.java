@@ -22,6 +22,7 @@ import se.llbit.chunky.resources.Texture;
 import se.llbit.math.AABB;
 import se.llbit.math.QuickMath;
 import se.llbit.math.Ray;
+import se.llbit.math.Vector3;
 
 /**
  * A textured block.
@@ -32,12 +33,11 @@ public class TexturedBlockModel {
   private static final AABB block = new AABB(0, 1, 0, 1, 0, 1);
 
   /**
-   * Find intersection between a ray and a block.
-   * The ray origin is updated to the intersection point.
+   * Find intersection between a ray and a block. The ray origin is updated to the intersection
+   * point.
    *
-   * @param texture array of textures for each side of the block.
-   * Texture 0 is north, 1 is south, 2 is west,
-   * 3 is east, 4 is top, 5 is bottom.
+   * @param texture array of textures for each side of the block. Texture 0 is north, 1 is south, 2
+   *     is west, 3 is east, 4 is top, 5 is bottom.
    * @return <code>true</code> if the ray intersects the block
    */
   public static boolean intersect(Ray ray, Texture[] texture) {
@@ -46,31 +46,30 @@ public class TexturedBlockModel {
       float[] color;
       if (ray.n.z < 0) {
         color = texture[0].getColor(ray.u, ray.v);
-        NormalMap.apply(ray, texture[0]);
+        NormalMap.apply(ray, new Vector3(1, 0, 0), new Vector3(0, -1, 0), texture[0]);
       } else if (ray.n.z > 0) {
         color = texture[1].getColor(ray.u, ray.v);
-        NormalMap.apply(ray, texture[1]);
+        NormalMap.apply(ray, new Vector3(-1, 0, 0), new Vector3(0, -1, 0), texture[1]);
       } else if (ray.n.x > 0) {
         color = texture[2].getColor(ray.u, ray.v);
-        NormalMap.apply(ray, texture[2]);
+        NormalMap.apply(ray, new Vector3(0, 0, 1), new Vector3(0, -1, 0), texture[2]);
       } else if (ray.n.x < 0) {
         color = texture[3].getColor(ray.u, ray.v);
-        NormalMap.apply(ray, texture[3]);
+        NormalMap.apply(ray, new Vector3(0, 0, -1), new Vector3(0, -1, 0), texture[3]);
       } else if (ray.n.y > 0) {
         color = texture[4].getColor(ray.u, 1 - ray.v);
-        ray.v = 1 - ray.v;
-        NormalMap.apply(ray, texture[4]);
+        NormalMap.apply(ray, new Vector3(1, 0, 1), new Vector3(0, 0, 1), texture[4]);
       } else {
         color = texture[5].getColor(ray.u, ray.v);
-        NormalMap.apply(ray, texture[5]);
+        NormalMap.apply(ray, new Vector3(1, 0, 1), new Vector3(0, 0, 1), texture[5]);
       }
 
       if (color[3] > Ray.EPSILON) {
         ray.color.set(color);
         ray.distance += ray.tNext;
         ray.o.scaleAdd(ray.tNext, ray.d);
-        return true;
       }
+      return true;
     }
     return false;
   }
@@ -78,9 +77,9 @@ public class TexturedBlockModel {
   /**
    * Find intersection between ray and block.
    *
-   * @param ray     ray to test
+   * @param ray ray to test
    * @param texture Texture array
-   * @param index   An index array used to index the texture array
+   * @param index An index array used to index the texture array
    * @return <code>true</code> if the ray intersected the block
    */
   public static boolean intersect(Ray ray, Texture[] texture, int[] index) {
@@ -89,23 +88,22 @@ public class TexturedBlockModel {
       float[] color;
       if (ray.n.z < 0) {
         color = texture[index[0]].getColor(ray.u, ray.v);
-        NormalMap.apply(ray, texture[index[0]]);
+        NormalMap.apply(ray, new Vector3(1, 0, 0), new Vector3(0, -1, 0), texture[0]);
       } else if (ray.n.z > 0) {
         color = texture[index[1]].getColor(ray.u, ray.v);
-        NormalMap.apply(ray, texture[index[1]]);
+        NormalMap.apply(ray, new Vector3(-1, 0, 0), new Vector3(0, -1, 0), texture[1]);
       } else if (ray.n.x > 0) {
         color = texture[index[2]].getColor(ray.u, ray.v);
-        NormalMap.apply(ray, texture[index[2]]);
+        NormalMap.apply(ray, new Vector3(0, 0, 1), new Vector3(0, -1, 0), texture[2]);
       } else if (ray.n.x < 0) {
         color = texture[index[3]].getColor(ray.u, ray.v);
-        NormalMap.apply(ray, texture[index[3]]);
+        NormalMap.apply(ray, new Vector3(0, 0, -1), new Vector3(0, -1, 0), texture[3]);
       } else if (ray.n.y > 0) {
         color = texture[index[4]].getColor(ray.u, 1 - ray.v);
-        ray.v = 1 - ray.v;
-        NormalMap.apply(ray, texture[index[4]]);
+        NormalMap.apply(ray, new Vector3(1, 0, 1), new Vector3(0, 0, 1), texture[4]);
       } else {
         color = texture[index[5]].getColor(ray.u, ray.v);
-        NormalMap.apply(ray, texture[index[5]]);
+        NormalMap.apply(ray, new Vector3(1, 0, 1), new Vector3(0, 0, 1), texture[5]);
       }
 
       if (color[3] > Ray.EPSILON) {
@@ -121,7 +119,7 @@ public class TexturedBlockModel {
   /**
    * Find intersection between ray and block.
    *
-   * @param ray     ray to test
+   * @param ray ray to test
    * @param texture Block texture
    * @return <code>true</code> if the ray intersected the block
    */
@@ -129,11 +127,24 @@ public class TexturedBlockModel {
     ray.t = Double.POSITIVE_INFINITY;
     if (block.intersect(ray)) {
       float[] color = texture.getColor(ray.u, ray.v);
+      if (ray.n.z < 0) {
+        NormalMap.apply(ray, new Vector3(1, 0, 0), new Vector3(0, -1, 0), texture);
+      } else if (ray.n.z > 0) {
+        NormalMap.apply(ray, new Vector3(-1, 0, 0), new Vector3(0, -1, 0), texture);
+      } else if (ray.n.x > 0) {
+        NormalMap.apply(ray, new Vector3(0, 0, 1), new Vector3(0, -1, 0), texture);
+      } else if (ray.n.x < 0) {
+        NormalMap.apply(ray, new Vector3(0, 0, -1), new Vector3(0, -1, 0), texture);
+      } else if (ray.n.y > 0) {
+        NormalMap.apply(ray, new Vector3(1, 0, 1), new Vector3(0, 0, 1), texture);
+      } else {
+        NormalMap.apply(ray, new Vector3(1, 0, 1), new Vector3(0, 0, 1), texture);
+      }
+
       if (color[3] > Ray.EPSILON) {
         ray.color.set(color);
         ray.distance += ray.tNext;
         ray.o.scaleAdd(ray.tNext, ray.d);
-        NormalMap.apply(ray, texture);
         return true;
       }
     }
@@ -180,5 +191,4 @@ public class TexturedBlockModel {
       ray.u = 1 - ray.u;
     }
   }
-
 }
