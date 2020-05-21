@@ -39,7 +39,7 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 - [x] Scaffolding
 - [x] Bell
 - [x] Lantern
-- [ ] Jigsaw Block
+- [x] Jigsaw Block
 
 ## 1.15
 
