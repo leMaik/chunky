@@ -23,16 +23,15 @@ public class GrassBlock extends MinecraftBlock {
         // Bottom face.
         Texture.dirt.getColor(ray);
         ray.t = ray.tNext;
+        // TODO bottom normal map
       } else {
         float[] color;
         if (ray.n.y > 0) {
           color = Texture.grassTop.getColor(ray.u, ray.v);
-          NormalMap.apply(ray, new Vector3(1, 0, 0), new Vector3(0, 0, 1), Texture.grassTop);
+          NormalMap.apply(ray, NormalMap.tbnCubeTop, Texture.grassTop);
         } else {
           color = Texture.grassSide.getColor(ray.u, ray.v);
-          Vector3 xv = new Vector3();
-          xv.cross(ray.n, new Vector3(0, -1, 0));
-          NormalMap.apply(ray, xv, new Vector3(0, -1, 0), Texture.grassSide);
+          // TODO apply normal map
         }
         if (color[3] > Ray.EPSILON) {
           ray.color.set(color);

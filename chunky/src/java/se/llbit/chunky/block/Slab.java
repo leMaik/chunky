@@ -55,12 +55,12 @@ public class Slab extends MinecraftBlockTranslucent {
     if (aabb[half].intersect(ray)) {
       if (ray.n.y != 0) {
         topTexture.getColor(ray);
-        NormalMap.apply(ray, new Vector3(1, 0, 0), new Vector3(0, 0, 1), topTexture);
+        NormalMap.apply(ray, NormalMap.tbnCubeTop, topTexture);
       } else {
         sideTexture.getColor(ray);
         Vector3 xv = new Vector3();
         xv.cross(ray.n, new Vector3(0, -1, 0));
-        NormalMap.apply(ray, xv, new Vector3(0, -1, 0), sideTexture);
+        // NormalMap.apply(ray, xv, new Vector3(0, -1, 0), sideTexture);
       }
       ray.color.w = 1;
       ray.distance += ray.tNext;

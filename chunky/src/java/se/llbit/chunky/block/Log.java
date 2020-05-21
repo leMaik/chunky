@@ -83,7 +83,7 @@ public class Log extends MinecraftBlock {
         ray.v = uv_x * u + (1 - uv_x) * ray.v;
         texture[textureIndex[direction][i]].getColor(ray);
         ray.n.set(side.n);
-        NormalMap.apply(ray, side.xv, side.yv, texture[textureIndex[direction][i]]);
+        NormalMap.apply(ray, side, texture[textureIndex[direction][i]]);
         ray.t = ray.tNext;
         hit = true;
       }

@@ -9,35 +9,23 @@ import se.llbit.math.Vector2;
 import se.llbit.math.Vector3;
 
 public class NormalMap extends Texture {
+  public static final Matrix3 tbnCubeTop =
+      getTbn(new Vector3(1, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 1, 0));
   private Vector3[] normals;
-
-  public static void apply(Ray ray, Vector3 xv, Vector3 yv, Texture texture) {
-    if (texture.normalMap != null) {
-      texture.normalMap.apply(ray, xv, yv);
-    }
-  }
 
   public static void apply(Ray ray, Quad quad, Texture texture) {
     if (texture.normalMap != null) {
-      texture.normalMap.apply(ray, quad.xv, quad.yv);
+      texture.normalMap.apply(quad, ray.n, ray.u, ray.v);
     }
   }
 
-  public void apply(Vector3 vec, Vector3 t, Vector3 b, double u, double v) {
-    t.normalize();
-    b.normalize();
+  public static void apply(Ray ray, Matrix3 tbn, Texture texture) {
+    if (texture.normalMap != null) {
+      texture.normalMap.apply(tbn, ray.n, ray.u, ray.v);
+    }
+  }
 
-    Matrix3 tbn = new Matrix3();
-    tbn.m11 = t.x;
-    tbn.m21 = t.y;
-    tbn.m31 = t.z;
-    tbn.m12 = b.x;
-    tbn.m22 = b.y;
-    tbn.m32 = b.z;
-    tbn.m13 = vec.x;
-    tbn.m23 = vec.y;
-    tbn.m33 = vec.z;
-
+  private void apply(Matrix3 tbn, Vector3 vec, double u, double v) {
     Vector3 n =
         this.normals[
             (int) ((1 - v) * height - Ray.EPSILON) * width + (int) (u * width - Ray.EPSILON)];
@@ -48,9 +36,31 @@ public class NormalMap extends Texture {
     }
   }
 
-  public void apply(Ray ray, Vector3 xv, Vector3 yv) {
-    apply(ray.n, xv, yv, ray.u, ray.v);
+  private void apply(Quad quad, Vector3 vec, double u, double v) {
+    Vector3 n =
+        this.normals[
+            (int) ((1 - v) * height - Ray.EPSILON) * width + (int) (u * width - Ray.EPSILON)];
+    if (n.lengthSquared() > 0) {
+      vec.set(n);
+      quad.tbn.transform(vec);
+      vec.normalize();
+    }
   }
+
+  /*
+  public void apply(Vector3 vec, Vector3 t, Vector3 b, double u, double v) {
+    t.normalize();
+    b.normalize();
+    Vector3 n =
+        this.normals[
+            (int) ((1 - v) * height - Ray.EPSILON) * width + (int) (u * width - Ray.EPSILON)];
+    if (n.lengthSquared() > 0) {
+      vec.set(n);
+      getTbn(t, b, n).transform(vec);
+      vec.normalize();
+    }
+  }
+  */
 
   @Override
   public void setTexture(BitmapImage newImage) {
@@ -67,5 +77,19 @@ public class NormalMap extends Texture {
         // normals[width * y + x].normalize();
       }
     }
+  }
+
+  public static Matrix3 getTbn(Vector3 t, Vector3 b, Vector3 n) {
+    Matrix3 tbn = new Matrix3();
+    tbn.m11 = t.x;
+    tbn.m21 = t.y;
+    tbn.m31 = t.z;
+    tbn.m12 = b.x;
+    tbn.m22 = b.y;
+    tbn.m32 = b.z;
+    tbn.m13 = n.x;
+    tbn.m23 = n.y;
+    tbn.m33 = n.z;
+    return tbn;
   }
 }
