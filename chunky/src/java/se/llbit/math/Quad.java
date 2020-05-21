@@ -32,11 +32,10 @@ public class Quad {
   public Vector3 yv = new Vector3();
   protected Vector4 uv = new Vector4();
   public int textureRotation = 0; // 0, 90, 180 or 270
+  public final Matrix3 tbn;
 
   /** Normal vector */
   public Vector3 n = new Vector3();
-
-  // TODO pre-calculate the TBN matrix used for normal mapping
 
   protected double d, xvl, yvl;
 
@@ -61,6 +60,17 @@ public class Quad {
     d = -n.dot(o);
     uv.set(other.uv);
     textureRotation = other.textureRotation;
+
+    tbn = new Matrix3();
+    tbn.m11 = xv.x;
+    tbn.m21 = xv.y;
+    tbn.m31 = xv.z;
+    tbn.m12 = yv.x;
+    tbn.m22 = yv.y;
+    tbn.m32 = yv.z;
+    tbn.m13 = n.x;
+    tbn.m23 = n.y;
+    tbn.m33 = n.z;
   }
 
   /** Create transformed Quad */
@@ -84,6 +94,17 @@ public class Quad {
     d = -n.dot(o);
     uv.set(other.uv);
     textureRotation = other.textureRotation;
+
+    tbn = new Matrix3();
+    tbn.m11 = xv.x;
+    tbn.m21 = xv.y;
+    tbn.m31 = xv.z;
+    tbn.m12 = yv.x;
+    tbn.m22 = yv.y;
+    tbn.m32 = yv.z;
+    tbn.m13 = n.x;
+    tbn.m23 = n.y;
+    tbn.m33 = n.z;
   }
 
   /**
@@ -106,6 +127,17 @@ public class Quad {
     this.uv.set(uv);
     this.uv.y -= uv.x;
     this.uv.w -= uv.z;
+
+    tbn = new Matrix3();
+    tbn.m11 = xv.x;
+    tbn.m21 = xv.y;
+    tbn.m31 = xv.z;
+    tbn.m12 = yv.x;
+    tbn.m22 = yv.y;
+    tbn.m32 = yv.z;
+    tbn.m13 = n.x;
+    tbn.m23 = n.y;
+    tbn.m33 = n.z;
   }
 
   /**
