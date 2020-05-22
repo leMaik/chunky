@@ -16,13 +16,12 @@
  */
 package se.llbit.math;
 
+import org.apache.commons.math3.random.RandomGenerator;
 import org.apache.commons.math3.util.FastMath;
 import se.llbit.chunky.block.Air;
 import se.llbit.chunky.renderer.scene.Scene;
 import se.llbit.chunky.world.BlockData;
 import se.llbit.chunky.world.Material;
-
-import java.util.Random;
 
 /**
  * The ray representation used for ray tracing.
@@ -261,7 +260,7 @@ public class Ray {
   /**
    * Set this ray to a random diffuse reflection of the input ray.
    */
-  public final void diffuseReflection(Ray ray, Random random) {
+  public final void diffuseReflection(Ray ray, RandomGenerator random) {
     set(ray);
 
     // get random point on unit disk
@@ -328,7 +327,7 @@ public class Ray {
    *
    * @param random random number source
    */
-  public final void scatterNormal(Random random) {
+  public final void scatterNormal(RandomGenerator random) {
     // get random point on unit disk
     double x1 = random.nextDouble();
     double x2 = random.nextDouble();

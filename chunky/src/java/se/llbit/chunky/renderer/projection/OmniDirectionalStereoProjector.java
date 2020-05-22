@@ -16,11 +16,10 @@
  */
 package se.llbit.chunky.renderer.projection;
 
+import org.apache.commons.math3.random.RandomGenerator;
 import org.apache.commons.math3.util.FastMath;
 import se.llbit.math.Constants;
 import se.llbit.math.Vector3;
-
-import java.util.Random;
 
 /**
  * A projector for Omni-Directional Stereo (ODS) images.
@@ -49,7 +48,7 @@ public class OmniDirectionalStereoProjector implements Projector {
   }
 
   @Override
-  public void apply(double x, double y, Random random, Vector3 pos, Vector3 direction) {
+  public void apply(double x, double y, RandomGenerator random, Vector3 pos, Vector3 direction) {
     apply(x, y, pos, direction);
   }
 

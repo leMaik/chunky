@@ -16,14 +16,14 @@
  */
 package se.llbit.chunky.renderer;
 
+import org.apache.commons.math3.random.MersenneTwister;
+import org.apache.commons.math3.random.RandomGenerator;
 import se.llbit.chunky.renderer.scene.Camera;
 import se.llbit.chunky.renderer.scene.RayTracer;
 import se.llbit.chunky.renderer.scene.Scene;
 import se.llbit.log.Log;
 import se.llbit.math.QuickMath;
 import se.llbit.math.Ray;
-
-import java.util.Random;
 
 /**
  * Performs rendering work.
@@ -60,7 +60,7 @@ public class RenderWorker extends Thread {
     this.rayTracer = manager.getRayTracer();
     this.id = id;
     state = new WorkerState();
-    state.random = new Random(seed);
+    state.random = new MersenneTwister(seed);
     state.ray = new Ray();
   }
 
@@ -98,7 +98,7 @@ public class RenderWorker extends Thread {
   private void work(RenderTile tile) {
     Scene scene = manager.getBufferedScene();
 
-    Random random = state.random;
+    RandomGenerator random = state.random;
     Ray ray = state.ray;
 
     int width = scene.canvasWidth();

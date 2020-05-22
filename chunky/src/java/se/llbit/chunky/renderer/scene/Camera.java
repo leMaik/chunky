@@ -16,6 +16,7 @@
  */
 package se.llbit.chunky.renderer.scene;
 
+import org.apache.commons.math3.random.RandomGenerator;
 import org.apache.commons.math3.util.FastMath;
 import se.llbit.chunky.entity.Entity;
 import se.llbit.chunky.renderer.Refreshable;
@@ -43,8 +44,6 @@ import se.llbit.math.Ray;
 import se.llbit.math.Vector2;
 import se.llbit.math.Vector3;
 import se.llbit.util.JsonSerializable;
-
-import java.util.Random;
 
 /**
  * Camera model for 3D rendering.
@@ -479,7 +478,7 @@ public class Camera implements JsonSerializable {
    * @param x      normalized image coordinate [-0.5, 0.5]
    * @param y      normalized image coordinate [-0.5, 0.5]
    */
-  public void calcViewRay(Ray ray, Random random, double x, double y) {
+  public void calcViewRay(Ray ray, RandomGenerator random, double x, double y) {
     // Reset the ray properties - current material etc.
     ray.setDefault();
 

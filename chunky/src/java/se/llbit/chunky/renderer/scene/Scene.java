@@ -17,6 +17,8 @@
 package se.llbit.chunky.renderer.scene;
 
 import java.io.FileOutputStream;
+
+import org.apache.commons.math3.random.RandomGenerator;
 import org.apache.commons.math3.util.FastMath;
 import se.llbit.chunky.PersistentSettings;
 import se.llbit.chunky.block.Air;
@@ -673,7 +675,7 @@ public class Scene implements JsonSerializable, Refreshable {
    *
    * @return {@code true} if the ray needs to die now
    */
-  public final boolean kill(int depth, Random random) {
+  public final boolean kill(int depth, RandomGenerator random) {
     return depth >= rayDepth && random.nextDouble() < .5f;
   }
 

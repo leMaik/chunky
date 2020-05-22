@@ -16,7 +16,7 @@
  */
 package se.llbit.chunky.renderer.projection;
 
-import java.util.Random;
+import org.apache.commons.math3.random.RandomGenerator;
 
 import se.llbit.math.Ray;
 import se.llbit.math.Vector3;
@@ -30,7 +30,7 @@ public class SphericalApertureProjector extends ApertureProjector {
     super(wrapped, apertureSize, subjectDistance);
   }
 
-  @Override public void apply(double x, double y, Random random, Vector3 o, Vector3 d) {
+  @Override public void apply(double x, double y, RandomGenerator random, Vector3 o, Vector3 d) {
     wrapped.apply(x, y, random, o, d);
 
     d.scale(subjectDistance);

@@ -16,8 +16,7 @@
  */
 package se.llbit.chunky.renderer.projection;
 
-import java.util.Random;
-
+import org.apache.commons.math3.random.RandomGenerator;
 import org.apache.commons.math3.util.FastMath;
 
 import se.llbit.chunky.renderer.scene.Camera;
@@ -37,7 +36,7 @@ public class PanoramicSlotProjector implements Projector {
     this.fovTan = Camera.clampedFovTan(fov);
   }
 
-  @Override public void apply(double x, double y, Random random, Vector3 o, Vector3 d) {
+  @Override public void apply(double x, double y, RandomGenerator random, Vector3 o, Vector3 d) {
     apply(x, y, o, d);
   }
 

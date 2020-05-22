@@ -16,6 +16,7 @@
  */
 package se.llbit.chunky.renderer.scene;
 
+import org.apache.commons.math3.random.RandomGenerator;
 import org.apache.commons.math3.util.FastMath;
 import se.llbit.chunky.block.Air;
 import se.llbit.chunky.block.Water;
@@ -26,8 +27,6 @@ import se.llbit.math.QuickMath;
 import se.llbit.math.Ray;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
-
-import java.util.Random;
 
 /**
  * Static methods for path tracing.
@@ -62,7 +61,7 @@ public class PathTracer implements RayTracer {
       boolean firstReflection) {
 
     boolean hit = false;
-    Random random = state.random;
+    RandomGenerator random = state.random;
     Vector3 ox = new Vector3(ray.o);
     Vector3 od = new Vector3(ray.d);
     double airDistance = 0;
@@ -250,8 +249,7 @@ public class PathTracer implements RayTracer {
             }
           } else {
             if (!scene.kill(ray.depth + 1, random)) {
-              Ray refracted = new Ray();
-              refracted.set(ray);
+              Ray refracted = new Ray(ray);
 
               // Calculate angle-dependent reflectance using
               // Fresnel equation approximation:
@@ -305,8 +303,7 @@ public class PathTracer implements RayTracer {
 
         } else {
 
-          Ray transmitted = new Ray();
-          transmitted.set(ray);
+          Ray transmitted = new Ray(ray);
           transmitted.o.scaleAdd(Ray.OFFSET, transmitted.d);
 
           if (pathTrace(scene, transmitted, state, 1, false)) {

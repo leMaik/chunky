@@ -16,8 +16,7 @@
  */
 package se.llbit.chunky.renderer.scene;
 
-import java.util.Random;
-
+import org.apache.commons.math3.random.RandomGenerator;
 import org.apache.commons.math3.util.FastMath;
 
 import se.llbit.chunky.renderer.Refreshable;
@@ -337,7 +336,7 @@ public class Sun implements JsonSerializable {
   /**
    * Point ray in random direction within sun solid angle
    */
-  public void getRandomSunDirection(Ray reflected, Random random) {
+  public void getRandomSunDirection(Ray reflected, RandomGenerator random) {
     double x1 = random.nextDouble();
     double x2 = random.nextDouble();
     double cos_a = 1 - x1 + x1 * RADIUS_COS;

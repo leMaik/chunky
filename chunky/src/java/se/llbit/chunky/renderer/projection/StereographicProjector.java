@@ -16,7 +16,7 @@
  */
 package se.llbit.chunky.renderer.projection;
 
-import java.util.Random;
+import org.apache.commons.math3.random.RandomGenerator;
 
 import se.llbit.chunky.renderer.scene.Camera;
 import se.llbit.math.Vector3;
@@ -34,7 +34,7 @@ public class StereographicProjector implements Projector {
     scale = Camera.clampedFovTan(fov);
   }
 
-  @Override public void apply(double x, double y, Random random, Vector3 o, Vector3 d) {
+  @Override public void apply(double x, double y, RandomGenerator random, Vector3 o, Vector3 d) {
     apply(x, y, o, d);
   }
 
