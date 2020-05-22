@@ -343,16 +343,12 @@ public class Sun implements JsonSerializable {
     double sin_a = FastMath.sqrt(1 - cos_a * cos_a);
     double phi = 2 * Math.PI * x2;
 
-    Vector3 u = new Vector3(su);
-    Vector3 v = new Vector3(sv);
-    Vector3 w = new Vector3(sw);
+    double a = FastMath.cos(phi) * sin_a;
+    double b = FastMath.sin(phi) * sin_a;
 
-    u.scale(FastMath.cos(phi) * sin_a);
-    v.scale(FastMath.sin(phi) * sin_a);
-    w.scale(cos_a);
-
-    reflected.d.add(u, v);
-    reflected.d.add(w);
+    reflected.d.x = su.x * a + sv.x * b + sw.x * cos_a;
+    reflected.d.y = su.y * a + sv.y * b + sw.y * cos_a;
+    reflected.d.z = su.z * a + sv.z * b + sw.z * cos_a;
     reflected.d.normalize();
   }
 
