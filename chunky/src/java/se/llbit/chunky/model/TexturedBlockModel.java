@@ -88,22 +88,22 @@ public class TexturedBlockModel {
       float[] color;
       if (ray.n.z < 0) {
         color = texture[index[0]].getColor(ray.u, ray.v);
-        // NormalMap.apply(ray, new Vector3(1, 0, 0), new Vector3(0, -1, 0), texture[0]);
+        NormalMap.apply(ray, NormalMap.tbnCubeNorth, texture[index[0]]);
       } else if (ray.n.z > 0) {
         color = texture[index[1]].getColor(ray.u, ray.v);
-        // NormalMap.apply(ray, new Vector3(-1, 0, 0), new Vector3(0, -1, 0), texture[1]);
+        NormalMap.apply(ray, NormalMap.tbnCubeSouth, texture[index[1]]);
       } else if (ray.n.x > 0) {
         color = texture[index[2]].getColor(ray.u, ray.v);
-        // NormalMap.apply(ray, new Vector3(0, 0, 1), new Vector3(0, -1, 0), texture[2]);
+        NormalMap.apply(ray, NormalMap.tbnCubeEast, texture[index[2]]);
       } else if (ray.n.x < 0) {
         color = texture[index[3]].getColor(ray.u, ray.v);
-        // NormalMap.apply(ray, new Vector3(0, 0, -1), new Vector3(0, -1, 0), texture[3]);
+        NormalMap.apply(ray, NormalMap.tbnCubeWest, texture[index[3]]);
       } else if (ray.n.y > 0) {
         color = texture[index[4]].getColor(ray.u, 1 - ray.v);
-        NormalMap.apply(ray, NormalMap.tbnCubeTop, texture[4]);
+        NormalMap.apply(ray, NormalMap.tbnCubeTop, texture[index[4]]);
       } else {
         color = texture[index[5]].getColor(ray.u, ray.v);
-        // NormalMap.apply(ray, new Vector3(1, 0, 1), new Vector3(0, 0, 1), texture[5]);
+        NormalMap.apply(ray, NormalMap.tbnCubeBottom, texture[5]);
       }
 
       if (color[3] > Ray.EPSILON) {
@@ -128,17 +128,17 @@ public class TexturedBlockModel {
     if (block.intersect(ray)) {
       float[] color = texture.getColor(ray.u, ray.v);
       if (ray.n.z < 0) {
-        // NormalMap.apply(ray, new Vector3(1, 0, 0), new Vector3(0, -1, 0), texture);
+        NormalMap.apply(ray, NormalMap.tbnCubeNorth, texture);
       } else if (ray.n.z > 0) {
-        // NormalMap.apply(ray, new Vector3(-1, 0, 0), new Vector3(0, -1, 0), texture);
+        NormalMap.apply(ray, NormalMap.tbnCubeSouth, texture);
       } else if (ray.n.x > 0) {
-        // NormalMap.apply(ray, new Vector3(0, 0, 1), new Vector3(0, -1, 0), texture);
+        NormalMap.apply(ray, NormalMap.tbnCubeEast, texture);
       } else if (ray.n.x < 0) {
-        // NormalMap.apply(ray, new Vector3(0, 0, -1), new Vector3(0, -1, 0), texture);
+        NormalMap.apply(ray, NormalMap.tbnCubeWest, texture);
       } else if (ray.n.y > 0) {
         NormalMap.apply(ray, NormalMap.tbnCubeTop, texture);
       } else {
-        // NormalMap.apply(ray, new Vector3(1, 0, 1), new Vector3(0, 0, 1), texture);
+        NormalMap.apply(ray, NormalMap.tbnCubeBottom, texture);
       }
 
       if (color[3] > Ray.EPSILON) {

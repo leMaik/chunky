@@ -21,7 +21,6 @@ public class TexturedBlock extends MinecraftBlock {
       Texture top, Texture bottom) {
     super(name, north);
     texture = new Texture[] { north, south, west, east, top, bottom };
-    localIntersect = true;
     opaque = true;
   }
 

@@ -66,12 +66,11 @@ public class SimpleTexture extends TextureLoader {
   @Override
   public boolean load(ZipFile texturePack, String topLevelDir) {
     boolean loaded = load(topLevelDir + file, texturePack);
+    Texture tmp = new Texture();
     if (loaded) {
-      texture.normalMap = new NormalMap();
-      if (!new SimpleTexture(file + "_n", texture.normalMap).load(texturePack, topLevelDir)) {
-        texture.normalMap = null;
-      }else{
-        System.out.println("normal map found "+file);
+      if (new SimpleTexture(file + "_n", tmp).load(texturePack, topLevelDir)) {
+        texture.normalMap = new NormalMap(tmp.getBitmap());
+        System.out.println("normal map found " + file);
       }
     }
     return loaded;
