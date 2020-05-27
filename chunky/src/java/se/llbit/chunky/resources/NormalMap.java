@@ -8,9 +8,22 @@ import se.llbit.math.Ray;
 import se.llbit.math.Vector2;
 import se.llbit.math.Vector3;
 
-public class NormalMap extends Texture {
+public class NormalMap {
   public static final Matrix3 tbnCubeTop =
       getTbn(new Vector3(1, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 1, 0));
+  public static final Matrix3 tbnCubeBottom =
+      getTbn(new Vector3(1, 0, 0), new Vector3(0, -1, 0), new Vector3(0, -1, 0));
+  public static final Matrix3 tbnCubeNorth =
+      getTbn(new Vector3(1, 0, 0), new Vector3(0, -1, 0), new Vector3(0, 0, -1));
+  public static final Matrix3 tbnCubeEast =
+      getTbn(new Vector3(0, 0, 1), new Vector3(0, -1, 0), new Vector3(1, 0, 0));
+  public static final Matrix3 tbnCubeSouth =
+      getTbn(new Vector3(-1, 0, 0), new Vector3(0, -1, 0), new Vector3(0, 0, 1));
+  public static final Matrix3 tbnCubeWest =
+      getTbn(new Vector3(0, 0, -1), new Vector3(0, -1, 0), new Vector3(-1, 0, 0));
+
+  private int width;
+  private int height;
   private Vector3[] normals;
 
   public static void apply(Ray ray, Quad quad, Texture texture) {
@@ -47,24 +60,9 @@ public class NormalMap extends Texture {
     }
   }
 
-  /*
-  public void apply(Vector3 vec, Vector3 t, Vector3 b, double u, double v) {
-    t.normalize();
-    b.normalize();
-    Vector3 n =
-        this.normals[
-            (int) ((1 - v) * height - Ray.EPSILON) * width + (int) (u * width - Ray.EPSILON)];
-    if (n.lengthSquared() > 0) {
-      vec.set(n);
-      getTbn(t, b, n).transform(vec);
-      vec.normalize();
-    }
-  }
-  */
-
-  @Override
-  public void setTexture(BitmapImage newImage) {
-    super.setTexture(newImage);
+  public NormalMap(BitmapImage newImage) {
+    width = newImage.width;
+    height = newImage.height;
     normals = new Vector3[width * height];
     float[] color = new float[4];
     for (int x = 0; x < newImage.width; x++) {
@@ -74,7 +72,7 @@ public class NormalMap extends Texture {
         // xy.normalize();
         normals[width * y + x] =
             new Vector3(color[0] * 2 - 1, color[1] * 2 - 1, FastMath.sqrt(1.0 - xy.dot(xy)));
-        // normals[width * y + x].normalize();
+        normals[width * y + x].normalize();
       }
     }
   }
