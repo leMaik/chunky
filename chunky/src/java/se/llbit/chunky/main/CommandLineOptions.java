@@ -30,8 +30,6 @@ import se.llbit.json.JsonValue;
 import se.llbit.json.PrettyPrinter;
 import se.llbit.log.Log;
 import se.llbit.util.MCDownloader;
-import se.llbit.util.NotNull;
-import se.llbit.util.StringUtil;
 import se.llbit.util.TaskTracker;
 
 import java.io.File;
@@ -61,7 +59,7 @@ public class CommandLineOptions {
   /**
    * This is the usage output generated for the --help flag.
    */
-  private static final String USAGE = StringUtil
+  private static final String USAGE = String
       .join("\n", "Usage: mapLoader [OPTIONS] [WORLD DIRECTORY]", "Options:",
           "  -texture <FILE>        use FILE as the texture pack (must be a Zip file)",
           "  -render <SCENE>        render the specified scene (see notes)",
