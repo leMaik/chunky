@@ -3650,14 +3650,7 @@ public class TexturePackLoader {
       Log.info(message.toString());
     }
     if (remember) {
-      StringBuilder paths = new StringBuilder();
-      for (String path : texturePacks) {
-        if (paths.length() > 0) {
-          paths.append(File.pathSeparator);
-        }
-        paths.append(path);
-      }
-      PersistentSettings.setLastTexturePack(paths.toString());
+      PersistentSettings.setLastTexturePack(String.join(File.pathSeparator, texturePacks));
     }
   }
 
