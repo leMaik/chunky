@@ -18,6 +18,8 @@
 package se.llbit.chunky.resources;
 
 import se.llbit.chunky.PersistentSettings;
+import se.llbit.chunky.block.BlockSpec;
+import se.llbit.chunky.block.ResourcepackBlockProvider;
 import se.llbit.chunky.world.biome.Biomes;
 import se.llbit.log.Log;
 
@@ -164,22 +166,24 @@ public class ResourcePackLoader {
         .map(s -> "- " + s)
         .collect(Collectors.joining("\n"))
     );
-    return loadResourcePacks(
-      resourcePacks.iterator(),
-      loaders
-    );
-  }
 
-  /**
-   * Load resources from the given resource packs.
-   * Resource pack files are loaded in list order - if a texture is not found in a pack,
-   * the next packs is checked as a fallback.
-   *
-   * @return True if all resources have been found and loaded.
-   */
-  private static boolean loadResourcePacks(Iterator<File> resourcePacks, List<PackLoader> loaders) {
-    while (resourcePacks.hasNext()) {
-      File resourcePack = resourcePacks.next();
+    BlockSpec.blockProviders.stream() // TODO move this
+      .filter(bp -> bp instanceof ResourcepackBlockProvider)
+      .forEach(
+        bp -> {
+          try {
+            List<File> blocks = new ArrayList<>(resourcePacks);
+            File minecraftJar = MinecraftFinder.getMinecraftJar();
+            if (minecraftJar != null) {
+              blocks.add(minecraftJar);
+            }
+            ((ResourcepackBlockProvider) bp).loadBlocks(blocks);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        });
+
+    for(File resourcePack : resourcePacks) {
       if (resourcePack.isFile() || resourcePack.isDirectory()) {
         if (loadSingleResourcePack(resourcePack, loaders)) {
           return true;
