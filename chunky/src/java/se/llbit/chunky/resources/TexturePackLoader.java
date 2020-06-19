@@ -16,7 +16,12 @@
  */
 package se.llbit.chunky.resources;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import se.llbit.chunky.PersistentSettings;
+import se.llbit.chunky.block.BlockSpec;
+import se.llbit.chunky.block.ResourcepackBlockProvider;
 import se.llbit.chunky.renderer.scene.Sun;
 import se.llbit.chunky.resources.texturepack.AllTextures;
 import se.llbit.chunky.resources.texturepack.AlternateTextures;
@@ -3762,6 +3767,19 @@ public class TexturePackLoader {
     if (remember) {
       PersistentSettings.setLastTexturePack(String.join(File.pathSeparator, texturePacks));
     }
+
+    BlockSpec.blockProviders.stream() // TODO move this
+        .filter(bp -> bp instanceof ResourcepackBlockProvider)
+        .forEach(
+            bp -> {
+              try {
+                List<String> blocks = new ArrayList<>(Arrays.asList(texturePacks));
+                blocks.add(MinecraftFinder.getMinecraftJarNonNull().getAbsolutePath());
+                ((ResourcepackBlockProvider) bp).loadBlocks(blocks.toArray(new String[0]));
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
+            });
   }
 
   private static Set<Map.Entry<String, TextureLoader>> loadTerrainTextures(ZipFile texturePack,
