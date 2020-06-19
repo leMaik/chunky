@@ -106,11 +106,7 @@ public class Chunky {
   public Chunky(ChunkyOptions options) {
     this.options = options;
     // registerBlockProvider(new MinecraftBlockProvider());
-    try {
-      registerBlockProvider(new ResourcepackBlockProvider(MinecraftFinder.getMinecraftJarNonNull()));
-    } catch (IOException e) {
-      Log.error("Could not load blocks", e);
-    }
+    registerBlockProvider(new ResourcepackBlockProvider());
   }
 
   /**
