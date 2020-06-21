@@ -44,6 +44,7 @@ import se.llbit.chunky.resources.texturepack.ShulkerTextureLoader;
 import se.llbit.chunky.resources.texturepack.SimpleTexture;
 import se.llbit.chunky.resources.texturepack.TextureLoader;
 import se.llbit.chunky.resources.texturepack.ThinArmEntityTextureLoader;
+import se.llbit.chunky.world.MaterialStore;
 import se.llbit.log.Log;
 import se.llbit.resources.ImageLoader;
 import se.llbit.util.NotNull;
@@ -3776,6 +3777,7 @@ public class TexturePackLoader {
                 List<String> blocks = new ArrayList<>(Arrays.asList(texturePacks));
                 blocks.add(MinecraftFinder.getMinecraftJarNonNull().getAbsolutePath());
                 ((ResourcepackBlockProvider) bp).loadBlocks(blocks.toArray(new String[0]));
+                MaterialStore.blockIds.addAll(bp.getSupportedBlocks());
               } catch (IOException e) {
                 e.printStackTrace();
               }
