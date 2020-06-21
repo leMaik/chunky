@@ -20,6 +20,7 @@ package se.llbit.chunky.resources;
 import se.llbit.chunky.PersistentSettings;
 import se.llbit.chunky.block.BlockSpec;
 import se.llbit.chunky.block.ResourcepackBlockProvider;
+import se.llbit.chunky.world.MaterialStore;
 import se.llbit.chunky.world.biome.Biomes;
 import se.llbit.log.Log;
 
@@ -178,6 +179,7 @@ public class ResourcePackLoader {
               blocks.add(minecraftJar);
             }
             ((ResourcepackBlockProvider) bp).loadBlocks(blocks);
+            MaterialStore.blockIds.addAll(bp.getSupportedBlocks());
           } catch (IOException e) {
             e.printStackTrace();
           }
