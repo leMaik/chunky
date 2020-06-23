@@ -20,16 +20,13 @@ _More detailed instructions with screenshots are available [on this page]({{ abs
 
 ## Features
 
-- Supports all 1.14 blocks
-- Supports all 1.15 honey-related blocks
-- Supports all 1.16 blocks (up to 20w17a, see [the list of supported blocks]({{ absolute_url }}supported-blocks))
+- Supports Minecraft 1.13, 1.14, 1.15 and 1.16 (see [the list of supported blocks]({{ absolute_url }}supported-blocks))
 - Improved Slime rendering
-- Improved stairs rendering
 - Map for 1.14+ worlds
 
 ## Planned features
 
-- Support 1.16 blocks shortly after 1.16 is released (see [the list of supported blocks]({{ absolute_url }}supported-blocks))
+- Support new snapshots shortly after they are released (see [the list of supported blocks]({{ absolute_url }}supported-blocks))
 - Support for custom block models from resource packs
 
 ## What's up with _leMaik's Chunky_?

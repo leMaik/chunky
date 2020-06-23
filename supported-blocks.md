@@ -50,9 +50,8 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 
 ## 1.16
 
-_Since this release is still in the snapshot phase, there might be a few blocks missing in this list._
-
 ### 20w06a
+
 - [x] Ancient debris
 - [x] Block of netherite
 - [x] Basalt block
@@ -83,28 +82,34 @@ _Since this release is still in the snapshot phase, there might be a few blocks 
 - [x] Vertical wall connections without gaps (`tall` block state)
 
 ### 20w09a
+
 - [x] Target block
 - [x] Crying obsidian
 - [x] Potted Crimson and Warped fungus
 - [x] Potted Crimson and Warped roots
 
 ### 20w10a
+
 - [x] Crimson and Warped Hyphae
 - [x] Stripped Crimson and Warped Hyphae
 
 ### 20w11a
+
 - [x] Twisting vines
 - [x] Nether gold ore
 
 ### 20w12a
+
 - [x] Respawn anchor
 - [x] Polished basalt
 
 ### 20w13a
+
 - [x] Lodestone
 - [ ] Jigsaw Block (new orientations, joint type)
 
 ### 20w15a
+
 - [x] Blackstone
 - [x] Blackstone slab
 - [x] Blackstone stairs
@@ -129,8 +134,10 @@ _Since this release is still in the snapshot phase, there might be a few blocks 
 - [x] Piglin banner pattern
 
 ### 20w16a
+
 - [x] Chain
 
 ### 20w17a
+
 - [x] Soul torch (renamed soul fire torch)
 - [x] Soul lantern (renamed soul fire lantern)
