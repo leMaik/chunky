@@ -106,7 +106,7 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 ### 20w13a
 
 - [x] Lodestone
-- [ ] Jigsaw Block (new orientations, joint type)
+- [x] Jigsaw Block (new orientations)
 
 ### 20w15a
 
