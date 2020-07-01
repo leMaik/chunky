@@ -157,7 +157,7 @@ public class ChunkMap implements ChunkUpdateListener, ChunkViewListener, CameraV
   }
 
   @Override public void chunkUpdated(ChunkPosition chunk) {
-    if (view.chunkScale >= 16) {
+    if (view.chunkScale >= ChunkView.chunkRenderThreshold) {
       mapBuffer.drawTile(mapLoader, chunk, chunkSelection);
     } else {
       regionUpdated(chunk.getRegionPosition());
@@ -241,7 +241,7 @@ public class ChunkMap implements ChunkUpdateListener, ChunkViewListener, CameraV
       // Test if hovered chunk is visible.
       if (mapView.isChunkVisible(cp)) {
 
-        if (mapView.scale >= 16) {
+        if (mapView.scale >= ChunkView.chunkRenderThreshold) {
           int x0 = (int) (mapView.scale * (cp.x - mapView.x0));
           int y0 = (int) (mapView.scale * (cp.z - mapView.z0));
           int blockScale = mapView.scale;
@@ -277,7 +277,7 @@ public class ChunkMap implements ChunkUpdateListener, ChunkViewListener, CameraV
   }
 
   @Override public void regionUpdated(ChunkPosition region) {
-    if (view.scale < 16) {
+    if (view.scale < ChunkView.chunkRenderThreshold) {
       mapBuffer.drawTile(mapLoader, region, chunkSelection);
       mapLoader.regionUpdated(region);
       repaintDeferred();
@@ -410,7 +410,7 @@ public class ChunkMap implements ChunkUpdateListener, ChunkViewListener, CameraV
         double scale = theView.scale;
         int cx = (int) QuickMath.floor(theView.x + (x - getWidth() / 2) / scale);
         int cz = (int) QuickMath.floor(theView.z + (y - getHeight() / 2) / scale);
-        if (theView.scale >= 16) {
+        if (theView.scale >= ChunkView.chunkRenderThreshold) {
           chunkSelection.toggleChunk(mapLoader.getWorld(), cx, cz);
         } else {
           chunkSelection.selectRegion(mapLoader.getWorld(), cx, cz);
@@ -440,7 +440,7 @@ public class ChunkMap implements ChunkUpdateListener, ChunkViewListener, CameraV
 
     int scale = mapView.getScale();
     int newScale = scale - diff;
-    if (newScale <= 16) {
+    if (newScale < ChunkView.chunkRenderThreshold) {
       mapView.setScale(newScale);
     } else if ((scale - diff * 4) <= 64) {
       mapView.setScale(scale - diff * 4);

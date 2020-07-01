@@ -39,6 +39,8 @@ public class ChunkView {
    */
   public static final int DEFAULT_BLOCK_SCALE = 4 * 16;
 
+  public static final int chunkRenderThreshold = 1;
+
   /**
    * A zero-size chunk view useful as a default chunk view for an uninitialized map.
    */
@@ -98,7 +100,7 @@ public class ChunkView {
   public ChunkView(double x, double z, int width, int height, int scale) {
     scale = clampScale(scale);
     this.scale = scale;
-    if (this.scale <= 12) {
+    if (this.scale < chunkRenderThreshold) {
       chunkScale = 1;
     } else {
       chunkScale = 16;
@@ -118,7 +120,7 @@ public class ChunkView {
     cx1 = (int) QuickMath.floor(x1);
     cz0 = (int) QuickMath.floor(z0);
     cz1 = (int) QuickMath.floor(z1);
-    if (this.scale >= 16) {
+    if (this.scale >= chunkRenderThreshold) {
       px0 = cx0 - 1;
       px1 = cx1 + 1;
       pz0 = cz0 - 1;
@@ -174,11 +176,11 @@ public class ChunkView {
 
   /**
    * Determines if a chunk or region is visible based on the view scale.
-   * If the scale is greater than or equal to 16 then the test is for chunk visibility,
+   * If the scale is greater than or equal to the chunkRenderThreshold then the test is for chunk visibility,
    * otherwise region visibility is checked.
    */
   public boolean shouldPreload(ChunkPosition pos) {
-    return chunkScale >= 16 ? isChunkVisible(pos.x, pos.z) : isRegionVisible(pos.x, pos.z);
+    return chunkScale >= chunkRenderThreshold ? isChunkVisible(pos.x, pos.z) : isRegionVisible(pos.x, pos.z);
   }
 
   public boolean isChunkVisible(ChunkPosition chunk) {

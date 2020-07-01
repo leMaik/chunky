@@ -98,7 +98,7 @@ public class MapBuffer {
       activeTiles.remove(tile.pos);
     }
     int x0, x1, z0, z1;
-    if (newView.chunkScale >= 16) {
+    if (newView.chunkScale >= ChunkView.chunkRenderThreshold) {
       x0 = newView.px0;
       x1 = newView.px1;
       z0 = newView.pz0;
@@ -157,7 +157,7 @@ public class MapBuffer {
   public synchronized void redrawView(WorldMapLoader mapLoader,
       ChunkSelectionTracker selection) {
     int x0, x1, z0, z1;
-    if (view.chunkScale >= 16) {
+    if (view.chunkScale >= ChunkView.chunkRenderThreshold) {
       x0 = view.px0;
       x1 = view.px1;
       z0 = view.pz0;

@@ -39,6 +39,8 @@ import java.util.function.Consumer;
  * Dynamically loads regions and chunks for the 2D world map.
  */
 public class WorldMapLoader implements ChunkTopographyListener, ChunkViewListener {
+  private static final int THREAD_COUNT = 4;
+  
   private final ChunkyFxController controller;
 
   private World world = EmptyWorld.INSTANCE;
@@ -58,7 +60,7 @@ public class WorldMapLoader implements ChunkTopographyListener, ChunkViewListene
     RegionChangeWatcher regionWatcher = new RegionChangeWatcher(this, mapView);
 
     // Start worker threads.
-    RegionParser[] regionParsers = new RegionParser[3];
+    RegionParser[] regionParsers = new RegionParser[THREAD_COUNT];
     for (int i = 0; i < regionParsers.length; ++i) {
       regionParsers[i] = new RegionParser(this, regionQueue, mapView);
       regionParsers[i].start();
