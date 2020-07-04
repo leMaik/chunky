@@ -31,7 +31,7 @@ public class Quad {
   protected Vector3 xv = new Vector3();
   protected Vector3 yv = new Vector3();
   protected Vector4 uv = new Vector4();
-  public double textureRotation = 0;
+  public int textureRotation = 0; // 0, 90, 180 or 270
 
   /** Normal vector */
   public Vector3 n = new Vector3();
@@ -137,11 +137,8 @@ public class Quad {
         v *= yvl;
 
         if (u >= 0 && u <= 1 && v >= 0 && v <= 1) {
-          // TODO this could be simplified because textureRotation is only used in 90° steps
-          double pu =
-              (u - 0.5) * Math.cos(textureRotation) - (v - 0.5) * Math.sin(textureRotation) + 0.5;
-          double pv =
-              (u - 0.5) * Math.sin(textureRotation) + (v - 0.5) * Math.cos(textureRotation) + 0.5;
+          double pu = (u - 0.5) * cos(textureRotation) - (v - 0.5) * sin(textureRotation) + 0.5;
+          double pv = (u - 0.5) * sin(textureRotation) + (v - 0.5) * cos(textureRotation) + 0.5;
           ray.u = uv.x + pu * uv.y;
           ray.v = uv.z + pv * uv.w;
           ray.tNext = t;
@@ -176,14 +173,36 @@ public class Quad {
     double u1 = uv.x + uv.y;
     double v0 = uv.z;
     double v1 = uv.z + uv.w;
-    // TODO texture rotation
 
-    primitives.add(
-        new TexturedTriangle(
-            c0, c2, c1, new Vector2(u0, v0), new Vector2(u0, v1), new Vector2(u1, v0), material));
-    primitives.add(
-        new TexturedTriangle(
-            c1, c2, c3, new Vector2(u1, v0), new Vector2(u0, v1), new Vector2(u1, v1), material));
+    if (textureRotation == 90) {
+      primitives.add(
+          new TexturedTriangle(
+              c0, c2, c1, new Vector2(u1, v0), new Vector2(u0, v0), new Vector2(u1, v1), material));
+      primitives.add(
+          new TexturedTriangle(
+              c1, c2, c3, new Vector2(u1, v1), new Vector2(u0, v0), new Vector2(u0, v1), material));
+    } else if (textureRotation == 180) {
+      primitives.add(
+          new TexturedTriangle(
+              c0, c2, c1, new Vector2(u1, v1), new Vector2(u1, v0), new Vector2(u0, v1), material));
+      primitives.add(
+          new TexturedTriangle(
+              c1, c2, c3, new Vector2(u0, v1), new Vector2(u1, v0), new Vector2(u0, v0), material));
+    } else if (textureRotation == 270) {
+      primitives.add(
+          new TexturedTriangle(
+              c0, c2, c1, new Vector2(u0, v1), new Vector2(u1, v1), new Vector2(u0, v0), material));
+      primitives.add(
+          new TexturedTriangle(
+              c1, c2, c3, new Vector2(u0, v0), new Vector2(u1, v1), new Vector2(u1, v0), material));
+    } else {
+      primitives.add(
+          new TexturedTriangle(
+              c0, c2, c1, new Vector2(u0, v0), new Vector2(u0, v1), new Vector2(u1, v0), material));
+      primitives.add(
+          new TexturedTriangle(
+              c1, c2, c3, new Vector2(u1, v0), new Vector2(u0, v1), new Vector2(u1, v1), material));
+    }
   }
 
   /** Build a transformed copy of this quad. */
@@ -198,5 +217,33 @@ public class Quad {
     t.add(xv);
     t.add(yv);
     return !(t.x < 0 || t.x > 1 || t.y < 0 || t.y > 1 || t.z < 0 || t.z > 1);
+  }
+
+  private static double cos(int angle) {
+    switch (angle) {
+      case 0:
+        return 1;
+      case 90:
+      case 270:
+        return 0;
+      case 180:
+        return -1;
+      default:
+        return Math.cos(Math.toRadians(angle));
+    }
+  }
+
+  private static double sin(int angle) {
+    switch (angle) {
+      case 0:
+      case 180:
+        return 0;
+      case 90:
+        return 1;
+      case 270:
+        return -1;
+      default:
+        return Math.sin(Math.toRadians(angle));
+    }
   }
 }
