@@ -492,7 +492,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
               : new Vector4(from.x / 16, to.x / 16, 1 - to.z / 16, 1 - from.z / 16));
 
         if (rotation > 0) {
-          quad.textureRotation = FastMath.toRadians(rotation); // -angle or +angle?
+          quad.textureRotation = rotation; // -angle or +angle?
         }
       } else if (direction.equals("down")) {
         this.quad =
@@ -509,7 +509,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
               : new Vector4(from.x / 16, to.x / 16, 1 - to.z / 16, 1 - from.z / 16));
 
         if (rotation > 0) {
-          quad.textureRotation = FastMath.toRadians(rotation); // -angle or +angle?
+          quad.textureRotation = rotation; // -angle or +angle?
         }
       } else if (direction.equals("west")) {
         this.quad =
@@ -526,7 +526,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
               : new Vector4(from.z / 16, to.z / 16, to.y / 16, from.y / 16));
 
         if (rotation > 0) {
-          quad.textureRotation = FastMath.toRadians(rotation);
+          quad.textureRotation = rotation;
         }
       } else if (direction.equals("east")) {
         this.quad =
@@ -543,7 +543,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
               : new Vector4(to.z / 16, from.z / 16, to.y / 16, from.y / 16));
 
         if (rotation > 0) {
-          quad.textureRotation = FastMath.toRadians(rotation);
+          quad.textureRotation = rotation;
         }
       } else if (direction.equals("north")) {
         this.quad =
@@ -560,7 +560,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
               : new Vector4(to.x / 16, from.x / 16, to.y / 16, from.y / 16));
 
         if (rotation > 0) {
-          quad.textureRotation = FastMath.toRadians(rotation); // -angle or +angle?
+          quad.textureRotation = rotation; // -angle or +angle?
         }
       } else if (direction.equals("south")) {
         this.quad =
@@ -577,7 +577,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
               : new Vector4(to.x / 16, from.x / 16, to.y / 16, from.y / 16));
 
         if (rotation > 0) {
-          quad.textureRotation = FastMath.toRadians(rotation); // -angle or +angle?
+          quad.textureRotation = rotation; // -angle or +angle?
         }
       }
     }
@@ -833,10 +833,10 @@ public class ResourcepackBlockProvider implements BlockProvider {
         if (uvlock) {
           // TODO angle sign might be wrong
           if (element.faces[3] != null && element.faces[3].quad != null) {
-            element.faces[3].quad.textureRotation -= Math.toRadians(angle);
+            element.faces[3].quad.textureRotation -= angle;
           }
           if (element.faces[5] != null && element.faces[5].quad != null) {
-            element.faces[5].quad.textureRotation -= Math.toRadians(angle);
+            element.faces[5].quad.textureRotation -= angle;
           }
         }
       }
@@ -851,10 +851,10 @@ public class ResourcepackBlockProvider implements BlockProvider {
         }
         if (uvlock) {
           if (element.faces[0] != null && element.faces[0].quad != null) {
-            element.faces[0].quad.textureRotation -= Math.toRadians(angle);
+            element.faces[0].quad.textureRotation -= angle;
           }
           if (element.faces[1] != null && element.faces[1].quad != null) {
-            element.faces[1].quad.textureRotation -= Math.toRadians(angle);
+            element.faces[1].quad.textureRotation -= angle;
           }
         }
       }
@@ -871,10 +871,10 @@ public class ResourcepackBlockProvider implements BlockProvider {
         if (uvlock) {
           // TODO angle sign might be wrong
           if (element.faces[2] != null && element.faces[2].quad != null) {
-            element.faces[2].quad.textureRotation -= Math.toRadians(angle);
+            element.faces[2].quad.textureRotation -= angle;
           }
           if (element.faces[4] != null && element.faces[4].quad != null) {
-            element.faces[4].quad.textureRotation -= Math.toRadians(angle);
+            element.faces[4].quad.textureRotation -= angle;
           }
         }
       }
