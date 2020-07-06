@@ -42,6 +42,7 @@ import se.llbit.nbt.CompoundTag;
 import se.llbit.nbt.Tag;
 import se.llbit.resources.ImageLoader;
 
+@SuppressWarnings("Duplicates") //I was tired of the warnings
 public class ResourcepackBlockProvider implements BlockProvider {
   private final Map<String, BlockVariants> blocks = new HashMap<>();
 
