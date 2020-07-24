@@ -38,7 +38,7 @@ public class Ray {
   /**
    * Ray direction.
    */
-  public Vector3 d = new Vector3();
+  public final Vector3 d = new DebugVector3(0, 0, 0);
 
   /**
    * Intersection point.
@@ -48,7 +48,7 @@ public class Ray {
   /**
    * Intersection normal.
    */
-  public Vector3 n = new Vector3();
+  public final Vector3 n = new DebugVector3.NonZero(1, 0, 0);
 
   /**
    * Distance traveled in current medium. This is updated after all intersection

@@ -57,7 +57,7 @@ public class Vector3 {
   /**
    * Set this vector equal to other vector.
    */
-  public final void set(Vector3 o) {
+  public void set(Vector3 o) {
     x = o.x;
     y = o.y;
     z = o.z;
@@ -66,7 +66,7 @@ public class Vector3 {
   /**
    * Set this vector equal to (d, e, f).
    */
-  public final void set(double d, double e, double f) {
+  public void set(double d, double e, double f) {
     x = d;
     y = e;
     z = f;
@@ -82,7 +82,7 @@ public class Vector3 {
   /**
    * Set this vector equal to a-b.
    */
-  public final void sub(Vector3 a, Vector3 b) {
+  public void sub(Vector3 a, Vector3 b) {
     x = a.x - b.x;
     y = a.y - b.y;
     z = a.z - b.z;
@@ -105,7 +105,7 @@ public class Vector3 {
   /**
    * Set this vector equal to the cross product of a and b.
    */
-  public final void cross(Vector3 a, Vector3 b) {
+  public void cross(Vector3 a, Vector3 b) {
     x = a.y * b.z - a.z * b.y;
     y = a.z * b.x - a.x * b.z;
     z = a.x * b.y - a.y * b.x;
@@ -114,7 +114,7 @@ public class Vector3 {
   /**
    * Normalize this vector (scale the vector to unit length)
    */
-  public final void normalize() {
+  public void normalize() {
     double s = 1 / FastMath.sqrt(lengthSquared());
     x *= s;
     y *= s;
@@ -124,7 +124,7 @@ public class Vector3 {
   /**
    * Set this vector equal to s*d + o.
    */
-  public final void scaleAdd(double s, Vector3 d, Vector3 o) {
+  public void scaleAdd(double s, Vector3 d, Vector3 o) {
     x = s * d.x + o.x;
     y = s * d.y + o.y;
     z = s * d.z + o.z;
@@ -133,7 +133,7 @@ public class Vector3 {
   /**
    * Add s*d to this vector.
    */
-  public final void scaleAdd(double s, Vector3 d) {
+  public void scaleAdd(double s, Vector3 d) {
     x += s * d.x;
     y += s * d.y;
     z += s * d.z;
@@ -142,7 +142,7 @@ public class Vector3 {
   /**
    * Scale this vector by s.
    */
-  public final void scale(double s) {
+  public void scale(double s) {
     x *= s;
     y *= s;
     z *= s;
@@ -151,7 +151,7 @@ public class Vector3 {
   /**
    * Set this vector equal to a+b.
    */
-  public final void add(Vector3 a, Vector3 b) {
+  public void add(Vector3 a, Vector3 b) {
     x = a.x + b.x;
     y = a.y + b.y;
     z = a.z + b.z;
@@ -160,7 +160,7 @@ public class Vector3 {
   /**
    * Add a to this vector.
    */
-  public final void add(Vector3 a) {
+  public void add(Vector3 a) {
     x += a.x;
     y += a.y;
     z += a.z;
@@ -169,7 +169,7 @@ public class Vector3 {
   /**
    * Add a to this vector.
    */
-  public final void add(Vector3i a) {
+  public void add(Vector3i a) {
     x += a.x;
     y += a.y;
     z += a.z;
@@ -178,7 +178,7 @@ public class Vector3 {
   /**
    * Add vector (a, b, c) to this vector.
    */
-  public final void add(double a, double b, double c) {
+  public void add(double a, double b, double c) {
     x += a;
     y += b;
     z += c;
@@ -187,7 +187,7 @@ public class Vector3 {
   /**
    * Subtract a from this vector.
    */
-  public final void sub(Vector3 a) {
+  public void sub(Vector3 a) {
     x -= a.x;
     y -= a.y;
     z -= a.z;
@@ -196,7 +196,7 @@ public class Vector3 {
   /**
    * Subtract vector (a, b, c) from this vector.
    */
-  public final void sub(double a, double b, double c) {
+  public void sub(double a, double b, double c) {
     x -= a;
     y -= b;
     z -= c;
@@ -205,7 +205,7 @@ public class Vector3 {
   /**
    * Subtract a from this vector.
    */
-  public final void sub(Vector3i a) {
+  public void sub(Vector3i a) {
     x -= a.x;
     y -= a.y;
     z -= a.z;
