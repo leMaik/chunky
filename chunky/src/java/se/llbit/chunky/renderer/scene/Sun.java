@@ -146,12 +146,17 @@ public class Sun implements JsonSerializable {
     cosTheta += horizonOffset * (1 - cosTheta);
     if (cosTheta < 0)
       cosTheta = 0;
-    double cosGamma = ray.d.dot(sw);
+    double cosGamma = QuickMath.clamp(ray.d.dot(sw), -1, 1);
     double gamma = FastMath.acos(cosGamma);
     double cos2Gamma = cosGamma * cosGamma;
     double x = zenith_x * perezF(cosTheta, gamma, cos2Gamma, A.x, B.x, C.x, D.x, E.x) * f0_x;
     double y = zenith_y * perezF(cosTheta, gamma, cos2Gamma, A.y, B.y, C.y, D.y, E.y) * f0_y;
     double z = zenith_Y * perezF(cosTheta, gamma, cos2Gamma, A.z, B.z, C.z, D.z, E.z) * f0_Y;
+    if (Double.isNaN(x)) {
+      // TODO this only happens when rendering minecraft:grass with the resourcepack model loader; find out why
+      ray.color.set(0, 0, 0, 1);
+      return;
+    }
     if (y <= Ray.EPSILON) {
       ray.color.set(0, 0, 0, 1);
     } else {
