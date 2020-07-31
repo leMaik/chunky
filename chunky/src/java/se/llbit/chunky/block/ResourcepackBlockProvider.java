@@ -38,7 +38,6 @@ import se.llbit.math.Transform;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 import se.llbit.math.primitive.Primitive;
-import se.llbit.nbt.CompoundTag;
 import se.llbit.nbt.Tag;
 import se.llbit.resources.ImageLoader;
 
@@ -103,7 +102,8 @@ public class ResourcepackBlockProvider implements BlockProvider {
                                     } else {
                                       Block model =
                                           modelLoader.loadBlockModel(
-                                              effectiveResources, modelName, blockName);
+                                              effectiveResources, modelName,
+                                              assetsName + ":" + blockName);
                                       if (model instanceof JsonModel) {
                                         if (blockDefinition.get("x").doubleValue(0) > 0) {
                                           ((JsonModel) model)
@@ -142,7 +142,8 @@ public class ResourcepackBlockProvider implements BlockProvider {
 
                                     Block model =
                                         modelLoader.loadBlockModel(
-                                            effectiveResources, modelName, blockName);
+                                            effectiveResources, modelName,
+                                            assetsName + ":" + blockName);
 
                                     if (model instanceof JsonModel) {
                                       if (blockDefinition.get("x").doubleValue(0) > 0) {
@@ -373,6 +374,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
   }
 
   private static class JsonModelLoader {
+
     private final Map<String, JsonObject> models = new HashMap<>();
     private final Map<String, Texture> textures = new HashMap<>();
 
@@ -381,7 +383,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
       if (texture == null) {
         String[] parts = textureName.split(":");
         if (parts.length < 2) {
-          parts = new String[] {"minecraft", parts[0]};
+          parts = new String[]{"minecraft", parts[0]};
         }
         // TODO <= 1.12 texture paths are prefixed
         try (InputStream inputStream =
@@ -409,7 +411,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
       if (model == null) {
         String[] parts = modelName.split(":");
         if (parts.length < 2) {
-          parts = new String[] {"minecraft", parts[0]};
+          parts = new String[]{"minecraft", parts[0]};
         }
         // TODO <= 1.12 model paths are prefixed
         List<String> path = new ArrayList<>();
