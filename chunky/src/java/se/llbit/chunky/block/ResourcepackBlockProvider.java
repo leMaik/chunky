@@ -183,11 +183,12 @@ public class ResourcepackBlockProvider implements BlockProvider {
 
                                 blocks.put(assetsName + ":" + blockName, variants);
                               } catch (IOException | SyntaxError | RuntimeException e) {
-                                System.out.println(
+                                System.err.println(
                                     "Could not load block "
                                         + blockName
                                         + " from "
                                         + resourcePack.getFileStores().iterator().next().name());
+                                e.printStackTrace();
                               }
                             });
                   } catch (IOException e) {
@@ -443,15 +444,32 @@ public class ResourcepackBlockProvider implements BlockProvider {
       JsonModel block = new JsonModel(blockName, Texture.air);
       JsonObject blockDefinition = this.getModel(resourcePacks, model);
       block.applyDefinition(blockDefinition, name -> this.getTexture(resourcePacks, name));
+      String parentName = blockDefinition.get("parent").stringValue("block/block");
+      if (parentName.equals("block/cube_all") || parentName.equals("minecraft:block/cube_all")) {
+        System.out.println("optimized block/cube_all");
+        return new MinecraftBlock(blockName, block.textures.get("all"));
+      } else if (parentName.equals("block/tinted_cross") || parentName
+          .equals("minecraft:block/tinted_cross") || parentName.equals("block/cross") || parentName
+          .equals("minecraft:block/cross")) {
+        block.supportsOpacity = false;
+      }
       try {
         while (!blockDefinition.get("parent").isUnknown()) {
-          String parentName = blockDefinition.get("parent").stringValue("block/block");
+          parentName = blockDefinition.get("parent").stringValue("block/block");
           blockDefinition = this.getModel(resourcePacks, parentName);
           block.applyDefinition(blockDefinition, name -> this.getTexture(resourcePacks, name));
-          if (parentName.equals("block/cube_all")) {
-            block.texture = block.textures.get("all");
-            block.localIntersect = false;
-            break;
+          if (parentName.equals("block/cube_all") || parentName
+              .equals("minecraft:block/cube_all")) {
+            System.out.println("optimized block/cube_all");
+            return new MinecraftBlock(blockName, block.textures.get("all"));
+            // block.texture = block.textures.get("all");
+            // block.localIntersect = false;
+            // break;
+          } else if (parentName.equals("block/tinted_cross") || parentName
+              .equals("minecraft:block/tinted_cross") || parentName.equals("block/cross")
+              || parentName
+              .equals("minecraft:block/cross")) {
+            block.supportsOpacity = false;
           }
         }
       } catch (RuntimeException e) {
@@ -589,8 +607,8 @@ public class ResourcepackBlockProvider implements BlockProvider {
 
       if (tintindex == 0) {
         float[] biomeColor = ray.getBiomeGrassColor(scene);
-        color = color.clone();
         if (color[3] > Ray.EPSILON) {
+          color = color.clone();
           color[0] *= biomeColor[0];
           color[1] *= biomeColor[1];
           color[2] *= biomeColor[2];
@@ -704,7 +722,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
         JsonModelFace face = faces[faceIndex];
         if (face != null && face.quad != null && face.quad.intersect(ray)) {
           float[] color = face.getColor(ray, scene, model.textures.get(face.texture));
-          if (color[3] > Ray.EPSILON) {
+          if (model.supportsOpacity ? color[3] > Ray.EPSILON : color[3] > .99f) {
             ray.color.set(color);
             ray.n.set(face.quad.n);
             ray.t = ray.tNext;
@@ -727,6 +745,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
   }
 
   private static class JsonModel extends Block {
+    private boolean supportsOpacity = true; // some blocks, e.g. tinted_cross/cross only support full or zero opacity and fractional values are ignored
     private Map<String, Texture> textures = new HashMap<>();
     private List<JsonModelElement> elements = new ArrayList<>();
     private boolean isBlockEntity = false;
