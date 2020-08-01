@@ -27,7 +27,7 @@ import se.llbit.chunky.renderer.scene.Scene;
 import se.llbit.chunky.resources.AnimatedTexture;
 import se.llbit.chunky.resources.BitmapImage;
 import se.llbit.chunky.resources.Texture;
-import se.llbit.chunky.world.MaterialStore;
+import se.llbit.chunky.world.Material;
 import se.llbit.chunky.world.material.TextureMaterial;
 import se.llbit.json.JsonArray;
 import se.llbit.json.JsonMember;
@@ -41,7 +41,6 @@ import se.llbit.math.Transform;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 import se.llbit.math.primitive.Primitive;
-import se.llbit.nbt.CompoundTag;
 import se.llbit.nbt.Tag;
 import se.llbit.resources.ImageLoader;
 
@@ -828,7 +827,11 @@ public class ResourcepackBlockProvider implements BlockProvider {
               if (face != null && face.quad != null) {
                 Texture texture = textures.get(face.texture);
                 if (texture != null) {
-                  face.quad.addTriangles(faces, new TextureMaterial(texture), transform);
+                  Material material = new TextureMaterial(texture);
+                  material.emittance = emittance;
+                  material.specular = specular;
+                  material.ior = ior;
+                  face.quad.addTriangles(faces, material, transform);
                 } else {
                   System.out.println("Missing texture " + face.texture + " for " + name);
                 }
@@ -962,7 +965,11 @@ public class ResourcepackBlockProvider implements BlockProvider {
                 if (face != null && face.quad != null) {
                   Texture texture = part.textures.get(face.texture);
                   if (texture != null) {
-                    face.quad.addTriangles(faces, new TextureMaterial(texture), transform);
+                    Material material = new TextureMaterial(texture);
+                    material.emittance = emittance;
+                    material.specular = specular;
+                    material.ior = ior;
+                    face.quad.addTriangles(faces, material, transform);
                   } else {
                     System.out.println("Missing texture " + face.texture + " for " + name);
                   }
