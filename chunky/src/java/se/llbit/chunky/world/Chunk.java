@@ -18,6 +18,7 @@ package se.llbit.chunky.world;
 
 import se.llbit.chunky.block.Air;
 import se.llbit.chunky.block.Block;
+import se.llbit.chunky.block.BlockProviderRegistry;
 import se.llbit.chunky.block.Lava;
 import se.llbit.chunky.block.Water;
 import se.llbit.chunky.chunk.BlockPalette;
@@ -146,7 +147,7 @@ public class Chunk {
    * Parse the chunk from the region file and render the current
    * layer, surface and cave maps.
    */
-  public synchronized void loadChunk() {
+  public synchronized void loadChunk(BlockProviderRegistry blockProviders) {
     if (!shouldReloadChunk()) {
       return;
     }
@@ -163,7 +164,7 @@ public class Chunk {
     }
     surfaceTimestamp = dataTimestamp;
     version = chunkVersion(data);
-    loadSurface(data);
+    loadSurface(data, blockProviders);
     biomesTimestamp = dataTimestamp;
     if (surface == IconLayer.MC_1_12) {
       biomes = IconLayer.MC_1_12;
@@ -173,7 +174,7 @@ public class Chunk {
     world.chunkUpdated(position);
   }
 
-  private void loadSurface(Map<String, Tag> data) {
+  private void loadSurface(Map<String, Tag> data, BlockProviderRegistry blockProviders) {
     if (data == null) {
       surface = IconLayer.CORRUPT;
       return;
@@ -187,7 +188,7 @@ public class Chunk {
       extractBiomeData(data.get(LEVEL_BIOMES), biomeData);
       int[] blockData = new int[CHUNK_BYTES];
       if (version.equals("1.13")) {
-        BlockPalette palette = new BlockPalette();
+        BlockPalette palette = new BlockPalette(blockProviders);
         loadBlockData(data, blockData, palette);
         updateHeightmap(heightmap, position, blockData, heightmapData, palette);
         surface = new SurfaceLayer(world.currentDimension(), blockData, biomeData, palette);
