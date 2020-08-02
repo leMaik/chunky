@@ -16,8 +16,8 @@
  */
 package se.llbit.chunky.resources;
 
+import se.llbit.chunky.block.BlockProviderRegistry;
 import se.llbit.chunky.chunk.BlockPalette;
-import se.llbit.chunky.renderer.RenderContext;
 import se.llbit.chunky.world.WorldTexture;
 import se.llbit.math.Octree;
 
@@ -30,11 +30,12 @@ public class OctreeFileFormat {
 
   /**
    * Load octrees and grass/foliage textures from a file.
-   *
-   * @param in input stream for the file to load the scene from.
+   *  @param in input stream for the file to load the scene from.
    * @param impl The octree implementation to use
+   * @param blockProviders
    */
-  public static OctreeData load(DataInputStream in, String impl) throws IOException {
+  public static OctreeData load(DataInputStream in, String impl,
+      BlockProviderRegistry blockProviders) throws IOException {
     int version = in.readInt();
     if (version != OCTREE_VERSION) {
       throw new IOException(String.format(
@@ -42,7 +43,7 @@ public class OctreeFileFormat {
           OCTREE_VERSION, version));
     }
     OctreeData data = new OctreeData();
-    data.palette = BlockPalette.read(in);
+    data.palette = BlockPalette.read(in, blockProviders);
     data.worldTree = Octree.load(impl, in);
     data.waterTree = Octree.load(impl, in);
     data.grassColors = WorldTexture.load(in);

@@ -352,11 +352,12 @@ public class CommandLineOptions {
         return;
       }
       try {
-        Scene scene = new Scene();
+        Chunky chunky = new Chunky(options);
+        Scene scene = new Scene(chunky);
         try (FileInputStream in = new FileInputStream(sceneFile)) {
           scene.loadDescription(in);
         }
-        RenderContext context = new RenderContext(new Chunky(options));
+        RenderContext context = new RenderContext(chunky);
         TaskTracker taskTracker = new TaskTracker(new ConsoleProgressListener(),
             TaskTracker.Task::new,
             (tracker, previous, name, size) -> new TaskTracker.Task(tracker, previous, name, size) {

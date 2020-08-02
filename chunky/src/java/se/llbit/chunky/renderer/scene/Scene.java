@@ -21,6 +21,7 @@ import org.apache.commons.math3.util.FastMath;
 import se.llbit.chunky.PersistentSettings;
 import se.llbit.chunky.block.Air;
 import se.llbit.chunky.block.Block;
+import se.llbit.chunky.block.BlockProviderRegistry;
 import se.llbit.chunky.block.Lava;
 import se.llbit.chunky.block.Water;
 import se.llbit.chunky.chunk.BlockPalette;
@@ -157,6 +158,7 @@ public class Scene implements JsonSerializable, Refreshable {
   protected final Vector3 fogColor =
       new Vector3(PersistentSettings.getFogColorRed(), PersistentSettings.getFogColorGreen(),
           PersistentSettings.getFogColorBlue());
+  private final BlockProviderRegistry blockProviders;
   public int sdfVersion = -1;
   public String name = "default_" + new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
 
@@ -309,14 +311,15 @@ public class Scene implements JsonSerializable, Refreshable {
    * Render buffers are initialized either by using loadDescription(),
    * fromJson(), or importFromJson(), or by calling initBuffers().
    */
-  public Scene() {
+  public Scene(BlockProviderRegistry blockProviders) {
     width = PersistentSettings.get3DCanvasWidth();
     height = PersistentSettings.get3DCanvasHeight();
     sppTarget = PersistentSettings.getSppTargetDefault();
 
-    palette = new BlockPalette();
+    palette = new BlockPalette(blockProviders);
     worldOctree = new Octree(octreeImplementation, 1);
     waterOctree = new Octree(octreeImplementation, 1);
+    this.blockProviders = blockProviders;
   }
 
   /**
@@ -361,6 +364,7 @@ public class Scene implements JsonSerializable, Refreshable {
   public Scene(Scene other) {
     copyState(other);
     copyTransients(other);
+    blockProviders = other.blockProviders;
   }
 
   /**
@@ -739,7 +743,7 @@ public class Scene implements JsonSerializable, Refreshable {
       int requiredDepth = calculateOctreeOrigin(chunksToLoad);
 
       // Create new octree to fit all chunks.
-      palette = new BlockPalette();
+      palette = new BlockPalette(blockProviders);
       worldOctree = new Octree(octreeImplementation, requiredDepth);
       waterOctree = new Octree(octreeImplementation, requiredDepth);
 
@@ -1873,12 +1877,12 @@ public class Scene implements JsonSerializable, Refreshable {
         long fileTimestamp = context.fileTimestamp(fileName);
         OctreeFileFormat.OctreeData data;
         try (DataInputStream in = new DataInputStream(new GZIPInputStream(context.getSceneFileInputStream(fileName)))) {
-          data = OctreeFileFormat.load(in, octreeImplementation);
+          data = OctreeFileFormat.load(in, octreeImplementation, blockProviders);
         } catch(PackedOctree.OctreeTooBigException e) {
           // Octree too big, reload file and force loading as NodeBasedOctree
           Log.warn("Octree was too big when loading dump, reloading with old (slower and bigger) implementation.");
           DataInputStream inRetry = new DataInputStream(new GZIPInputStream(context.getSceneFileInputStream(fileName)));
-          data = OctreeFileFormat.load(inRetry, "NODE");
+          data = OctreeFileFormat.load(inRetry, "NODE", blockProviders);
         }
         worldOctree = data.worldTree;
         worldOctree.setTimestamp(fileTimestamp);
@@ -2423,7 +2427,7 @@ public class Scene implements JsonSerializable, Refreshable {
    */
   public synchronized void fromJson(JsonObject json) {
     boolean finalizeBufferPrev = finalizeBuffer;  // Remember the finalize setting.
-    Scene scene = new Scene();
+    Scene scene = new Scene(blockProviders);
     scene.importFromJson(json);
     copyState(scene);
     copyTransients(scene);

@@ -16,29 +16,35 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 /**
- * The block palette maps every block type to a numeric ID and can get the <code>{@link Block}</code>
- * instance that corresponds to an ID. Only one instance of every block configuration will be created and then
- * re-used for all blocks of that type with the same configuration (i.e. the same block data).
- * The numerical IDs are used to efficiently store the blocks in the octree.
- *
+ * The block palette maps every block type to a numeric ID and can get the <code>{@link
+ * Block}</code> instance that corresponds to an ID. Only one instance of every block configuration
+ * will be created and then re-used for all blocks of that type with the same configuration (i.e.
+ * the same block data). The numerical IDs are used to efficiently store the blocks in the octree.
+ * <p>
  * This class also manages material properties.
  */
 public class BlockPalette {
+
   private static final int BLOCK_PALETTE_VERSION = 4;
   public final int airId, stoneId, waterId;
   public static final int ANY_ID = Octree.ANY_TYPE;
 
   private final Map<String, Consumer<Block>> materialProperties;
 
-  /** Stone blocks are used for filling invisible regions in the Octree. */
+  /**
+   * Stone blocks are used for filling invisible regions in the Octree.
+   */
   public final Block stone, water;
 
   private final Map<BlockSpec, Integer> blockMap;
   private final List<Block> palette;
+  private final BlockProviderRegistry blockProviders;
 
-  public BlockPalette(Map<BlockSpec, Integer> initialMap, List<Block> initialList) {
+  public BlockPalette(Map<BlockSpec, Integer> initialMap, List<Block> initialList,
+      BlockProviderRegistry blockProviders) {
     this.blockMap = initialMap;
     this.palette = initialList;
+    this.blockProviders = blockProviders;
     this.materialProperties = getDefaultMaterialProperties();
     CompoundTag airTag = new CompoundTag();
     airTag.add("Name", new StringTag("minecraft:air"));
@@ -53,8 +59,8 @@ public class BlockPalette {
     water = get(waterId);
   }
 
-  public BlockPalette() {
-    this(new HashMap<>(), new ArrayList<>());
+  public BlockPalette(BlockProviderRegistry blockProviders) {
+    this(new HashMap<>(), new ArrayList<>(), blockProviders);
   }
 
   /**
@@ -74,22 +80,23 @@ public class BlockPalette {
     }
     id = palette.size();
     blockMap.put(spec, id);
-    Block block = spec.toBlock();
+    Block block = spec.toBlock(blockProviders);
     applyMaterial(block);
     palette.add(block);
     return id;
   }
 
   public Block get(int id) {
-    if(id == ANY_ID)
+    if (id == ANY_ID) {
       return stone;
+    }
     return palette.get(id);
   }
 
   /**
    * Updates the material properties of the block and applies them.
    *
-   * @param name the id of the block to be updated, e.g. "minecraft:stone"
+   * @param name       the id of the block to be updated, e.g. "minecraft:stone"
    * @param properties function that modifies the block's properties
    */
   public void updateProperties(String name, Consumer<Block> properties) {
@@ -104,8 +111,8 @@ public class BlockPalette {
   }
 
   /**
-   * Apply the material properties that were registered via <code>
-   * {@link #updateProperties(String, Consumer)}</code> to the given block.
+   * Apply the material properties that were registered via <code> {@link #updateProperties(String,
+   * Consumer)}</code> to the given block.
    *
    * @param block Block to apply the material configuration to
    */
@@ -117,14 +124,16 @@ public class BlockPalette {
   }
 
   /**
-   * Apply all material properties that were registered with <code>
-   * {@link #updateProperties(String, Consumer)}</code> for all blocks in this palette.
+   * Apply all material properties that were registered with <code> {@link #updateProperties(String,
+   * Consumer)}</code> for all blocks in this palette.
    */
   public void applyMaterials() {
     palette.forEach(this::applyMaterial);
   }
 
-  /** @return Default material properties. */
+  /**
+   * @return Default material properties.
+   */
   public static Map<String, Consumer<Block>> getDefaultMaterialProperties() {
     Map<String, Consumer<Block>> materialProperties = new HashMap<>();
     materialProperties.put(
@@ -253,22 +262,22 @@ public class BlockPalette {
       block.waterlogged = true;
     });
     materialProperties.put("minecraft:campfire", block -> {
-      if (block instanceof Campfire && ((Campfire)block).isLit) {
+      if (block instanceof Campfire && ((Campfire) block).isLit) {
         block.emittance = 1.0f;
       }
     });
     materialProperties.put("minecraft:furnace", block -> {
-      if(block instanceof Furnace && ((Furnace)block).isLit()) {
+      if (block instanceof Furnace && ((Furnace) block).isLit()) {
         block.emittance = 1.0f;
       }
     });
     materialProperties.put("minecraft:smoker", block -> {
-      if(block instanceof Smoker && ((Smoker)block).isLit()) {
+      if (block instanceof Smoker && ((Smoker) block).isLit()) {
         block.emittance = 1.0f;
       }
     });
     materialProperties.put("minecraft:blast_furnace", block -> {
-      if(block instanceof BlastFurnace && ((BlastFurnace)block).isLit()) {
+      if (block instanceof BlastFurnace && ((BlastFurnace) block).isLit()) {
         block.emittance = 1.0f;
       }
     });
@@ -304,7 +313,7 @@ public class BlockPalette {
     });
     materialProperties.put("minecraft:respawn_anchor", block -> {
       if (block instanceof RespawnAnchor) {
-        int charges = ((RespawnAnchor)block).charges;
+        int charges = ((RespawnAnchor) block).charges;
         if (charges > 0) {
           block.emittance = 1.0f / 15 * (charges * 4 - 2);
         }
@@ -313,7 +322,9 @@ public class BlockPalette {
     return materialProperties;
   }
 
-  /** Writes the block specifications to file. */
+  /**
+   * Writes the block specifications to file.
+   */
   public void write(DataOutputStream out) throws IOException {
     out.writeInt(BLOCK_PALETTE_VERSION);
     BlockSpec[] specs = new BlockSpec[blockMap.size()];
@@ -326,7 +337,7 @@ public class BlockPalette {
     }
   }
 
-  public static BlockPalette read(DataInputStream in) throws IOException {
+  public static BlockPalette read(DataInputStream in, BlockProviderRegistry blockProviders) throws IOException {
     int version = in.readInt();
     if (version != BLOCK_PALETTE_VERSION) {
       throw new IOException("Incompatible block palette format.");
@@ -337,8 +348,8 @@ public class BlockPalette {
     for (int i = 0; i < numBlocks; ++i) {
       BlockSpec spec = BlockSpec.deserialize(in);
       blockMap.put(spec, i);
-      blocks.add(spec.toBlock());
+      blocks.add(spec.toBlock(blockProviders));
     }
-    return new BlockPalette(blockMap, blocks);
+    return new BlockPalette(blockMap, blocks, blockProviders);
   }
 }

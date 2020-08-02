@@ -16,9 +16,19 @@
  */
 package se.llbit.chunky.main;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import se.llbit.chunky.PersistentSettings;
 import se.llbit.chunky.block.BlockProvider;
-import se.llbit.chunky.block.BlockSpec;
+import se.llbit.chunky.block.BlockProviderRegistry;
 import se.llbit.chunky.block.MinecraftBlockProvider;
 import se.llbit.chunky.plugin.ChunkyPlugin;
 import se.llbit.chunky.plugin.TabTransformer;
@@ -52,21 +62,12 @@ import se.llbit.log.Log;
 import se.llbit.log.Receiver;
 import se.llbit.util.TaskTracker;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.HashSet;
-import java.util.Set;
-
 /**
- * Chunky is a Minecraft mapping and rendering tool created by
- * Jesper Öqvist (jesper@llbit.se).
+ * Chunky is a Minecraft mapping and rendering tool created by Jesper Öqvist (jesper@llbit.se).
  *
  * <p>Read more about Chunky at <a href="https://chunky.llbit.se">https://chunky.llbit.se</a>.
  */
-public class Chunky {
+public class Chunky implements BlockProviderRegistry {
 
   /**
    * A log receiver suitable for headless rendering.
@@ -86,13 +87,24 @@ public class Chunky {
 
   public final ChunkyOptions options;
   private RenderController renderController;
-  private SceneFactory sceneFactory = SceneFactory.DEFAULT;
+  private SceneFactory sceneFactory = new SceneFactory() {
+    @Override
+    public Scene newScene() {
+      return new Scene(Chunky.this);
+    }
+
+    @Override
+    public Scene copyScene(Scene scene) {
+      return new Scene(scene);
+    }
+  };
   private RenderContextFactory renderContextFactory = RenderContext::new;
   private RendererFactory rendererFactory = RenderManager::new;
   private RayTracerFactory previewRayTracerFactory = PreviewRayTracer::new;
   private RayTracerFactory rayTracerFactory = PathTracer::new;
   private RenderControlsTabTransformer renderControlsTabTransformer = tabs -> tabs;
   private TabTransformer mainTabTransformer = tabs -> tabs;
+  private final List<BlockProvider> blockProviders = new LinkedList<>();
 
   /**
    * @return The title of the main window. Includes the current version string.
@@ -137,7 +149,8 @@ public class Chunky {
     renderer.setSnapshotControl(SnapshotControl.DEFAULT);
     renderer.setOnFrameCompleted((scene, spp) -> {
       if (SnapshotControl.DEFAULT.saveSnapshot(scene, spp)) {
-        scene.saveSnapshot(new File(getRenderContext().getSceneDirectory(), "snapshots"), taskTracker, getRenderContext().numRenderThreads());
+        scene.saveSnapshot(new File(getRenderContext().getSceneDirectory(), "snapshots"),
+            taskTracker, getRenderContext().numRenderThreads());
       }
 
       if (SnapshotControl.DEFAULT.saveRenderDump(scene, spp)) {
@@ -156,7 +169,8 @@ public class Chunky {
       int minutes = (int) ((time / 60000) % 60);
       int hours = (int) (time / 3600000);
       System.out.println(String
-          .format("Total rendering time: %d hours, %d minutes, %d seconds", hours, minutes, seconds));
+          .format("Total rendering time: %d hours, %d minutes, %d seconds", hours, minutes,
+              seconds));
       System.out.println("Average samples per second (SPS): " + sps);
     });
 
@@ -192,8 +206,8 @@ public class Chunky {
   }
 
   /**
-   * Main entry point for Chunky. Chunky should normally be started via
-   * the launcher which sets up the classpath with all dependencies.
+   * Main entry point for Chunky. Chunky should normally be started via the launcher which sets up
+   * the classpath with all dependencies.
    */
   public static void main(final String[] args) {
     CommandLineOptions cmdline = new CommandLineOptions(args);
@@ -250,20 +264,23 @@ public class Chunky {
       if (!jarName.isEmpty()) {
         Log.info("Loading plugin: " + value);
         try {
-          ChunkyPlugin.load(pluginsPath.resolve(jarName).toRealPath().toFile(), (plugin, manifest) -> {
-            String pluginName = manifest.get("name").asString("");
-            if (loadedPlugins.contains(pluginName)) {
-              Log.warnf("Multiple plugins with the same name (\"%s\") are enabled. Loading multiple versions of the same plugin can lead to strange behavior.", pluginName);
-            }
-            loadedPlugins.add(pluginName);
-            try {
-              plugin.attach(this);
-            } catch (Throwable t) {
-              Log.error("Plugin " + jarName + " failed to load.", t);
-            }
-            Log.infof("Plugin loaded: %s %s", manifest.get("name").asString(""),
-                manifest.get("version").asString(""));
-          });
+          ChunkyPlugin
+              .load(pluginsPath.resolve(jarName).toRealPath().toFile(), (plugin, manifest) -> {
+                String pluginName = manifest.get("name").asString("");
+                if (loadedPlugins.contains(pluginName)) {
+                  Log.warnf(
+                      "Multiple plugins with the same name (\"%s\") are enabled. Loading multiple versions of the same plugin can lead to strange behavior.",
+                      pluginName);
+                }
+                loadedPlugins.add(pluginName);
+                try {
+                  plugin.attach(this);
+                } catch (Throwable t) {
+                  Log.error("Plugin " + jarName + " failed to load.", t);
+                }
+                Log.infof("Plugin loaded: %s %s", manifest.get("name").asString(""),
+                    manifest.get("version").asString(""));
+              });
         } catch (Throwable t) {
           Log.error("Plugin " + jarName + " failed to load.", t);
         }
@@ -282,7 +299,7 @@ public class Chunky {
     try {
       File file = options.getSceneDescriptionFile();
       try (FileInputStream in = new FileInputStream(file)) {
-        Scene scene = new Scene();
+        Scene scene = new Scene(this);
         scene.loadDescription(in); // Load description to get current SPP & canvas size.
         RenderContext context = new RenderContext(this);
         TaskTracker taskTracker = new TaskTracker(new ConsoleProgressListener(),
@@ -410,8 +427,14 @@ public class Chunky {
   /**
    * Registers a block provider to add support for blocks.
    */
+  @Override()
   public void registerBlockProvider(BlockProvider blockProvider) {
-    BlockSpec.blockProviders.add(0, blockProvider);
-    MaterialStore.blockIds.addAll(blockProvider.getSupportedBlocks());
+    blockProviders.add(0, blockProvider);
+    MaterialStore.blockIds.addAll(blockProvider.getSupportedBlocks()); // TODO
+  }
+
+  @Override()
+  public Collection<BlockProvider> getBlockProviders() {
+    return blockProviders;
   }
 }
