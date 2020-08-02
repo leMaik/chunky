@@ -16,6 +16,7 @@
  */
 package se.llbit.chunky.world;
 
+import se.llbit.chunky.block.BlockProviderRegistry;
 import se.llbit.chunky.chunk.BlockPalette;
 import se.llbit.chunky.map.IconLayer;
 import se.llbit.chunky.map.MapTile;
@@ -88,7 +89,7 @@ public class EmptyChunk extends Chunk {
     // Do nothing.
   }
 
-  @Override public synchronized void loadChunk() {
+  @Override public synchronized void loadChunk(BlockProviderRegistry blockProviders) {
     // Do nothing.
   }
 
