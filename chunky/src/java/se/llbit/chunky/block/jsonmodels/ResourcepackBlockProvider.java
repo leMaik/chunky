@@ -417,6 +417,10 @@ public class ResourcepackBlockProvider implements BlockProvider {
             // ...unless they are animated
             texture = new AnimatedTexture(image);
           }
+          try(InputStream normalMapInputStream = zip.getInputStream("assets",parts[0],"textures",parts[1]+"_n.png")){
+            System.out.println("Normal map found for "+textureName);
+            texture.normalMap = new NormalMap(ImageLoader.read(normalMapInputStream));
+          }catch(Exception e) {}
           textures.put(textureName, texture);
         } catch (IOException e) {
           // throw new RuntimeException("Could not load texture " + textureName, e);
@@ -464,7 +468,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
       String parentName = blockDefinition.get("parent").stringValue("block/block");
       if (parentName.equals("block/cube_all") || parentName.equals("minecraft:block/cube_all")) {
         // System.out.println("optimized block/cube_all");
-        return new MinecraftBlock(blockName, block.textures.get("all"));
+        //return new MinecraftBlock(blockName, block.textures.get("all"));
       } else if (parentName.equals("block/cube") || parentName.equals("minecraft:block/cube")) {
         // System.out.println("optimized block/cube");
         block.opaque = true;
@@ -481,7 +485,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
           if (parentName.equals("block/cube_all") || parentName
               .equals("minecraft:block/cube_all")) {
             // System.out.println("optimized block/cube_all");
-            return new MinecraftBlock(blockName, block.textures.get("all"));
+            //return new MinecraftBlock(blockName, block.textures.get("all"));
           } else if (parentName.equals("block/cube") || parentName.equals("minecraft:block/cube")) {
             // System.out.println("optimized block/cube");
             block.opaque = true;
