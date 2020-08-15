@@ -23,7 +23,7 @@ import se.llbit.chunky.block.BlockSpec;
 import se.llbit.chunky.block.MinecraftBlockProvider;
 import se.llbit.chunky.main.CommandLineOptions.Mode;
 import se.llbit.chunky.plugin.PluginApi;
-import se.llbit.chunky.block.ResourcepackBlockProvider;
+import se.llbit.chunky.block.jsonmodels.ResourcepackBlockProvider;
 import se.llbit.chunky.plugin.ChunkyPlugin;
 import se.llbit.chunky.plugin.TabTransformer;
 import se.llbit.chunky.renderer.ConsoleProgressListener;

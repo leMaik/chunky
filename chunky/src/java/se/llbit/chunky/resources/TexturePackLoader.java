@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import se.llbit.chunky.PersistentSettings;
 import se.llbit.chunky.block.BlockSpec;
-import se.llbit.chunky.block.ResourcepackBlockProvider;
+import se.llbit.chunky.block.jsonmodels.ResourcepackBlockProvider;
 import se.llbit.chunky.renderer.scene.Sun;
 import se.llbit.chunky.resources.texturepack.AllTextures;
 import se.llbit.chunky.resources.texturepack.AlternateTextures;
