@@ -509,7 +509,7 @@ public class Scene implements JsonSerializable, Refreshable {
     }
 
     if (loadDump(context, taskTracker)) {
-      postProcessFrame(taskTracker);
+      postProcessFrame(taskTracker, context.numRenderThreads());
     }
 
     if (spp == 0) {
@@ -1706,7 +1706,7 @@ public class Scene implements JsonSerializable, Refreshable {
     if (!directory.exists()) directory.mkdirs();
     computeAlpha(progress, threadCount);
     if (!finalized) {
-      postProcessFrame(progress);
+      postProcessFrame(progress, threadCount);
     }
     writeImage(targetFile, outputMode, progress);
   }
@@ -1724,7 +1724,7 @@ public class Scene implements JsonSerializable, Refreshable {
   public synchronized void saveFrame(File targetFile, OutputMode mode, TaskTracker progress, int threadCount) {
     computeAlpha(progress, threadCount);
     if (!finalized) {
-      postProcessFrame(progress);
+      postProcessFrame(progress, threadCount);
     }
     writeImage(targetFile, mode, progress);
   }
@@ -1736,7 +1736,7 @@ public class Scene implements JsonSerializable, Refreshable {
       throws IOException {
     computeAlpha(progress, threadCount);
     if (!finalized) {
-      postProcessFrame(progress);
+      postProcessFrame(progress, threadCount);
     }
     writeImage(out, mode, progress);
   }
@@ -1781,9 +1781,8 @@ public class Scene implements JsonSerializable, Refreshable {
    * <p>This is normally done by the render workers during rendering,
    * but in some cases an separate post processing pass is needed.
    */
-  public void postProcessFrame(TaskTracker progress) {
+  public void postProcessFrame(TaskTracker progress, int threadCount) {
     try (TaskTracker.Task task = progress.task("Finalizing frame")) {
-      int threadCount = PersistentSettings.getNumThreads();
       ExecutorService executor = Executors.newFixedThreadPool(threadCount);
       AtomicInteger done = new AtomicInteger(0);
       int colWidth = width / threadCount;
