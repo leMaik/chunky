@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import se.llbit.chunky.block.Block;
 import se.llbit.chunky.entity.Entity;
 import se.llbit.chunky.renderer.scene.Scene;
+import se.llbit.chunky.resources.NormalMap;
 import se.llbit.chunky.resources.Texture;
 import se.llbit.chunky.world.Material;
 import se.llbit.chunky.world.material.TextureMaterial;
@@ -58,6 +59,7 @@ public class QuadBlock extends Block {
           ray.n.set(quads[i].n);
           ray.t = ray.tNext;
           hit = true;
+          NormalMap.apply(ray, quads[i], textures[i]);
         }
       }
     }
