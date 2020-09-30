@@ -143,6 +143,11 @@ public class Scene implements JsonSerializable, Refreshable {
    */
   public static final double DEFAULT_FOG_DENSITY = 0.0;
 
+  /**
+   * Default biome blend radius.
+   */
+  public static final int DEFAULT_BIOME_BLEND_RADIUS = 0;
+
   protected final Sky sky = new Sky(this);
   protected final Camera camera = new Camera(this);
   protected final Sun sun = new Sun(this);
@@ -210,7 +215,12 @@ public class Scene implements JsonSerializable, Refreshable {
   /** Controls how much the fog color is blended over the sky/skymap. */
   protected double skyFogDensity = 1;
 
+  /** Controls if biome colors are enabled. */
   protected boolean biomeColors = true;
+
+  /** Controls the blend radius of biome colors. */
+  protected int biomeBlendRadius = DEFAULT_BIOME_BLEND_RADIUS;
+
   protected boolean transparentSky = false;
   protected boolean renderActors = true;
   protected Collection<ChunkPosition> chunks = new ArrayList<>();
@@ -406,6 +416,7 @@ public class Scene implements JsonSerializable, Refreshable {
     waterColor.set(other.waterColor);
     fogColor.set(other.fogColor);
     biomeColors = other.biomeColors;
+    biomeBlendRadius = other.biomeBlendRadius;
     sunEnabled = other.sunEnabled;
     emittersEnabled = other.emittersEnabled;
     emitterIntensity = other.emitterIntensity;
@@ -1088,8 +1099,8 @@ public class Scene implements JsonSerializable, Refreshable {
       int target = chunksToLoad.size();
       for (ChunkPosition cp : chunksToLoad) {
 
-        // Finalize grass and foliage textures.
-        // 3x3 box blur.
+        // Finalize grass, foliage and water textures.
+        // box blur
         for (int x = 0; x < 16; ++x) {
           for (int z = 0; z < 16; ++z) {
 
@@ -1097,9 +1108,9 @@ public class Scene implements JsonSerializable, Refreshable {
             float[] grassMix = {0, 0, 0};
             float[] foliageMix = {0, 0, 0};
             float[] waterMix = {0, 0, 0};
-            for (int sx = x - 1; sx <= x + 1; ++sx) {
+            for (int sx = x - biomeBlendRadius; sx <= x + biomeBlendRadius; ++sx) {
               int wx = cp.x * 16 + sx;
-              for (int sz = z - 1; sz <= z + 1; ++sz) {
+              for (int sz = z - biomeBlendRadius; sz <= z + biomeBlendRadius; ++sz) {
                 int wz = cp.z * 16 + sz;
 
                 ChunkPosition ccp = ChunkPosition.get(wx >> 4, wz >> 4);
@@ -2420,6 +2431,7 @@ public class Scene implements JsonSerializable, Refreshable {
     json.add("fogColor", fogColorObj);
     json.add("fastFog", fastFog);
     json.add("biomeColorsEnabled", biomeColors);
+    json.add("biomeBlendRadius", biomeBlendRadius);
     json.add("transparentSky", transparentSky);
     json.add("fogDensity", fogDensity);
     json.add("skyFogDensity", skyFogDensity);
@@ -2683,6 +2695,7 @@ public class Scene implements JsonSerializable, Refreshable {
     fogColor.z = fogColorObj.get("blue").doubleValue(fogColor.z);
     fastFog = json.get("fastFog").boolValue(fastFog);
     biomeColors = json.get("biomeColorsEnabled").boolValue(biomeColors);
+    biomeBlendRadius = json.get("biomeBlendRadius").intValue(biomeBlendRadius);
     transparentSky = json.get("transparentSky").boolValue(transparentSky);
     fogDensity = json.get("fogDensity").doubleValue(fogDensity);
     skyFogDensity = json.get("skyFogDensity").doubleValue(skyFogDensity);
