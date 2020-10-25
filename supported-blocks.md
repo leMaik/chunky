@@ -33,7 +33,7 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 - [x] Stonecutter
 - [x] Grindstone
 - [x] Lectern
-- [ ] Lectern with book
+- [x] Lectern with book
 - [x] Campfire
 - [ ] Campfire with items
 - [x] Scaffolding
@@ -142,6 +142,6 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 - [x] Soul torch (renamed soul fire torch)
 - [x] Soul lantern (renamed soul fire lantern)
 
-## 1.16.2
+### 1.16.2
 
 - [x] Rotated chains (x and z axis)
