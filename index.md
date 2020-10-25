@@ -14,7 +14,7 @@ Chunky is a Minecraft rendering tool that uses path tracing to create beautiful 
 
 Get the latest version of the Chunky launcher from [here](https://chunkyupdate.lemaik.de/ChunkyLauncher.jar) and start it. Press _Check for update_ to get the latest version of Chunky.
 
-If you want to get the latest snapshots, make sure to tick the _Download snapshots_ checkbox before checking for updates.
+If you want to get the latest snapshots, make sure to tick the _Download snapshots_ checkbox before checking for updates. Snapshots are built every night from the [master branch](https://github.com/chunky-dev/chunky/commits/master).
 
 _More detailed instructions with screenshots are available [on this page]({{ absolute_url }}installation)._
 

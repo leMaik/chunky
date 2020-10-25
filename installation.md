@@ -7,10 +7,12 @@ layout: default
 1. Download the latest Chunky Launcher from [here](https://chunkyupdate.lemaik.de/ChunkyLauncher.jar) and start it.
 
    If the launcher doesn't open with a double click make sure you have Java 8 installed first ([get it from here](https://www.java.com/en/download/manual.jsp)). **Make sure that you use the 64-bit version of Java if you use a 64-bit operating system.**
-   
+
    Otherwise start it from the console, e.g. `java -jar path/to/ChunkyLauncher.jar --launcher`
 
-2. If you want to get the latest snapshot, check the _Download snapshots_ checkbox. Then press _Check for update_ to get the latest version of Chunky.
+2. If you want to get the latest snapshot, check the _Download snapshots_ checkbox. Snapshots are built every night from the [master branch](https://github.com/chunky-dev/chunky/commits/master).
+
+   Then press _Check for update_ to get the latest version of Chunky.
 
    ![](/assets/img/chunky-step2.png)
 
