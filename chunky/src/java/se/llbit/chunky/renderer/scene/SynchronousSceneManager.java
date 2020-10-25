@@ -109,8 +109,11 @@ public class SynchronousSceneManager implements SceneProvider, SceneManager {
       synchronized (storedScene) {
         String sceneName = storedScene.name();
         Log.info("Saving scene " + sceneName);
-        File sceneDir = resolveSceneDirectory(sceneName);
-        context.setSceneDirectory(sceneDir);
+        File sceneDir = context.getSceneDirectory();
+        if (!sceneDir.isDirectory()) {
+          sceneDir = resolveSceneDirectory(sceneName);
+          context.setSceneDirectory(sceneDir);
+        }
         if (!sceneDir.isDirectory()) {
           boolean success = sceneDir.mkdirs();
           if (!success) {
@@ -142,7 +145,10 @@ public class SynchronousSceneManager implements SceneProvider, SceneManager {
     // Lock order: scene -> storedScene.
     synchronized (scene) {
       try (TaskTracker.Task ignored = taskTracker.task("Loading scene", 1)) {
-        context.setSceneDirectory(resolveSceneDirectory(sceneName));
+        File sceneDirectory = resolveSceneDirectory(sceneName);
+        if (sceneDirectory.isDirectory()) {
+          context.setSceneDirectory(sceneDirectory);
+        }
         scene.loadScene(context, sceneName, taskTracker);
       }
 
