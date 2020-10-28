@@ -888,7 +888,7 @@ public class Scene implements JsonSerializable, Refreshable {
               if (isHidden) {
                 worldOctree.set(Octree.ANY_TYPE, x, cy - origin.y, z);
               } else {
-                Octree.Node octNode = new Octree.Node(blocks[index]);
+                int octNode = blocks[index];
                 Block block = palette.get(blocks[index]);
 
                 if (block.isEntity()) {
@@ -922,30 +922,30 @@ public class Scene implements JsonSerializable, Refreshable {
                   if (!block.isBlockWithEntity()) {
                     if (block.waterlogged) {
                       block = palette.water;
-                      octNode = new Octree.Node(palette.waterId);
+                      octNode = palette.waterId;
                     } else {
                       block = Air.INSTANCE;
-                      octNode = new Octree.Node(palette.airId);
+                      octNode = palette.airId;
                     }
                   }
                 }
 
                 if (block.isWaterFilled()) {
-                  Octree.Node waterNode = new Octree.Node(palette.waterId);
+                  int waterNode = palette.waterId;
                   if (cy + 1 < yMax) {
                     int above = Chunk.chunkIndex(cx, cy + 1, cz);
                     Block aboveBlock = palette.get(blocks[above]);
                     if (aboveBlock.isWaterFilled()) {
-                      waterNode = new Octree.Node(palette.getWaterId(8, 1 << Water.FULL_BLOCK));
+                      waterNode = palette.getWaterId(8, 1 << Water.FULL_BLOCK);
                     }
                   }
                   if (block.isWater()) {
                     // Move plain water blocks to the water octree.
-                    octNode = new Octree.Node(palette.airId);
+                    octNode = palette.airId;
 
                     if (notOnEdge) {
                       // Perform water computation now for water blocks that are not on th edge of the chunk
-                      if (((Water) palette.get(waterNode.type)).data == 0) {
+                      if (((Water) palette.get(waterNode)).data == 0) {
                         // Test if the block has not already be marked as full
                         int level0 = 8 - ((Water) block).level;
                         int corner0 = level0;
@@ -985,11 +985,10 @@ public class Scene implements JsonSerializable, Refreshable {
                         corner1 = Math.min(7, 8 - (corner1 / 4));
                         corner2 = Math.min(7, 8 - (corner2 / 4));
                         corner3 = Math.min(7, 8 - (corner3 / 4));
-                        waterNode = new Octree.Node(
-                            palette.getWaterId(((Water) block).level, (corner0 << Water.CORNER_0)
+                        waterNode = palette.getWaterId(((Water) block).level, (corner0 << Water.CORNER_0)
                                 | (corner1 << Water.CORNER_1)
                                 | (corner2 << Water.CORNER_2)
-                                | (corner3 << Water.CORNER_3)));
+                                | (corner3 << Water.CORNER_3));
                       }
                     }
                   }
@@ -998,8 +997,7 @@ public class Scene implements JsonSerializable, Refreshable {
                   int above = Chunk.chunkIndex(cx, cy + 1, cz);
                   Block aboveBlock = palette.get(blocks[above]);
                   if (aboveBlock instanceof Lava) {
-                    octNode = new Octree.Node(
-                        palette.getLavaId(((Lava) block).level, 1 << Water.FULL_BLOCK));
+                    octNode = palette.getLavaId(((Lava) block).level, 1 << Water.FULL_BLOCK);
                   } else if (notOnEdge) {
                     // Compute lava level for blocks not on edge
                     Lava lava = (Lava) block;
@@ -1041,13 +1039,13 @@ public class Scene implements JsonSerializable, Refreshable {
                     corner1 = Math.min(7, 8 - (corner1 / 4));
                     corner2 = Math.min(7, 8 - (corner2 / 4));
                     corner3 = Math.min(7, 8 - (corner3 / 4));
-                    octNode = new Octree.Node(palette.getLavaId(
+                    octNode = palette.getLavaId(
                         lava.level,
                         (corner0 << Water.CORNER_0)
                             | (corner1 << Water.CORNER_1)
                             | (corner2 << Water.CORNER_2)
                             | (corner3 << Water.CORNER_3)
-                    ));
+                    );
                   }
                 }
                 worldOctree.set(octNode, x, cy - origin.y, z);
