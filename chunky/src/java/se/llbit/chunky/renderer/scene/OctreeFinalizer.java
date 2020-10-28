@@ -78,117 +78,120 @@ public class OctreeFinalizer {
 
   private static void processBlock(Octree worldTree, Octree waterTree, BlockPalette palette, int x,
       int cy, int z) {
-    Material mat = worldTree.getMaterial(x, cy, z, palette);
     Material wmat = waterTree.getMaterial(x, cy, z, palette);
 
     if (wmat instanceof Water) {
       Material above = waterTree.getMaterial(x, cy + 1, z, palette);
-      Material aboveBlock = worldTree.getMaterial(x, cy + 1, z, palette);
       int level0 = 8 - ((Water) wmat).level;
-      if (!above.isWater() && !aboveBlock.solid) {
-        int corner0 = level0;
-        int corner1 = level0;
-        int corner2 = level0;
-        int corner3 = level0;
+      if (!above.isWater()) {
+        Material aboveBlock = worldTree.getMaterial(x, cy + 1, z, palette);
+        if (!aboveBlock.solid) {
+          int corner0 = level0;
+          int corner1 = level0;
+          int corner2 = level0;
+          int corner3 = level0;
 
-        int level = waterLevelAt(worldTree, waterTree, palette, x - 1, cy, z, level0);
-        corner3 += level;
-        corner0 += level;
+          int level = waterLevelAt(worldTree, waterTree, palette, x - 1, cy, z, level0);
+          corner3 += level;
+          corner0 += level;
 
-        level = waterLevelAt(worldTree, waterTree, palette, x - 1, cy, z + 1, level0);
-        corner0 += level;
+          level = waterLevelAt(worldTree, waterTree, palette, x - 1, cy, z + 1, level0);
+          corner0 += level;
 
-        level = waterLevelAt(worldTree, waterTree, palette, x, cy, z + 1, level0);
-        corner0 += level;
-        corner1 += level;
+          level = waterLevelAt(worldTree, waterTree, palette, x, cy, z + 1, level0);
+          corner0 += level;
+          corner1 += level;
 
-        level = waterLevelAt(worldTree, waterTree, palette, x + 1, cy, z + 1, level0);
-        corner1 += level;
+          level = waterLevelAt(worldTree, waterTree, palette, x + 1, cy, z + 1, level0);
+          corner1 += level;
 
-        level = waterLevelAt(worldTree, waterTree, palette, x + 1, cy, z, level0);
-        corner1 += level;
-        corner2 += level;
+          level = waterLevelAt(worldTree, waterTree, palette, x + 1, cy, z, level0);
+          corner1 += level;
+          corner2 += level;
 
-        level = waterLevelAt(worldTree, waterTree, palette, x + 1, cy, z - 1, level0);
-        corner2 += level;
+          level = waterLevelAt(worldTree, waterTree, palette, x + 1, cy, z - 1, level0);
+          corner2 += level;
 
-        level = waterLevelAt(worldTree, waterTree, palette, x, cy, z - 1, level0);
-        corner2 += level;
-        corner3 += level;
+          level = waterLevelAt(worldTree, waterTree, palette, x, cy, z - 1, level0);
+          corner2 += level;
+          corner3 += level;
 
-        level = waterLevelAt(worldTree, waterTree, palette, x - 1, cy, z - 1, level0);
-        corner3 += level;
+          level = waterLevelAt(worldTree, waterTree, palette, x - 1, cy, z - 1, level0);
+          corner3 += level;
 
-        corner0 = Math.min(7, 8 - (corner0 / 4));
-        corner1 = Math.min(7, 8 - (corner1 / 4));
-        corner2 = Math.min(7, 8 - (corner2 / 4));
-        corner3 = Math.min(7, 8 - (corner3 / 4));
+          corner0 = Math.min(7, 8 - (corner0 / 4));
+          corner1 = Math.min(7, 8 - (corner1 / 4));
+          corner2 = Math.min(7, 8 - (corner2 / 4));
+          corner3 = Math.min(7, 8 - (corner3 / 4));
 
-        waterTree.set(palette.getWaterId(((Water) wmat).level, (corner0 << Water.CORNER_0)
-            | (corner1 << Water.CORNER_1)
-            | (corner2 << Water.CORNER_2)
-            | (corner3 << Water.CORNER_3)), x, cy, z);
+          waterTree.set(palette.getWaterId(((Water) wmat).level, (corner0 << Water.CORNER_0)
+              | (corner1 << Water.CORNER_1)
+              | (corner2 << Water.CORNER_2)
+              | (corner3 << Water.CORNER_3)), x, cy, z);
+        }
       }
-    } else if (mat instanceof Lava) {
-      Material above = worldTree.getMaterial(x, cy + 1, z, palette);
-      if (!(above instanceof Lava)) {
-        Lava lava = (Lava) mat;
+    } else {
+      Material mat = worldTree.getMaterial(x, cy, z, palette);
+      if (mat instanceof Lava) {
+        Material above = worldTree.getMaterial(x, cy + 1, z, palette);
+        if (!(above instanceof Lava)) {
+          Lava lava = (Lava) mat;
 
-        int level0 = 8 - lava.level;
-        int corner0 = level0;
-        int corner1 = level0;
-        int corner2 = level0;
-        int corner3 = level0;
+          int level0 = 8 - lava.level;
+          int corner0 = level0;
+          int corner1 = level0;
+          int corner2 = level0;
+          int corner3 = level0;
 
-        int level = lavaLevelAt(worldTree, palette, x - 1, cy, z, level0);
-        corner3 += level;
-        corner0 += level;
+          int level = lavaLevelAt(worldTree, palette, x - 1, cy, z, level0);
+          corner3 += level;
+          corner0 += level;
 
-        level = lavaLevelAt(worldTree, palette, x - 1, cy, z + 1, level0);
-        corner0 += level;
+          level = lavaLevelAt(worldTree, palette, x - 1, cy, z + 1, level0);
+          corner0 += level;
 
-        level = lavaLevelAt(worldTree, palette, x, cy, z + 1, level0);
-        corner0 += level;
-        corner1 += level;
+          level = lavaLevelAt(worldTree, palette, x, cy, z + 1, level0);
+          corner0 += level;
+          corner1 += level;
 
-        level = lavaLevelAt(worldTree, palette, x + 1, cy, z + 1, level0);
-        corner1 += level;
+          level = lavaLevelAt(worldTree, palette, x + 1, cy, z + 1, level0);
+          corner1 += level;
 
-        level = lavaLevelAt(worldTree, palette, x + 1, cy, z, level0);
-        corner1 += level;
-        corner2 += level;
+          level = lavaLevelAt(worldTree, palette, x + 1, cy, z, level0);
+          corner1 += level;
+          corner2 += level;
 
-        level = lavaLevelAt(worldTree, palette, x + 1, cy, z - 1, level0);
-        corner2 += level;
+          level = lavaLevelAt(worldTree, palette, x + 1, cy, z - 1, level0);
+          corner2 += level;
 
-        level = lavaLevelAt(worldTree, palette, x, cy, z - 1, level0);
-        corner2 += level;
-        corner3 += level;
+          level = lavaLevelAt(worldTree, palette, x, cy, z - 1, level0);
+          corner2 += level;
+          corner3 += level;
 
-        level = lavaLevelAt(worldTree, palette, x - 1, cy, z - 1, level0);
-        corner3 += level;
+          level = lavaLevelAt(worldTree, palette, x - 1, cy, z - 1, level0);
+          corner3 += level;
 
-        corner0 = Math.min(7, 8 - (corner0 / 4));
-        corner1 = Math.min(7, 8 - (corner1 / 4));
-        corner2 = Math.min(7, 8 - (corner2 / 4));
-        corner3 = Math.min(7, 8 - (corner3 / 4));
-        worldTree.set(palette.getLavaId(
-            lava.level,
-            (corner0 << Water.CORNER_0)
-                | (corner1 << Water.CORNER_1)
-                | (corner2 << Water.CORNER_2)
-                | (corner3 << Water.CORNER_3)
-        ), x, cy, z);
+          corner0 = Math.min(7, 8 - (corner0 / 4));
+          corner1 = Math.min(7, 8 - (corner1 / 4));
+          corner2 = Math.min(7, 8 - (corner2 / 4));
+          corner3 = Math.min(7, 8 - (corner3 / 4));
+          worldTree.set(palette.getLavaId(
+              lava.level,
+              (corner0 << Water.CORNER_0)
+                  | (corner1 << Water.CORNER_1)
+                  | (corner2 << Water.CORNER_2)
+                  | (corner3 << Water.CORNER_3)
+          ), x, cy, z);
+        }
       }
     }
   }
 
   private static int waterLevelAt(Octree worldTree, Octree waterTree,
       BlockPalette palette, int x, int cy, int z, int baseLevel) {
-    Octree.Node node = waterTree.get(x, cy, z);
-    Material corner = palette.get(node.type);
+    Material corner = waterTree.getMaterial(x, cy, z, palette);
     if (corner instanceof Water) {
-      Material above = palette.get(waterTree.get(x, cy + 1, z).type);
+      Material above = waterTree.getMaterial(x, cy + 1, z, palette);
       boolean isFullBlock = above.isWaterFilled();
       return isFullBlock ? 8 : 8 - ((Water) corner).level;
     } else if (corner.waterlogged) {
@@ -201,10 +204,9 @@ public class OctreeFinalizer {
 
   private static int lavaLevelAt(Octree octree, BlockPalette palette,
       int x, int cy, int z, int baseLevel) {
-    Octree.Node node = octree.get(x, cy, z);
-    Material corner = palette.get(node.type);
+    Material corner = octree.getMaterial(x, cy, z, palette);
     if (corner instanceof Lava) {
-      Material above = palette.get(octree.get(x, cy + 1, z).type);
+      Material above = octree.getMaterial(x, cy + 1, z, palette);
       boolean isFullBlock = above instanceof Lava;
       return isFullBlock ? 8 : 8 - ((Lava) corner).level;
     } else if (!corner.solid) {
