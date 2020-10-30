@@ -47,7 +47,7 @@ public class QuadBlock extends Block {
           continue;
         }
         float[] color = textures[i].getColor(ray.u, ray.v);
-        if (color[3] > .99f) {
+        if (color[3] > Ray.EPSILON) {
           if (quads[i] instanceof TintedQuad) {
             float[] biomeColor = ray.getBiomeGrassColor(scene);
             color[0] *= biomeColor[0];
