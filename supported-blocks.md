@@ -145,3 +145,42 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 ### 1.16.2
 
 - [x] Rotated chains (x and z axis)
+
+## 1.17
+
+### 20w45a
+
+- [ ] Cake with candle (all 16 colors)
+- [ ] Cake with lit candle (all 16 colors)
+- [ ] Candle (all 16 colors)
+- [ ] Lit candle (all 16 colors)
+- [ ] Dirt path (renamed grass path)
+- [ ] Lightning rod
+- [ ] Tinted glass
+- [ ] Tuff
+- [ ] Water cauldron (renamed cauldron)
+- [ ] Lava cauldron
+- [ ] Copper ore
+- [ ] (Waxed) Copper block
+- [ ] (Waxed) Lightly weathered copper
+- [ ] (Waxed) Semi weathered copper block
+- [ ] Weathered copper block
+- [ ] (Waxed) Cut copper
+- [ ] (Waxed) Lightly weathered cut copper
+- [ ] (Waxed) Semi weathered cut copper
+- [ ] Weathered cut copper
+- [ ] (Waxed) Cut copper stairs
+- [ ] (Waxed) Lightly weathered cut copper stairs
+- [ ] (Waxed) Semi weathered cut copper stairs
+- [ ] Weathered cut copper stairs
+- [ ] (Waxed) Cut copper slab
+- [ ] (Waxed) Lightly weathered cut copper slab
+- [ ] (Waxed) Semi weathered cut copper slab
+- [ ] Weathered cut copper slab
+- [ ] Amethyst block
+- [ ] Budding amethyst
+- [ ] Large amethyst bug
+- [ ] Medium amethyst bug
+- [ ] Small amethyst bug
+- [ ] Amethyst cluster
+- [ ] Calcite
