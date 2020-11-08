@@ -150,37 +150,37 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 
 ### 20w45a
 
-- [ ] Cake with candle (all 16 colors)
-- [ ] Cake with lit candle (all 16 colors)
-- [ ] Candle (all 16 colors)
-- [ ] Lit candle (all 16 colors)
-- [ ] Dirt path (renamed grass path)
-- [ ] Lightning rod
+- [x] Cake with candle (including 16 colored candles)
+- [ ] Cake with lit candle
+- [ ] Candle (including 16 colored candles)
+- [ ] Lit candle
+- [x] Dirt path (renamed grass path)
+- [x] Lightning rod
 - [ ] Tinted glass
-- [ ] Tuff
-- [ ] Water cauldron (renamed cauldron)
-- [ ] Lava cauldron
-- [ ] Copper ore
-- [ ] (Waxed) Copper block
-- [ ] (Waxed) Lightly weathered copper
-- [ ] (Waxed) Semi weathered copper block
-- [ ] Weathered copper block
-- [ ] (Waxed) Cut copper
-- [ ] (Waxed) Lightly weathered cut copper
-- [ ] (Waxed) Semi weathered cut copper
-- [ ] Weathered cut copper
-- [ ] (Waxed) Cut copper stairs
-- [ ] (Waxed) Lightly weathered cut copper stairs
-- [ ] (Waxed) Semi weathered cut copper stairs
-- [ ] Weathered cut copper stairs
-- [ ] (Waxed) Cut copper slab
-- [ ] (Waxed) Lightly weathered cut copper slab
-- [ ] (Waxed) Semi weathered cut copper slab
-- [ ] Weathered cut copper slab
-- [ ] Amethyst block
-- [ ] Budding amethyst
-- [ ] Large amethyst bug
-- [ ] Medium amethyst bug
-- [ ] Small amethyst bug
-- [ ] Amethyst cluster
-- [ ] Calcite
+- [x] Tuff
+- [x] Water cauldron (renamed cauldron)
+- [x] Lava cauldron
+- [x] Copper ore
+- [x] (Waxed) Copper block
+- [x] (Waxed) Lightly weathered copper block
+- [x] (Waxed) Semi weathered copper block
+- [x] Weathered copper block
+- [x] (Waxed) Cut copper
+- [x] (Waxed) Lightly weathered cut copper
+- [x] (Waxed) Semi weathered cut copper
+- [x] Weathered cut copper
+- [x] (Waxed) Cut copper stairs
+- [x] (Waxed) Lightly weathered cut copper stairs
+- [x] (Waxed) Semi weathered cut copper stairs
+- [x] Weathered cut copper stairs
+- [x] (Waxed) Cut copper slab
+- [x] (Waxed) Lightly weathered cut copper slab
+- [x] (Waxed) Semi weathered cut copper slab
+- [x] Weathered cut copper slab
+- [x] Amethyst block
+- [x] Budding amethyst
+- [x] Small amethyst bud
+- [x] Medium amethyst bud
+- [x] Large amethyst bud
+- [x] Amethyst cluster
+- [x] Calcite
