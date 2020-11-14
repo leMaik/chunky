@@ -151,12 +151,12 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 ### 20w45a
 
 - [x] Cake with candle (including 16 colored candles)
-- [ ] Cake with lit candle
-- [ ] Candle (including 16 colored candles)
-- [ ] Lit candle
+- [x] Cake with lit candle
+- [x] Candle (including 16 colored candles)
+- [x] Lit candle
 - [x] Dirt path (renamed grass path)
 - [x] Lightning rod
-- [ ] Tinted glass
+- [x] Tinted glass
 - [x] Tuff
 - [x] Water cauldron (renamed cauldron)
 - [x] Lava cauldron
@@ -184,3 +184,8 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 - [x] Large amethyst bud
 - [x] Amethyst cluster
 - [x] Calcite
+
+### 20w46a
+
+- [x] Powder snow
+- [x] Powder snow cauldron

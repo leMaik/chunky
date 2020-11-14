@@ -20,7 +20,7 @@ _More detailed instructions with screenshots are available [on this page]({{ abs
 
 ## Features
 
-- Supports Minecraft 1.13, 1.14, 1.15 and 1.16 (see [the list of supported blocks]({{ absolute_url }}supported-blocks))
+- Supports Minecraft 1.13, 1.14, 1.15, 1.16 and upcoming 1.17 (see [the list of supported blocks]({{ absolute_url }}supported-blocks))
 - Improved Slime rendering
 - Map for 1.14+ worlds
 
