@@ -395,8 +395,11 @@ public class ChunkyFxController
         mapCanvas, mapOverlay);
 
     mapLoader.addWorldLoadListener(
-        world -> {
-          chunkSelection.clearSelection();
+        (world, reloading) -> {
+          if (!reloading) {
+            // only clear selection if a different world was loaded, not on reload
+            chunkSelection.clearSelection();
+          }
           world.addChunkDeletionListener(chunkSelection);
           Optional<Vector3> playerPos = world.playerPos();
           world.addChunkUpdateListener(map);

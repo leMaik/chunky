@@ -291,7 +291,7 @@ public class GeneralTab extends ScrollPane implements RenderControlsTab, Initial
     this.renderControls = controls;
     this.chunkyFxController = controls.getChunkyController();
     this.mapLoader = chunkyFxController.getMapLoader();
-    mapLoader.addWorldLoadListener(world -> {
+    mapLoader.addWorldLoadListener((world, reloading) -> {
       loadSelectedChunks.setDisable(world instanceof EmptyWorld || world == null);
     });
     this.controller = controls.getRenderController();
