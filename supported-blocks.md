@@ -189,3 +189,8 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 
 - [x] Powder snow
 - [x] Powder snow cauldron
+
+### 20w48a
+
+- [x] Dripstone block
+- [x] Pointed dripstone
