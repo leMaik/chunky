@@ -194,3 +194,7 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 
 - [x] Dripstone block
 - [x] Pointed dripstone
+
+### 20w49a
+
+- [x] Sculk sensor
