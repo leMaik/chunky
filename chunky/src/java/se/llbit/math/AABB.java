@@ -54,81 +54,81 @@ public class AABB {
     double u, v;
     boolean hit = false;
 
-    ray.tNext = ray.t;
+    double tNext = ray.t;
 
     t = (xmin - ix) / ray.d.x;
-    if (t < ray.tNext && t > -Ray.EPSILON) {
+    if (t < tNext && t > -Ray.EPSILON) {
       u = iz + ray.d.z * t;
       v = iy + ray.d.y * t;
       if (u >= zmin && u <= zmax &&
           v >= ymin && v <= ymax) {
         hit = true;
-        ray.tNext = t;
+        ray.tNext = tNext = t;
         ray.u = u;
         ray.v = v;
         ray.n.set(-1, 0, 0);
       }
     }
     t = (xmax - ix) / ray.d.x;
-    if (t < ray.tNext && t > -Ray.EPSILON) {
+    if (t < tNext && t > -Ray.EPSILON) {
       u = iz + ray.d.z * t;
       v = iy + ray.d.y * t;
       if (u >= zmin && u <= zmax &&
           v >= ymin && v <= ymax) {
         hit = true;
-        ray.tNext = t;
+        ray.tNext = tNext = t;
         ray.u = 1 - u;
         ray.v = v;
         ray.n.set(1, 0, 0);
       }
     }
     t = (ymin - iy) / ray.d.y;
-    if (t < ray.tNext && t > -Ray.EPSILON) {
+    if (t < tNext && t > -Ray.EPSILON) {
       u = ix + ray.d.x * t;
       v = iz + ray.d.z * t;
       if (u >= xmin && u <= xmax &&
           v >= zmin && v <= zmax) {
         hit = true;
-        ray.tNext = t;
+        ray.tNext = tNext = t;
         ray.u = u;
         ray.v = v;
         ray.n.set(0, -1, 0);
       }
     }
     t = (ymax - iy) / ray.d.y;
-    if (t < ray.tNext && t > -Ray.EPSILON) {
+    if (t < tNext && t > -Ray.EPSILON) {
       u = ix + ray.d.x * t;
       v = iz + ray.d.z * t;
       if (u >= xmin && u <= xmax &&
           v >= zmin && v <= zmax) {
         hit = true;
-        ray.tNext = t;
+        ray.tNext = tNext = t;
         ray.u = u;
         ray.v = v;
         ray.n.set(0, 1, 0);
       }
     }
     t = (zmin - iz) / ray.d.z;
-    if (t < ray.tNext && t > -Ray.EPSILON) {
+    if (t < tNext && t > -Ray.EPSILON) {
       u = ix + ray.d.x * t;
       v = iy + ray.d.y * t;
       if (u >= xmin && u <= xmax &&
           v >= ymin && v <= ymax) {
         hit = true;
-        ray.tNext = t;
+        ray.tNext = tNext = t;
         ray.u = 1 - u;
         ray.v = v;
         ray.n.set(0, 0, -1);
       }
     }
     t = (zmax - iz) / ray.d.z;
-    if (t < ray.tNext && t > -Ray.EPSILON) {
+    if (t < tNext && t > -Ray.EPSILON) {
       u = ix + ray.d.x * t;
       v = iy + ray.d.y * t;
       if (u >= xmin && u <= xmax &&
           v >= ymin && v <= ymax) {
         hit = true;
-        ray.tNext = t;
+        ray.tNext = tNext = t;
         ray.u = u;
         ray.v = v;
         ray.n.set(0, 0, 1);
