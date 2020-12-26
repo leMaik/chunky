@@ -26,6 +26,7 @@ import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
 public class TorchModel {
+
   // facing west
   private static final Quad[] quads = {
       // west
@@ -147,6 +148,7 @@ public class TorchModel {
       double pz = ray.o.z - QuickMath.floor(ray.o.z + ray.d.z * Ray.OFFSET) + ray.d.z * ray.tNext;
       if (px >= 0 && px <= 1 && py >= 0 && py <= 1 && pz >= 0 && pz <= 1) {
         ray.color.set(color);
+        ray.emittanceValue = texture.getEmittanceAt(ray.u, ray.v);
         ray.distance += ray.t;
         ray.o.scaleAdd(ray.t, ray.d);
         return true;
