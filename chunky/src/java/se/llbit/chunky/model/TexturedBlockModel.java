@@ -64,6 +64,7 @@ public class TexturedBlockModel extends AABBModel {
     }
     getTextureCoordinates(ray);
     ray.getCurrentMaterial().getTexture(ray.getBlockData()).getColor(ray);
+    ray.getCurrentMaterial().getTexture(ray.getBlockData()).getEmittanceAt(ray);
   }
 
   /**
