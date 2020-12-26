@@ -156,15 +156,15 @@ public class PathTracer implements RayTracer {
 
             Vector4 indirectEmitterColor = new Vector4(0, 0, 0, 0);
 
-            if (scene.emittersEnabled && (!scene.isPreventNormalEmitterWithSampling() || scene.getEmitterSamplingStrategy() == EmitterSamplingStrategy.NONE || ray.depth == 0) && currentMat.emittance > Ray.EPSILON) {
+            if (scene.emittersEnabled && (!scene.isPreventNormalEmitterWithSampling() || scene.getEmitterSamplingStrategy() == EmitterSamplingStrategy.NONE || ray.depth == 0) currentMat.emittance > Ray.EPSILON && ray.emittanceValue > Ray.EPSILON) {
 
               emittance = addEmitted;
               ray.emittance.x = ray.color.x * ray.color.x *
-                  currentMat.emittance * scene.emitterIntensity;
+                  currentMat.emittance * ray.emittanceValue * scene.emitterIntensity;
               ray.emittance.y = ray.color.y * ray.color.y *
-                  currentMat.emittance * scene.emitterIntensity;
+                  currentMat.emittance * ray.emittanceValue * scene.emitterIntensity;
               ray.emittance.z = ray.color.z * ray.color.z *
-                  currentMat.emittance * scene.emitterIntensity;
+                  currentMat.emittance * ray.emittanceValue * scene.emitterIntensity;
               hit = true;
             } else if(scene.emittersEnabled && scene.emitterSamplingStrategy != EmitterSamplingStrategy.NONE && scene.getEmitterGrid() != null) {
               // Sample emitter
@@ -438,7 +438,7 @@ public class PathTracer implements RayTracer {
       PreviewRayTracer.nextIntersection(scene, emitterRay);
       if(emitterRay.getCurrentMaterial().emittance > Ray.EPSILON) {
         indirectEmitterColor.set(emitterRay.color);
-        indirectEmitterColor.scale(emitterRay.getCurrentMaterial().emittance);
+        indirectEmitterColor.scale(emitterRay.getCurrentMaterial().emittance * emitterRay.emittanceValue);
         // TODO Take fog into account
         indirectEmitterCoef *= scene.emitterIntensity;
         // Dont know if really realistic but offer better convergence and is better artistically
