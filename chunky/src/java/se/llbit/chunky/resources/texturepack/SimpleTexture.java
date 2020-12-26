@@ -16,13 +16,13 @@
  */
 package se.llbit.chunky.resources.texturepack;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import se.llbit.chunky.resources.BitmapImage;
 import se.llbit.chunky.resources.Texture;
 import se.llbit.resources.ImageLoader;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.zip.ZipFile;
 
 /**
  * Non-animated texture loader.
@@ -39,7 +39,8 @@ public class SimpleTexture extends TextureLoader {
     this.texture = texture;
   }
 
-  @Override protected boolean load(InputStream imageStream) throws IOException {
+  @Override
+  protected boolean load(InputStream imageStream) throws IOException {
     BitmapImage image = ImageLoader.read(imageStream);
 
     if (image.height > image.width) {
@@ -60,11 +61,44 @@ public class SimpleTexture extends TextureLoader {
     return true;
   }
 
-  @Override public boolean load(ZipFile texturePack, String topLevelDir) {
-    return load(topLevelDir + file, texturePack);
+  @Override
+  public boolean load(ZipFile texturePack, String topLevelDir) {
+    boolean loaded = load(topLevelDir + file, texturePack);
+    if (loaded) {
+      try (InputStream in = texturePack.getInputStream(new ZipEntry(file + "_s.png"))) {
+        if (in != null) {
+          // LabPBR uses the alpha channel for the emission map
+          // Some resource packs use the blue channel (Red=Smoothness, Green=Metalness, Blue=Emission)
+          // (In BSL, this option is called "Old PBR + Emissive")
+          BitmapImage specularMap = ImageLoader.read(in);
+          byte[] emissionMap = new byte[specularMap.width * specularMap.height];
+          boolean hasEmission = false;
+          for (int y = 0; y < specularMap.height; ++y) {
+            for (int x = 0; x < specularMap.width; ++x) {
+              // blue
+              if ((emissionMap[y * specularMap.width + x] = (byte) (
+                  specularMap.data[y * specularMap.width + x] & 0xFF)) != (byte) 0x00) {
+                hasEmission = true;
+              }
+
+              // alpha
+              // emissionMap[y * specularMap.width + x] = (byte) (
+              //    specularMap.data[(y * specularMap.width + x) * 4] >>> 24);
+            }
+          }
+          if (hasEmission) {
+            texture.setEmissionMap(emissionMap);
+          }
+        }
+      } catch (IOException e) {
+        // Safe to ignore
+      }
+    }
+    return loaded;
   }
 
-  @Override public String toString() {
+  @Override
+  public String toString() {
     return "texture:" + file;
   }
 }
