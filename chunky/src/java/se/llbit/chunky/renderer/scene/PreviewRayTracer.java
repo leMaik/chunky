@@ -36,9 +36,9 @@ public class PreviewRayTracer implements RayTracer {
   @Override public void trace(Scene scene, WorkerState state) {
     Ray ray = state.ray;
     if (scene.isInWater(ray)) {
-      ray.setCurrentMaterial(Water.INSTANCE);
+      ray.setCurrentMaterial(Water.INSTANCE, 0);
     } else {
-      ray.setCurrentMaterial(Air.INSTANCE);
+      ray.setCurrentMaterial(Air.INSTANCE, 0);
     }
     while (true) {
       if (!nextIntersection(scene, ray)) {
@@ -86,7 +86,7 @@ public class PreviewRayTracer implements RayTracer {
    * @return Next intersection
    */
   public static boolean nextIntersection(Scene scene, Ray ray) {
-    ray.setPrevMaterial(ray.getCurrentMaterial(), ray.getCurrentData());
+    ray.setPrevMaterial(ray.getCurrentMaterial(), ray.getCurrentData(), ray.emittanceValue);
     ray.t = Double.POSITIVE_INFINITY;
     boolean hit = false;
     if (scene.sky().cloudsEnabled()) {
@@ -105,7 +105,7 @@ public class PreviewRayTracer implements RayTracer {
       scene.updateOpacity(ray);
       return true;
     } else {
-      ray.setCurrentMaterial(Air.INSTANCE);
+      ray.setCurrentMaterial(Air.INSTANCE, 0);
       return false;
     }
   }
@@ -117,7 +117,7 @@ public class PreviewRayTracer implements RayTracer {
         ray.t = t;
         Water.INSTANCE.getColor(ray);
         ray.n.set(0, 1, 0);
-        ray.setCurrentMaterial(Water.OCEAN_WATER);
+        ray.setCurrentMaterial(Water.OCEAN_WATER, 0);
         return true;
       }
     }
@@ -127,7 +127,7 @@ public class PreviewRayTracer implements RayTracer {
         ray.t = t;
         Water.INSTANCE.getColor(ray);
         ray.n.set(0, -1, 0);
-        ray.setCurrentMaterial(Air.INSTANCE);
+        ray.setCurrentMaterial(Air.INSTANCE, 0);
         return true;
       }
     }
@@ -150,7 +150,7 @@ public class PreviewRayTracer implements RayTracer {
           } else {
             ray.color.set(0.25, 0.25, 0.25, 1);
           }
-          ray.setCurrentMaterial(MinecraftBlock.STONE);
+          ray.setCurrentMaterial(MinecraftBlock.STONE, 0);
           ray.n.set(0, 1, 0);
           return true;
         }

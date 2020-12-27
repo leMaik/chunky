@@ -62,6 +62,8 @@ public class Ray {
    */
   public Vector4 color = new Vector4();
 
+  public double prevEmittanceValue = 0;
+
   /**
    * Emittance of previously intersected surface.
    */
@@ -149,6 +151,7 @@ public class Ray {
     depth = 0;
     color.set(0, 0, 0, 0);
     emittance.set(0, 0, 0);
+    prevEmittanceValue = 0;
     emittanceValue = 0;
     specular = true;
   }
@@ -166,7 +169,8 @@ public class Ray {
     n.set(other.n);
     color.set(0, 0, 0, 0);
     emittance.set(0, 0, 0);
-    emittanceValue = 0;
+    prevEmittanceValue = other.prevEmittanceValue;
+    emittanceValue = other.emittanceValue;
     specular = other.specular;
   }
 
@@ -324,6 +328,7 @@ public class Ray {
 
     o.scaleAdd(Ray.OFFSET, d);
     currentMaterial = prevMaterial;
+    emittanceValue = prevEmittanceValue;
     specular = false;
   }
 
@@ -335,6 +340,7 @@ public class Ray {
     d.scaleAdd(-2 * ray.d.dot(ray.n), ray.n, ray.d);
     o.scaleAdd(0.00001, ray.n);
     currentMaterial = prevMaterial;
+    emittanceValue = prevEmittanceValue;
   }
 
   /**
@@ -386,12 +392,13 @@ public class Ray {
     n.set(ux * tx + vx * ty + n.x * tz, uy * tx + vy * ty + n.y * tz, uz * tx + vz * ty + n.z * tz);
   }
 
-  public void setPrevMaterial(Material mat, int data) {
+  public void setPrevMaterial(Material mat, int data, double emittanceValue) {
     this.prevMaterial = mat;
     this.prevData = data;
+    this.prevEmittanceValue = emittanceValue;
   }
 
-  public void setCurrentMaterial(Material mat) {
+  public void setCurrentMaterial(Material mat, double emittanceValue) {
     this.currentMaterial = mat;
     if (mat instanceof Water) {
       this.currentData = ((Water) mat).data;
@@ -400,11 +407,13 @@ public class Ray {
     } else {
       this.currentData = 0;
     }
+    this.emittanceValue = Math.max(emittanceValue, this.emittanceValue);
   }
 
-  public void setCurrentMaterial(Material mat, int data) {
+  public void setCurrentMaterial(Material mat, int data, double emittanceValue) {
     this.currentMaterial = mat;
     this.currentData = data;
+    this.emittanceValue = Math.max(emittanceValue, this.emittanceValue);
   }
 
   public Material getPrevMaterial() {

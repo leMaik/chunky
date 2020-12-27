@@ -642,45 +642,42 @@ public class Scene implements JsonSerializable, Refreshable {
    */
   private boolean worldIntersection(Ray ray) {
     Ray start = new Ray(ray);
-    start.setCurrentMaterial(ray.getPrevMaterial(), ray.getPrevData());
+    start.setCurrentMaterial(ray.getPrevMaterial(), ray.getPrevData(), ray.prevEmittanceValue);
     boolean hit = false;
     Ray r = new Ray(start);
-    r.setCurrentMaterial(start.getPrevMaterial(), start.getPrevData());
+    r.setCurrentMaterial(start.getPrevMaterial(), start.getPrevData(), start.prevEmittanceValue);
     if (worldOctree.enterBlock(this, r, palette) && r.distance < ray.t) {
       ray.t = r.distance;
       ray.n.set(r.n);
       ray.color.set(r.color);
-      ray.emittanceValue = r.emittanceValue;
-      ray.setPrevMaterial(r.getPrevMaterial(), r.getPrevData());
-      ray.setCurrentMaterial(r.getCurrentMaterial(), r.getCurrentData());
+      ray.setPrevMaterial(r.getPrevMaterial(), r.getPrevData(), r.prevEmittanceValue);
+      ray.setCurrentMaterial(r.getCurrentMaterial(), r.getCurrentData(), r.emittanceValue);
       hit = true;
     }
     if (start.getCurrentMaterial().isWater()) {
       if(start.getCurrentMaterial() != Water.OCEAN_WATER) {
         r = new Ray(start);
-        r.setCurrentMaterial(start.getPrevMaterial(), start.getPrevData());
+        r.setCurrentMaterial(start.getPrevMaterial(), start.getPrevData(), start.prevEmittanceValue);
         if(waterOctree.exitWater(this, r, palette) && r.distance < ray.t - Ray.EPSILON) {
           ray.t = r.distance;
           ray.n.set(r.n);
           ray.color.set(r.color);
-          ray.emittanceValue = r.emittanceValue;
-          ray.setPrevMaterial(r.getPrevMaterial(), r.getPrevData());
-          ray.setCurrentMaterial(r.getCurrentMaterial(), r.getCurrentData());
+          ray.setPrevMaterial(r.getPrevMaterial(), r.getPrevData(), r.prevEmittanceValue);
+          ray.setCurrentMaterial(r.getCurrentMaterial(), r.getCurrentData(), r.emittanceValue);
           hit = true;
         } else if(ray.getPrevMaterial() == Air.INSTANCE) {
-          ray.setPrevMaterial(Water.INSTANCE, 1 << Water.FULL_BLOCK);
+          ray.setPrevMaterial(Water.INSTANCE, 1 << Water.FULL_BLOCK, 0);
         }
       }
     } else {
       r = new Ray(start);
-      r.setCurrentMaterial(start.getPrevMaterial(), start.getPrevData());
+      r.setCurrentMaterial(start.getPrevMaterial(), start.getPrevData(), start.prevEmittanceValue);
       if (waterOctree.enterBlock(this, r, palette) && r.distance < ray.t) {
         ray.t = r.distance;
         ray.n.set(r.n);
         ray.color.set(r.color);
-        ray.emittanceValue = r.emittanceValue;
-        ray.setPrevMaterial(r.getPrevMaterial(), r.getPrevData());
-        ray.setCurrentMaterial(r.getCurrentMaterial(), r.getCurrentData());
+        ray.setPrevMaterial(r.getPrevMaterial(), r.getPrevData(), r.prevEmittanceValue);
+        ray.setCurrentMaterial(r.getCurrentMaterial(), r.getCurrentData(), r.emittanceValue);
         hit = true;
       }
     }
@@ -1469,9 +1466,9 @@ public class Scene implements JsonSerializable, Refreshable {
     WorkerState state = new WorkerState();
     state.ray = ray;
     if (isInWater(ray)) {
-      ray.setCurrentMaterial(Water.INSTANCE);
+      ray.setCurrentMaterial(Water.INSTANCE, 0);
     } else {
-      ray.setCurrentMaterial(Air.INSTANCE);
+      ray.setCurrentMaterial(Air.INSTANCE, 0);
     }
     camera.getTargetDirection(ray);
     ray.o.x -= origin.x;
