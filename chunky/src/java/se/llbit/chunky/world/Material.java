@@ -57,6 +57,11 @@ public abstract class Material {
   public float emittance = 0;
 
   /**
+   * The smoothness of this material.
+   */
+  public float smoothness = 1;
+
+  /**
    * Subsurface scattering property.
    */
   public boolean subSurfaceScattering = false;
@@ -82,6 +87,7 @@ public abstract class Material {
     solid = true;
     specular = 0;
     emittance = 0;
+    smoothness = 1;
     subSurfaceScattering = false;
   }
 

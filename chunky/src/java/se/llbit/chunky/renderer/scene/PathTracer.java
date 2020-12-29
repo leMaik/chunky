@@ -148,7 +148,7 @@ public class PathTracer implements RayTracer {
 
         if (!scene.kill(ray.depth + 1, random)) {
           Ray reflected = new Ray();
-          reflected.specularReflection(ray);
+          reflected.specularReflection(ray, 0.5, random);
 
           if (pathTrace(scene, reflected, state, 1, false)) {
             ray.color.x = reflected.color.x;
@@ -286,7 +286,7 @@ public class PathTracer implements RayTracer {
             // Total internal reflection.
             if (!scene.kill(ray.depth + 1, random)) {
               Ray reflected = new Ray();
-              reflected.specularReflection(ray);
+              reflected.specularReflection(ray, 1, random);
               if (pathTrace(scene, reflected, state, 1, false)) {
 
                 ray.color.x = reflected.color.x;
@@ -306,7 +306,7 @@ public class PathTracer implements RayTracer {
 
               if (random.nextFloat() < Rtheta) {
                 Ray reflected = new Ray();
-                reflected.specularReflection(ray);
+                reflected.specularReflection(ray, 0.5, random);
                 if (pathTrace(scene, reflected, state, 1, false)) {
                   ray.color.x = reflected.color.x;
                   ray.color.y = reflected.color.y;

@@ -335,12 +335,60 @@ public class Ray {
   /**
    * Set this ray to the specular reflection of the input ray.
    */
-  public final void specularReflection(Ray ray) {
+  public final void specularReflection(Ray ray, double smoothness, Random random) {
     set(ray);
-    d.scaleAdd(-2 * ray.d.dot(ray.n), ray.n, ray.d);
-    o.scaleAdd(0.00001, ray.n);
+    smoothness =smoothness>0? currentMaterial.smoothness:0;
     currentMaterial = prevMaterial;
     emittanceValue = prevEmittanceValue;
+
+    if (smoothness < 1 - Ray.EPSILON) {
+      // get random point on unit disk
+      double x1 = random.nextDouble() * (1 - smoothness);
+      double x2 = random.nextDouble();
+      double r = FastMath.sqrt(x1);
+      double theta = 2 * Math.PI * x2;
+
+      // project to point on hemisphere in tangent space
+      double tx = r * FastMath.cos(theta);
+      double ty = r * FastMath.sin(theta);
+      double tz = FastMath.sqrt(1 - x1);
+
+      // transform from tangent space to world space
+      double xx, xy, xz;
+      double ux, uy, uz;
+      double vx, vy, vz;
+
+      if (QuickMath.abs(n.x) > .1) {
+        xx = 0;
+        xy = 1;
+        xz = 0;
+      } else {
+        xx = 1;
+        xy = 0;
+        xz = 0;
+      }
+
+      ux = xy * d.z - xz * d.y;
+      uy = xz * d.x - xx * d.z;
+      uz = xx * d.y - xy * d.x;
+
+      r = 1 / FastMath.sqrt(ux * ux + uy * uy + uz * uz);
+
+      ux *= r;
+      uy *= r;
+      uz *= r;
+
+      vx = uy * d.z - uz * d.y;
+      vy = uz * d.x - ux * d.z;
+      vz = ux * d.y - uy * d.x;
+
+      d.x = ux * tx + vx * ty + d.x * tz;
+      d.y = uy * tx + vy * ty + d.y * tz;
+      d.z = uz * tx + vz * ty + d.z * tz;
+    } else {
+      d.scaleAdd(-2 * ray.d.dot(ray.n), ray.n, ray.d);
+      o.scaleAdd(0.00001, ray.n);
+    }
   }
 
   /**

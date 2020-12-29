@@ -3005,6 +3005,7 @@ public class Scene implements JsonSerializable, Refreshable {
           block.emittance = properties.asObject().get("emittance").floatValue(block.emittance);
           block.specular = properties.asObject().get("specular").floatValue(block.specular);
           block.ior = properties.asObject().get("ior").floatValue(block.ior);
+          block.smoothness = properties.asObject().get("smoothness").floatValue(block.smoothness);
         });
       }
     });
@@ -3025,6 +3026,7 @@ public class Scene implements JsonSerializable, Refreshable {
         material.emittance = properties.get("emittance").floatValue(material.emittance);
         material.specular = properties.get("specular").floatValue(material.specular);
         material.ior = properties.get("ior").floatValue(material.ior);
+        material.smoothness = properties.asObject().get("smoothness").floatValue(material.smoothness);
       }
     }
   }
