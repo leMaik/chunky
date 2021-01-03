@@ -23,6 +23,7 @@ import java.util.zip.ZipFile;
 import se.llbit.chunky.resources.BitmapImage;
 import se.llbit.chunky.resources.Texture;
 import se.llbit.chunky.resources.pbr.EmissionMap;
+import se.llbit.chunky.resources.pbr.LabPbrEmissionMap;
 import se.llbit.chunky.resources.pbr.OldPbrEmissionMap;
 import se.llbit.resources.ImageLoader;
 
@@ -70,17 +71,24 @@ public class SimpleTexture extends TextureLoader {
   @Override
   public boolean load(ZipFile texturePack, String topLevelDir) {
     boolean loaded = load(topLevelDir + file, texturePack);
-    if (loaded) {
+
+    String emittanceFormat = System.getProperty("chunky.pbr.emittance", "");
+    if (emittanceFormat.equals("oldpbr") || emittanceFormat.equals("labpbr")) {
       try (InputStream in = texturePack.getInputStream(new ZipEntry(file + "_s.png"))) {
         if (in != null) {
           // LabPBR uses the alpha channel for the emission map
           // Some resource packs use the blue channel (Red=Smoothness, Green=Metalness, Blue=Emission)
           // (In BSL, this option is called "Old PBR + Emissive")
           BitmapImage specularMap = getTextureOrFirstFrame(in);
-          EmissionMap emissionMap = new OldPbrEmissionMap();
+          EmissionMap emissionMap = emittanceFormat.equals("oldpbr") ? new OldPbrEmissionMap()
+              : new LabPbrEmissionMap();
           if (emissionMap.load(specularMap)) {
             texture.setEmissionMap(emissionMap);
+          } else {
+            texture.setEmissionMap(EmissionMap.EMPTY);
           }
+        } else {
+          texture.setEmissionMap(EmissionMap.EMPTY);
         }
       } catch (IOException e) {
         // Safe to ignore
