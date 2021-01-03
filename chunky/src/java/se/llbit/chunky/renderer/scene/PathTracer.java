@@ -16,6 +16,7 @@
  */
 package se.llbit.chunky.renderer.scene;
 
+import java.util.Random;
 import org.apache.commons.math3.util.FastMath;
 import se.llbit.chunky.block.Air;
 import se.llbit.chunky.block.Water;
@@ -23,9 +24,11 @@ import se.llbit.chunky.model.WaterModel;
 import se.llbit.chunky.renderer.EmitterSamplingStrategy;
 import se.llbit.chunky.renderer.WorkerState;
 import se.llbit.chunky.world.Material;
-import se.llbit.math.*;
-
-import java.util.Random;
+import se.llbit.math.Grid;
+import se.llbit.math.QuickMath;
+import se.llbit.math.Ray;
+import se.llbit.math.Vector3;
+import se.llbit.math.Vector4;
 
 /**
  * Static methods for path tracing.
@@ -34,18 +37,21 @@ import java.util.Random;
  */
 public class PathTracer implements RayTracer {
 
-  /** Extinction factor for fog rendering. */
+  /**
+   * Extinction factor for fog rendering.
+   */
   private static final double EXTINCTION_FACTOR = 0.04;
 
   /**
    * Path trace the ray.
    */
-  @Override public void trace(Scene scene, WorkerState state) {
+  @Override
+  public void trace(Scene scene, WorkerState state) {
     Ray ray = state.ray;
     if (scene.isInWater(ray)) {
-      ray.setCurrentMaterial(Water.INSTANCE);
+      ray.setCurrentMaterial(Water.INSTANCE, 0);
     } else {
-      ray.setCurrentMaterial(Air.INSTANCE);
+      ray.setCurrentMaterial(Air.INSTANCE, 0);
     }
     pathTrace(scene, ray, state, 1, true);
   }
@@ -53,8 +59,8 @@ public class PathTracer implements RayTracer {
   /**
    * Path trace the ray in this scene.
    *
-   * @param firstReflection {@code true} if the ray has not yet hit the first
-   * diffuse or specular reflection
+   * @param firstReflection {@code true} if the ray has not yet hit the first diffuse or specular
+   *                        reflection
    */
   public static boolean pathTrace(Scene scene, Ray ray, WorkerState state, int addEmitted,
       boolean firstReflection) {
@@ -157,7 +163,9 @@ public class PathTracer implements RayTracer {
 
             Vector4 indirectEmitterColor = new Vector4(0, 0, 0, 0);
 
-            if (scene.emittersEnabled && (!scene.isPreventNormalEmitterWithSampling() || scene.getEmitterSamplingStrategy() == EmitterSamplingStrategy.NONE || ray.depth == 0) && currentMat.emittance > Ray.EPSILON && ray.emittanceValue > Ray.EPSILON) {
+            if (scene.emittersEnabled && (!scene.isPreventNormalEmitterWithSampling()
+                || scene.getEmitterSamplingStrategy() == EmitterSamplingStrategy.NONE
+                || ray.depth == 0) && currentMat.emittance * ray.emittanceValue > Ray.EPSILON) {
               emittance = addEmitted;
               ray.emittance.x = ray.color.x * ray.color.x *
                   currentMat.emittance * ray.emittanceValue * scene.emitterIntensity;
@@ -166,16 +174,20 @@ public class PathTracer implements RayTracer {
               ray.emittance.z = ray.color.z * ray.color.z *
                   currentMat.emittance * ray.emittanceValue * scene.emitterIntensity;
               hit = true;
-            } else if(scene.emittersEnabled && scene.emitterSamplingStrategy != EmitterSamplingStrategy.NONE && scene.getEmitterGrid() != null) {
+            } else if (scene.emittersEnabled
+                && scene.emitterSamplingStrategy != EmitterSamplingStrategy.NONE
+                && scene.getEmitterGrid() != null) {
               // Sample emitter
               boolean sampleOne = scene.emitterSamplingStrategy == EmitterSamplingStrategy.ONE;
-              if(sampleOne) {
-                Grid.EmitterPosition pos = scene.getEmitterGrid().sampleEmitterPosition((int) ray.o.x, (int) ray.o.y, (int) ray.o.z, random);
-                if(pos != null) {
-                  indirectEmitterColor = sampleEmitter(scene, ray, pos,  random);
+              if (sampleOne) {
+                Grid.EmitterPosition pos = scene.getEmitterGrid()
+                    .sampleEmitterPosition((int) ray.o.x, (int) ray.o.y, (int) ray.o.z, random);
+                if (pos != null) {
+                  indirectEmitterColor = sampleEmitter(scene, ray, pos, random);
                 }
               } else {
-                for(Grid.EmitterPosition pos : scene.getEmitterGrid().getEmitterPositions((int) ray.o.x, (int) ray.o.y, (int) ray.o.z)) {
+                for (Grid.EmitterPosition pos : scene.getEmitterGrid()
+                    .getEmitterPositions((int) ray.o.x, (int) ray.o.y, (int) ray.o.z)) {
                   indirectEmitterColor.scaleAdd(1, sampleEmitter(scene, ray, pos, random));
                 }
               }
@@ -198,7 +210,8 @@ public class PathTracer implements RayTracer {
                   reflected.o.scaleAdd(-Ray.OFFSET, ray.n);
                 }
 
-                reflected.setCurrentMaterial(reflected.getPrevMaterial(), reflected.getPrevData());
+                reflected.setCurrentMaterial(reflected.getPrevMaterial(), reflected.getPrevData(),
+                    reflected.prevEmittanceValue);
 
                 getDirectLightAttenuation(scene, reflected, state);
 
@@ -221,7 +234,8 @@ public class PathTracer implements RayTracer {
                     reflected.color.y + reflected.emittance.y) + (indirectEmitterColor.y));
                 ray.color.z = ray.color.z * (emittance + directLightB * scene.sun.emittance.z + (
                     reflected.color.z + reflected.emittance.z) + (indirectEmitterColor.z));
-              } else if(indirectEmitterColor.x > Ray.EPSILON || indirectEmitterColor.y > Ray.EPSILON || indirectEmitterColor.z > Ray.EPSILON) {
+              } else if (indirectEmitterColor.x > Ray.EPSILON
+                  || indirectEmitterColor.y > Ray.EPSILON || indirectEmitterColor.z > Ray.EPSILON) {
                 hit = true;
                 ray.color.x *= indirectEmitterColor.x;
                 ray.color.y *= indirectEmitterColor.y;
@@ -234,12 +248,16 @@ public class PathTracer implements RayTracer {
               hit = pathTrace(scene, reflected, state, 0, false) || hit;
               if (hit) {
                 ray.color.x =
-                    ray.color.x * (emittance + (reflected.color.x + reflected.emittance.x) + (indirectEmitterColor.x));
+                    ray.color.x * (emittance + (reflected.color.x + reflected.emittance.x)
+                        + (indirectEmitterColor.x));
                 ray.color.y =
-                    ray.color.y * (emittance + (reflected.color.y + reflected.emittance.y) + (indirectEmitterColor.y));
+                    ray.color.y * (emittance + (reflected.color.y + reflected.emittance.y)
+                        + (indirectEmitterColor.y));
                 ray.color.z =
-                    ray.color.z * (emittance + (reflected.color.z + reflected.emittance.z) + (indirectEmitterColor.z));
-              } else if(indirectEmitterColor.x > Ray.EPSILON || indirectEmitterColor.y > Ray.EPSILON || indirectEmitterColor.z > Ray.EPSILON) {
+                    ray.color.z * (emittance + (reflected.color.z + reflected.emittance.z)
+                        + (indirectEmitterColor.z));
+              } else if (indirectEmitterColor.x > Ray.EPSILON
+                  || indirectEmitterColor.y > Ray.EPSILON || indirectEmitterColor.z > Ray.EPSILON) {
                 hit = true;
                 ray.color.x *= indirectEmitterColor.x;
                 ray.color.y *= indirectEmitterColor.y;
@@ -387,7 +405,7 @@ public class PathTracer implements RayTracer {
           Ray.EPSILON, airDistance - Ray.EPSILON);
       atmos.o.scaleAdd(offset, od, ox);
       sun.getRandomSunDirection(atmos, random);
-      atmos.setCurrentMaterial(Air.INSTANCE);
+      atmos.setCurrentMaterial(Air.INSTANCE, 0);
 
       double fogDensity = scene.getFogDensity() * EXTINCTION_FACTOR;
       double extinction = Math.exp(-airDistance * fogDensity);
@@ -414,32 +432,37 @@ public class PathTracer implements RayTracer {
   }
 
   /**
-   * Cast a shadow ray from the intersection point (given by ray) to the emitter
-   * at position pos. Returns the contribution of this emitter (0 if the emitter is occluded)
-   * @param scene The scene being rendered
-   * @param ray The ray that generated the intersection
-   * @param pos The position of the emitter to sample
+   * Cast a shadow ray from the intersection point (given by ray) to the emitter at position pos.
+   * Returns the contribution of this emitter (0 if the emitter is occluded)
+   *
+   * @param scene  The scene being rendered
+   * @param ray    The ray that generated the intersection
+   * @param pos    The position of the emitter to sample
    * @param random RNG
    * @return The contribution of the emitter
    */
-  private static Vector4 sampleEmitter(Scene scene, Ray ray, Grid.EmitterPosition pos, Random random) {
+  private static Vector4 sampleEmitter(Scene scene, Ray ray, Grid.EmitterPosition pos,
+      Random random) {
     Vector4 indirectEmitterColor = new Vector4();
     Ray emitterRay = new Ray();
     emitterRay.set(ray);
     // TODO Sampling a random point on the model would be better than using a random point in the middle of the cube
-    Vector3 target = new Vector3(pos.x + (random.nextDouble() - 0.5) * pos.radius, pos.y + (random.nextDouble() - 0.5) * pos.radius, pos.z  + (random.nextDouble() - 0.5) * pos.radius);
+    Vector3 target = new Vector3(pos.x + (random.nextDouble() - 0.5) * pos.radius,
+        pos.y + (random.nextDouble() - 0.5) * pos.radius,
+        pos.z + (random.nextDouble() - 0.5) * pos.radius);
     emitterRay.d.set(target);
     emitterRay.d.sub(emitterRay.o);
     double distance = emitterRay.d.length();
     emitterRay.d.normalize();
     double indirectEmitterCoef = emitterRay.d.dot(emitterRay.n);
-    if(indirectEmitterCoef > 0) {
+    if (indirectEmitterCoef > 0) {
       emitterRay.emittance.set(0, 0, 0);
       emitterRay.o.scaleAdd(Ray.EPSILON, emitterRay.d);
       PreviewRayTracer.nextIntersection(scene, emitterRay);
-      if(emitterRay.getCurrentMaterial().emittance > Ray.EPSILON) {
+      if (emitterRay.getCurrentMaterial().emittance > Ray.EPSILON) {
         indirectEmitterColor.set(emitterRay.color);
-        indirectEmitterColor.scale(emitterRay.getCurrentMaterial().emittance * emitterRay.emittanceValue);
+        indirectEmitterColor
+            .scale(emitterRay.getCurrentMaterial().emittance * emitterRay.emittanceValue);
         // TODO Take fog into account
         indirectEmitterCoef *= scene.emitterIntensity;
         // Dont know if really realistic but offer better convergence and is better artistically
@@ -473,7 +496,7 @@ public class PathTracer implements RayTracer {
       attenuation.z *= ray.color.z * ray.color.w + mult;
       attenuation.w *= mult;
       if (ray.getPrevMaterial().isWater()) {
-        if(scene.waterVisibility == 0) {
+        if (scene.waterVisibility == 0) {
           attenuation.w = 0;
         } else {
           double a = ray.distance / scene.waterVisibility;

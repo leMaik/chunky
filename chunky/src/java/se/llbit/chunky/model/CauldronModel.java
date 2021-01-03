@@ -416,8 +416,8 @@ public class CauldronModel {
       } else {
         ray.n.set(water.n);
       }
-      ray.setPrevMaterial(ray.getCurrentMaterial(), ray.getCurrentData());
-      ray.setCurrentMaterial(Water.INSTANCE);
+      ray.setPrevMaterial(ray.getCurrentMaterial(), ray.getCurrentData(), ray.emittanceValue);
+      ray.setCurrentMaterial(Water.INSTANCE, 0);
       ray.t = ray.tNext;
     }
 
@@ -454,8 +454,8 @@ public class CauldronModel {
         hit = true;
 
         // set the current material to lava so that only the lava is emissive and not the cauldron
-        ray.setPrevMaterial(ray.getCurrentMaterial(), ray.getCurrentData());
-        ray.setCurrentMaterial(new Lava(7));
+        ray.setPrevMaterial(ray.getCurrentMaterial(), ray.getCurrentData(), ray.emittanceValue);
+        ray.setCurrentMaterial(new Lava(7), Texture.lava.getEmittanceAt(ray.u, ray.v));
       }
     }
 
