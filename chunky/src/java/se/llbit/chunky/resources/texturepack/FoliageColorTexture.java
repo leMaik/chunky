@@ -46,5 +46,10 @@ public class FoliageColorTexture extends TextureLoader {
   @Override public boolean load(ZipFile texturePack, String topLevelDir) {
     return load(topLevelDir + file, texturePack);
   }
+
+  @Override
+  public void reset() {
+    Biomes.loadDefaultFoliageColors();
+  }
 }
 

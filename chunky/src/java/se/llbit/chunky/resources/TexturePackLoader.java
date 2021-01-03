@@ -3719,6 +3719,12 @@ public class TexturePackLoader {
     TextureCache.reset();
     TexturePackLoader.texturePacks = texturePacks;
     Set<Map.Entry<String, TextureLoader>> toLoad = allTextures.entrySet();
+
+    // reset all textures to get predictable output regardless of what was loaded previously
+    for (TextureLoader loader : allTextures.values()) {
+      loader.reset();
+    }
+
     for (String path : texturePacks) {
       if (!path.isEmpty()) {
         File file = new File(path);

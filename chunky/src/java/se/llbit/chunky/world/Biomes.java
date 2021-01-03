@@ -161,13 +161,29 @@ public class Biomes {
   private static float[][] waterColorLinear = new float[grassColor.length][3];
 
   static {
+    loadDefaultFoliageColors();
+    loadDefaultGrassColors();
+    loadDefaultWaterColors();
+  }
+
+  public static void loadDefaultFoliageColors() {
+    for (int i = 0; i < biomes.length; ++i) {
+      foliageColor[i] = biomes[i].foliageColor;
+    }
+    gammaCorrectColors(foliageColor, foliageColorLinear);
+  }
+
+  public static void loadDefaultGrassColors() {
     for (int i = 0; i < biomes.length; ++i) {
       grassColor[i] = biomes[i].grassColor;
-      foliageColor[i] = biomes[i].foliageColor;
-      waterColor[i] = biomes[i].waterColor;
     }
     gammaCorrectColors(grassColor, grassColorLinear);
-    gammaCorrectColors(foliageColor, foliageColorLinear);
+  }
+
+  public static void loadDefaultWaterColors() {
+    for (int i = 0; i < biomes.length; ++i) {
+      waterColor[i] = biomes[i].waterColor;
+    }
     gammaCorrectColors(waterColor, waterColorLinear);
   }
 

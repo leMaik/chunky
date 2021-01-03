@@ -58,4 +58,8 @@ public class IndexedTexture extends TextureLoader {
     return false;
   }
 
+  @Override
+  public void reset() {
+    texture.reset();
+  }
 }

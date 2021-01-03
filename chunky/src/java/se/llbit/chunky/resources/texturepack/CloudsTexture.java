@@ -16,13 +16,12 @@
  */
 package se.llbit.chunky.resources.texturepack;
 
-import se.llbit.chunky.resources.BitmapImage;
-import se.llbit.chunky.world.Clouds;
-import se.llbit.resources.ImageLoader;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.ZipFile;
+import se.llbit.chunky.resources.BitmapImage;
+import se.llbit.chunky.world.Clouds;
+import se.llbit.resources.ImageLoader;
 
 /**
  * @author Jesper Öqvist <jesper@llbit.se>
@@ -51,6 +50,11 @@ public class CloudsTexture extends TextureLoader {
 
   @Override public boolean load(ZipFile texturePack, String topLevelDir) {
     return load(topLevelDir + file, texturePack);
+  }
+
+  @Override
+  public void reset() {
+    Clouds.clear();
   }
 }
 
