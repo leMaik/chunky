@@ -166,7 +166,7 @@ public class PathTracer implements RayTracer {
             if (scene.emittersEnabled && (!scene.isPreventNormalEmitterWithSampling()
                 || scene.getEmitterSamplingStrategy() == EmitterSamplingStrategy.NONE
                 || ray.depth == 0) && currentMat.emittance * ray.emittanceValue > Ray.EPSILON) {
-              emittance = addEmitted;
+              emittance = (float) (addEmitted * ray.emittanceValue);
               ray.emittance.x = ray.color.x * ray.color.x *
                   currentMat.emittance * ray.emittanceValue * scene.emitterIntensity;
               ray.emittance.y = ray.color.y * ray.color.y *
@@ -459,7 +459,7 @@ public class PathTracer implements RayTracer {
       emitterRay.emittance.set(0, 0, 0);
       emitterRay.o.scaleAdd(Ray.EPSILON, emitterRay.d);
       PreviewRayTracer.nextIntersection(scene, emitterRay);
-      if (emitterRay.getCurrentMaterial().emittance > Ray.EPSILON) {
+      if (emitterRay.getCurrentMaterial().emittance * emitterRay.emittanceValue > Ray.EPSILON) {
         indirectEmitterColor.set(emitterRay.color);
         indirectEmitterColor
             .scale(emitterRay.getCurrentMaterial().emittance * emitterRay.emittanceValue);
