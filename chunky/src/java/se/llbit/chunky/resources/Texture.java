@@ -41,15 +41,18 @@ import se.llbit.util.NotNull;
 public class Texture {
 
   public static final Texture EMPTY_TEXTURE = new Texture() {
-    @Override public void getColor(double u, double v, Vector4 c) {
+    @Override
+    public void getColor(double u, double v, Vector4 c) {
       c.set(0, 0, 0, 0);
     }
 
-    @Override public void getColorInterpolated(double u, double v, Vector4 c) {
+    @Override
+    public void getColorInterpolated(double u, double v, Vector4 c) {
       c.set(0, 0, 0, 0);
     }
 
-    @Override public boolean isEmptyTexture() {
+    @Override
+    public boolean isEmptyTexture() {
       return true;
     }
   };
@@ -1042,7 +1045,9 @@ public class Texture {
   public static final Texture pottedFloweringAzaleaBushTop = new Texture();
   public static final Texture pottedFloweringAzaleaBushSide = new Texture();
 
-  /** Banner base texture. */
+  /**
+   * Banner base texture.
+   */
   public static final Texture bannerBase = new Texture();
 
   public static final Texture armorStand = new Texture();
@@ -1056,7 +1061,7 @@ public class Texture {
   private float[] avgColorFlat;
 
   private Image fxImage = null;
-  private EmissionMap emissionMap = EmissionMap.EMPTY;
+  private EmissionMap emissionMap = EmissionMap.DEFAULT;
 
   public Texture() {
     this(ImageLoader.missingImage);
@@ -1078,7 +1083,7 @@ public class Texture {
     image = newImage;
 
     // Gamma correct the texture.
-    avgColorLinear = new float[] {0, 0, 0, 0};
+    avgColorLinear = new float[]{0, 0, 0, 0};
 
     int[] data = image.data;
     width = image.width;
@@ -1158,10 +1163,11 @@ public class Texture {
    * @return color
    */
   public final float[] getColor(int x, int y) {
-    if(useAverageColor)
+    if (useAverageColor) {
       return avgColorFlat;
+    }
     float[] result = new float[4];
-    ColorUtil.getRGBAComponentsGammaCorrected(image.data[width*y + x], result);
+    ColorUtil.getRGBAComponentsGammaCorrected(image.data[width * y + x], result);
     return result;
   }
 
@@ -1247,12 +1253,19 @@ public class Texture {
     return fxImage;
   }
 
-  /** Access the raw image data for this texture. */
+  /**
+   * Access the raw image data for this texture.
+   */
   public int[] getData() {
     return image.data;
   }
 
   public BitmapImage getBitmap() {
     return image;
+  }
+
+  public void reset() {
+    setTexture(ImageLoader.missingImage);
+    setEmissionMap(EmissionMap.DEFAULT);
   }
 }

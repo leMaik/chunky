@@ -55,4 +55,9 @@ public class EntityTextureLoader extends TextureLoader {
   public boolean load(ZipFile texturePack, String topLevelDir) {
     return load(topLevelDir + file, texturePack);
   }
+
+  @Override
+  public void reset() {
+    texture.reset();
+  }
 }
