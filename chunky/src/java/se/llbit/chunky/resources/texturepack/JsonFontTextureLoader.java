@@ -113,4 +113,8 @@ public class JsonFontTextureLoader extends TextureLoader {
   protected boolean load(String file, ZipFile texturePack) {
     return super.load(file, texturePack);
   }
+
+  @Override public void reset() {
+    Texture.fonts.clear();
+  }
 }

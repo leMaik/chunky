@@ -52,4 +52,8 @@ public class RotatedTextureLoader extends TextureLoader {
     throw new TextureFormatError("Call simple texture sub-loader instead.");
   }
 
+  @Override
+  public void reset() {
+    texture.reset();
+  }
 }

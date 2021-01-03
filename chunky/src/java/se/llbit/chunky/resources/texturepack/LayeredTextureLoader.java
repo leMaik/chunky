@@ -78,5 +78,11 @@ public class LayeredTextureLoader extends TextureLoader {
   @Override public String toString() {
     return String.format("{texture: %s, overlay: %s}", baseTexture, textureName);
   }
+
+  @Override
+  public void reset() {
+    baseTexture.reset();
+    texture.reset();
+  }
 }
 

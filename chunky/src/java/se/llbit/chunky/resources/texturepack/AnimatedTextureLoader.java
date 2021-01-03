@@ -52,4 +52,8 @@ public class AnimatedTextureLoader extends TextureLoader {
     return load(topLevelDir + file, texturePack);
   }
 
+  @Override
+  public void reset() {
+    texture.reset();
+  }
 }

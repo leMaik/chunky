@@ -155,4 +155,15 @@ public class ChestTexture extends TextureLoader {
   public boolean load(ZipFile texturePack, String topLevelDir) {
     return load(topLevelDir + file, texturePack);
   }
+
+  @Override
+  public void reset() {
+    lock.reset();
+    top.reset();
+    bottom.reset();
+    left.reset();
+    right.reset();
+    front.reset();
+    back.reset();
+  }
 }
