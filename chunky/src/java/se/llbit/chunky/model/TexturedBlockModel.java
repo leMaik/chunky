@@ -43,25 +43,38 @@ public class TexturedBlockModel {
     ray.t = Double.POSITIVE_INFINITY;
     if (block.intersect(ray)) {
       float[] color;
-      double emittance;
+      double emittance = 0;
+      boolean hasEmittance = ray.getCurrentMaterial().emittance > Ray.EPSILON;
       if (ray.n.z < 0) {
         color = texture[0].getColor(ray.u, ray.v);
-        emittance = texture[0].getEmittanceAt(ray.u, ray.v);
+        if (hasEmittance) {
+          emittance = texture[0].getEmittanceAt(ray.u, ray.v);
+        }
       } else if (ray.n.z > 0) {
         color = texture[1].getColor(ray.u, ray.v);
-        emittance = texture[1].getEmittanceAt(ray.u, ray.v);
+        if (hasEmittance) {
+          emittance = texture[1].getEmittanceAt(ray.u, ray.v);
+        }
       } else if (ray.n.x > 0) {
         color = texture[2].getColor(ray.u, ray.v);
-        emittance = texture[2].getEmittanceAt(ray.u, ray.v);
+        if (hasEmittance) {
+          emittance = texture[2].getEmittanceAt(ray.u, ray.v);
+        }
       } else if (ray.n.x < 0) {
         color = texture[3].getColor(ray.u, ray.v);
-        emittance = texture[3].getEmittanceAt(ray.u, ray.v);
+        if (hasEmittance) {
+          emittance = texture[3].getEmittanceAt(ray.u, ray.v);
+        }
       } else if (ray.n.y > 0) {
         color = texture[4].getColor(1 - ray.u, 1 - ray.v);
-        emittance = texture[4].getEmittanceAt(1 - ray.u, 1 - ray.v);
+        if (hasEmittance) {
+          emittance = texture[4].getEmittanceAt(1 - ray.u, 1 - ray.v);
+        }
       } else {
         color = texture[5].getColor(ray.u, ray.v);
-        emittance = texture[5].getEmittanceAt(ray.u, ray.v);
+        if (hasEmittance) {
+          emittance = texture[5].getEmittanceAt(ray.u, ray.v);
+        }
       }
 
       if (color[3] > Ray.EPSILON) {
@@ -87,25 +100,38 @@ public class TexturedBlockModel {
     ray.t = Double.POSITIVE_INFINITY;
     if (block.intersect(ray)) {
       float[] color;
-      double emittance;
+      double emittance = 0;
+      boolean hasEmittance = ray.getCurrentMaterial().emittance > Ray.EPSILON;
       if (ray.n.z < 0) {
         color = texture[index[0]].getColor(ray.u, ray.v);
-        emittance = texture[index[0]].getEmittanceAt(ray.u, ray.v);
+        if (hasEmittance) {
+          emittance = texture[index[0]].getEmittanceAt(ray.u, ray.v);
+        }
       } else if (ray.n.z > 0) {
         color = texture[index[1]].getColor(ray.u, ray.v);
-        emittance = texture[index[1]].getEmittanceAt(ray.u, ray.v);
+        if (hasEmittance) {
+          emittance = texture[index[1]].getEmittanceAt(ray.u, ray.v);
+        }
       } else if (ray.n.x > 0) {
         color = texture[index[2]].getColor(ray.u, ray.v);
-        emittance = texture[index[2]].getEmittanceAt(ray.u, ray.v);
+        if (hasEmittance) {
+          emittance = texture[index[2]].getEmittanceAt(ray.u, ray.v);
+        }
       } else if (ray.n.x < 0) {
         color = texture[index[3]].getColor(ray.u, ray.v);
-        emittance = texture[index[3]].getEmittanceAt(ray.u, ray.v);
+        if (hasEmittance) {
+          emittance = texture[index[3]].getEmittanceAt(ray.u, ray.v);
+        }
       } else if (ray.n.y > 0) {
         color = texture[index[4]].getColor(1 - ray.u, 1 - ray.v);
-        emittance = texture[index[4]].getEmittanceAt(1 - ray.u, 1 - ray.v);
+        if (hasEmittance) {
+          emittance = texture[index[4]].getEmittanceAt(1 - ray.u, 1 - ray.v);
+        }
       } else {
         color = texture[index[5]].getColor(ray.u, ray.v);
-        emittance = texture[index[5]].getEmittanceAt(ray.u, ray.v);
+        if (hasEmittance) {
+          emittance = texture[index[5]].getEmittanceAt(ray.u, ray.v);
+        }
       }
 
       if (color[3] > Ray.EPSILON) {
