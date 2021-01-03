@@ -120,11 +120,13 @@ public class TorchModel {
     boolean hit = false;
     ray.t = Double.POSITIVE_INFINITY;
     float[] color = null;
+    double emittance = 0;
     for (Quad quad : rotQuads[rot]) {
       if (quad.intersect(ray)) {
         float[] c = texture.getColor(ray.u, ray.v);
         if (c[3] > Ray.EPSILON) {
           color = c;
+          emittance = texture.getEmittanceAt(ray.u, ray.v);
           ray.n.set(quad.n);
           ray.t = ray.tNext;
           hit = true;
@@ -136,6 +138,7 @@ public class TorchModel {
         float[] c = texture.getColor(ray.u, ray.v);
         if (c[3] > Ray.EPSILON) {
           color = c;
+          emittance = texture.getEmittanceAt(ray.u, ray.v);
           ray.n.set(triangle.n);
           ray.t = ray.tNext;
           hit = true;
@@ -148,7 +151,7 @@ public class TorchModel {
       double pz = ray.o.z - QuickMath.floor(ray.o.z + ray.d.z * Ray.OFFSET) + ray.d.z * ray.tNext;
       if (px >= 0 && px <= 1 && py >= 0 && py <= 1 && pz >= 0 && pz <= 1) {
         ray.color.set(color);
-        ray.emittanceValue = texture.getEmittanceAt(ray.u, ray.v);
+        ray.emittanceValue = emittance;
         ray.distance += ray.t;
         ray.o.scaleAdd(ray.t, ray.d);
         return true;
