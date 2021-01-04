@@ -63,9 +63,14 @@ public class Ray {
   public Vector4 color = new Vector4();
 
   /**
-   * Emittance of previously intersected surface.
+   * The emittance of the previously intersected surface.
    */
   public double emittanceValue = 0;
+
+  /**
+   * The reflectance of the previously intersected surface.
+   */
+  public double reflectanceValue = 0;
 
   /**
    * Emittance of previously intersected surface (used for emitter sampling).
@@ -150,6 +155,7 @@ public class Ray {
     color.set(0, 0, 0, 0);
     emittance.set(0, 0, 0);
     emittanceValue = 0;
+    reflectanceValue = 0;
     specular = true;
   }
 
@@ -167,6 +173,7 @@ public class Ray {
     color.set(0, 0, 0, 0);
     emittance.set(0, 0, 0);
     emittanceValue = 0;
+    reflectanceValue = 0;
     specular = other.specular;
   }
 
