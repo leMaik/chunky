@@ -797,7 +797,7 @@ public class Scene implements JsonSerializable, Refreshable {
     int yMin = Math.max(0, yClipMin);
     int yMax = Math.min(256, yClipMax);
 
-    ChunkData chunkData = new GenericChunkData();
+    ChunkData chunkData = null;
 
     Block stone = palette.stone;
 
@@ -814,8 +814,7 @@ public class Scene implements JsonSerializable, Refreshable {
 
         loadedChunks.add(cp);
 
-        chunkData.clear();
-        world.getChunk(cp).getBlockData(chunkData, palette);
+        chunkData = world.getChunk(cp).getChunkData(chunkData, palette);
         numChunks += 1;
 
         int wx0 = cp.x * 16; // Start of this chunk in world coordinates.
