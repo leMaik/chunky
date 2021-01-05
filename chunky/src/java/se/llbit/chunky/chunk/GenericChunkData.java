@@ -13,7 +13,7 @@ public class GenericChunkData implements ChunkData {
   private Integer minSectionY = Integer.MAX_VALUE;
   private Integer maxSectionY = Integer.MIN_VALUE;
 
-  private IntObjectHashMap<SectionData> sections;
+  private final IntObjectHashMap<SectionData> sections;
   public byte[] biomes;
   public Collection<CompoundTag> tileEntities;
   public Collection<CompoundTag> entities;
@@ -21,8 +21,6 @@ public class GenericChunkData implements ChunkData {
   public GenericChunkData() {
     sections = new IntObjectHashMap<>();
     biomes = new byte[X_MAX * Z_MAX];
-    tileEntities = new ArrayList<>();
-    entities = new ArrayList<>();
   }
 
   @Override
@@ -66,11 +64,17 @@ public class GenericChunkData implements ChunkData {
 
   @Override
   public Collection<CompoundTag> getTileEntities() {
+    if(tileEntities == null) {
+      tileEntities = new ArrayList<>();
+    }
     return tileEntities;
   }
 
   @Override
   public Collection<CompoundTag> getEntities() {
+    if(entities == null) {
+      entities = new ArrayList<>();
+    }
     return entities;
   }
 
