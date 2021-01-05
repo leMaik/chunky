@@ -25,7 +25,6 @@ import se.llbit.chunky.block.Lava;
 import se.llbit.chunky.block.Water;
 import se.llbit.chunky.chunk.BlockPalette;
 import se.llbit.chunky.chunk.ChunkData;
-import se.llbit.chunky.chunk.GenericChunkData;
 import se.llbit.chunky.entity.ArmorStand;
 import se.llbit.chunky.entity.Entity;
 import se.llbit.chunky.entity.PaintingEntity;
@@ -859,20 +858,20 @@ public class Scene implements JsonSerializable, Refreshable {
               int x = cx + cp.x * 16 - origin.x;
 
               // Change the type of hidden blocks to ANY_TYPE
-              boolean notOnEdge = !chunkData.blockOnEdge(cx, cy, cz);
+              boolean notOnEdge = !chunkData.isBlockOnEdge(cx, cy, cz);
 
               boolean isHidden = notOnEdge
-                      && palette.get(chunkData.blockAt(cx+1, cy, cz)).opaque
-                      && palette.get(chunkData.blockAt(cx-1, cy, cz)).opaque
-                      && palette.get(chunkData.blockAt(cx, cy+1, cz)).opaque
-                      && palette.get(chunkData.blockAt(cx, cy-1, cz)).opaque
-                      && palette.get(chunkData.blockAt(cx, cy, cz+1)).opaque
-                      && palette.get(chunkData.blockAt(cx, cy, cz-1)).opaque;
+                      && palette.get(chunkData.getBlockAt(cx+1, cy, cz)).opaque
+                      && palette.get(chunkData.getBlockAt(cx-1, cy, cz)).opaque
+                      && palette.get(chunkData.getBlockAt(cx, cy+1, cz)).opaque
+                      && palette.get(chunkData.getBlockAt(cx, cy-1, cz)).opaque
+                      && palette.get(chunkData.getBlockAt(cx, cy, cz+1)).opaque
+                      && palette.get(chunkData.getBlockAt(cx, cy, cz-1)).opaque;
 
               if(isHidden) {
                 worldOctree.set(new Octree.Node(Octree.ANY_TYPE), x, cy - origin.y, z);
               } else {
-                int currentBlock = chunkData.blockAt(cx, cy, cz);
+                int currentBlock = chunkData.getBlockAt(cx, cy, cz);
                 Octree.Node octNode = new Octree.Node(currentBlock);
                 Block block = palette.get(currentBlock);
 
@@ -891,7 +890,7 @@ public class Scene implements JsonSerializable, Refreshable {
                 if (block.isWaterFilled()) {
                   Octree.Node waterNode = new Octree.Node(palette.waterId);
                   if (cy + 1 < yMax) {
-                    if (palette.get(chunkData.blockAt(cx, cy + 1, cz)).isWaterFilled()) {
+                    if (palette.get(chunkData.getBlockAt(cx, cy + 1, cz)).isWaterFilled()) {
                       waterNode = new Octree.DataNode(palette.waterId, 1 << Water.FULL_BLOCK);
                     }
                   }
@@ -952,7 +951,7 @@ public class Scene implements JsonSerializable, Refreshable {
                   }
                   waterOctree.set(waterNode, x, cy - origin.y, z);
                 } else if (cy + 1 < yMax && block instanceof Lava) {
-                  if (palette.get(chunkData.blockAt(cx, cy+1, cz)) instanceof Lava) {
+                  if (palette.get(chunkData.getBlockAt(cx, cy+1, cz)) instanceof Lava) {
                     octNode = new Octree.DataNode(currentBlock, 1 << Water.FULL_BLOCK);
                   } else if(notOnEdge) {
                     // Compute lava level for blocks not on edge
@@ -1022,7 +1021,7 @@ public class Scene implements JsonSerializable, Refreshable {
           if (y >= yClipMin && y <= yClipMax) {
             int x = entityTag.get("x").intValue(0) - wx0; // Chunk-local coordinates.
             int z = entityTag.get("z").intValue(0) - wz0;
-            Block block = palette.get(chunkData.blockAt(x, y, z));
+            Block block = palette.get(chunkData.getBlockAt(x, y, z));
             // Metadata is the old block data (to be replaced in future Minecraft versions?).
             Vector3 position = new Vector3(x + wx0, y, z + wz0);
             if (block.isBlockEntity()) {
