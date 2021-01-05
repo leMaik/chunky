@@ -282,6 +282,7 @@ public class Chunk {
       for (SpecificTag section : sections.asList()) {
         Tag yTag = section.get("Y");
         int sectionY = yTag.byteValue() & 0xFF;
+        int sectionMinBlockY = sectionY << 4;
 
         if (section.get("Palette").isList()) {
           ListTag palette = section.get("Palette").asList();
@@ -308,11 +309,12 @@ public class Chunk {
             }
             BitBuffer buffer = new BitBuffer(blockStates.longArray(), bpb, isAligned);
             for (int y = 0; y < SECTION_Y_MAX; y++) {
-              for(int x = 0; x < X_MAX; x++) {
-                for (int z = 0; z < Z_MAX; z++) {
+              int blockY = sectionMinBlockY + y;
+              for (int z = 0; z < Z_MAX; z++) {
+                for(int x = 0; x < X_MAX; x++) {
                   int b0 = buffer.read();
                   if (b0 < subpalette.length) {
-                    chunkData.setBlockAt(x, y, z, subpalette[b0]);
+                    chunkData.setBlockAt(x, blockY, z, subpalette[b0]);
                   }
                 }
               }
@@ -320,23 +322,22 @@ public class Chunk {
           }
         } else { //  1.12 or older chunk
           Tag dataTag = section.get("Data");
-          byte[] blockDataBytes = new byte[(Chunk.X_MAX * Chunk.Y_MAX * Chunk.Z_MAX) / 2];
+          byte[] blockDataBytes = new byte[(Chunk.X_MAX * Chunk.SECTION_Y_MAX * Chunk.Z_MAX)/2];
           if (dataTag.isByteArray(SECTION_HALF_NIBBLES)) {
-            System.arraycopy(dataTag.byteArray(), 0, blockDataBytes, SECTION_HALF_NIBBLES * sectionY,
-                SECTION_HALF_NIBBLES);
+            System.arraycopy(dataTag.byteArray(), 0, blockDataBytes, 0, SECTION_HALF_NIBBLES);
           }
 
           Tag blocksTag = section.get("Blocks");
           if (blocksTag.isByteArray(SECTION_BYTES)) {
-            byte[] blocksBytes = new byte[Chunk.X_MAX * Chunk.Y_MAX * Chunk.Z_MAX];
-            System.arraycopy(blocksTag.byteArray(), 0, blocksBytes, SECTION_BYTES * sectionY,
-                SECTION_BYTES);
+            byte[] blocksBytes = new byte[Chunk.X_MAX * Chunk.SECTION_Y_MAX * Chunk.Z_MAX];
+            System.arraycopy(blocksTag.byteArray(), 0, blocksBytes, 0, SECTION_BYTES);
 
-            int offset = SECTION_BYTES;
+            int offset = 0;
             for (int y = 0; y < SECTION_Y_MAX; y++) {
-              for(int x = 0; x < X_MAX; x++) {
-                for (int z = 0; z < Z_MAX; z++) {
-                  chunkData.setBlockAt(x, y, z, blockPalette.put(LegacyBlocks.getTag(offset, blocksBytes, blockDataBytes)));
+              int blockY = sectionMinBlockY + y;
+              for (int z = 0; z < Z_MAX; z++) {
+                for(int x = 0; x < X_MAX; x++) {
+                  chunkData.setBlockAt(x, blockY, z, blockPalette.put(LegacyBlocks.getTag(offset, blocksBytes, blockDataBytes)));
                   offset += 1;
                 }
               }
