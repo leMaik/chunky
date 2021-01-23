@@ -29,6 +29,7 @@ import se.llbit.chunky.chunk.ChunkData;
 import se.llbit.chunky.chunk.SimpleChunkData;
 import se.llbit.chunky.entity.ArmorStand;
 import se.llbit.chunky.entity.Entity;
+import se.llbit.chunky.entity.ItemFrameEntity;
 import se.llbit.chunky.entity.Lectern;
 import se.llbit.chunky.entity.PaintingEntity;
 import se.llbit.chunky.entity.PlayerEntity;
@@ -840,6 +841,8 @@ public class Scene implements JsonSerializable, Refreshable {
 
         // Load entities from the chunk:
         for (CompoundTag tag : chunkData.getEntities()) {
+          String id = tag.get("id").stringValue("");
+          System.out.println("Entity " + id);
           Tag posTag = tag.get("Pos");
           if (posTag.isList()) {
             ListTag pos = posTag.asList();
@@ -848,7 +851,6 @@ public class Scene implements JsonSerializable, Refreshable {
             double z = pos.get(2).doubleValue();
 
             if (y >= yClipMin && y <= yClipMax) {
-              String id = tag.get("id").stringValue("");
               if (id.equals("minecraft:painting") || id.equals("Painting")) {
                 // Before 1.12 paintings had id=Painting.
                 // After 1.12 paintings had id=minecraft:painting.
@@ -857,6 +859,9 @@ public class Scene implements JsonSerializable, Refreshable {
                     new PaintingEntity(new Vector3(x, y, z), tag.get("Motive").stringValue(), yaw));
               } else if (id.equals("minecraft:armor_stand")) {
                 actors.add(new ArmorStand(new Vector3(x, y, z), tag));
+              } else if (id.equals("minecraft:item_frame")) {
+                System.out.println("Item frame!");
+                entities.add(new ItemFrameEntity(new Vector3(x, y, z)));
               }
             }
           }
@@ -1055,6 +1060,7 @@ public class Scene implements JsonSerializable, Refreshable {
         // about certain blocks or entities.
         // Block entities are loaded after the base block data so that metadata can be updated.
         for (CompoundTag entityTag : chunkData.getTileEntities()) {
+          System.out.println("Tile entity " + entityTag.dumpTree());
           int y = entityTag.get("y").intValue(0);
           if (y >= yClipMin && y <= yClipMax) {
             int x = entityTag.get("x").intValue(0) - wx0; // Chunk-local coordinates.
