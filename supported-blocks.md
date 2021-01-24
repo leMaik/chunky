@@ -202,4 +202,4 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 ### 21w03a
 
 - [x] Glow lichen
-- [] Glow item frame
+- [ ] Glow item frame
