@@ -46,8 +46,9 @@ public class TexturedBlockModel {
       double emittance = 0;
       double reflectance = 0;
       double roughness = 0;
+      float metalness = 0;
       boolean hasEmittance = ray.getCurrentMaterial().emittance > Ray.EPSILON;
-      boolean hasSpecular = ray.getCurrentMaterial().specular > Ray.EPSILON;
+      boolean hasSpecular = ray.getCurrentMaterial().specular > Ray.EPSILON || ray.getCurrentMaterial().metalness > Ray.EPSILON;
       if (ray.n.z < 0) {
         color = texture[0].getColor(ray.u, ray.v);
         if (hasEmittance) {
@@ -56,6 +57,7 @@ public class TexturedBlockModel {
         if (hasSpecular) {
           reflectance = texture[0].getReflectanceAt(ray.u, ray.v);
           roughness = texture[0].getRoughnessAt(ray.u, ray.v);
+          metalness = texture[0].getMetalnessAt(ray.u, ray.v);
         }
       } else if (ray.n.z > 0) {
         color = texture[1].getColor(ray.u, ray.v);
@@ -65,6 +67,7 @@ public class TexturedBlockModel {
         if (hasSpecular) {
           reflectance = texture[1].getReflectanceAt(ray.u, ray.v);
           roughness = texture[1].getRoughnessAt(ray.u, ray.v);
+          metalness = texture[1].getMetalnessAt(ray.u, ray.v);
         }
       } else if (ray.n.x > 0) {
         color = texture[2].getColor(ray.u, ray.v);
@@ -74,6 +77,7 @@ public class TexturedBlockModel {
         if (hasSpecular) {
           reflectance = texture[2].getReflectanceAt(ray.u, ray.v);
           roughness = texture[2].getRoughnessAt(ray.u, ray.v);
+          metalness = texture[2].getMetalnessAt(ray.u, ray.v);
         }
       } else if (ray.n.x < 0) {
         color = texture[3].getColor(ray.u, ray.v);
@@ -83,6 +87,7 @@ public class TexturedBlockModel {
         if (hasSpecular) {
           reflectance = texture[3].getReflectanceAt(ray.u, ray.v);
           roughness = texture[3].getRoughnessAt(ray.u, ray.v);
+          metalness = texture[3].getMetalnessAt(ray.u, ray.v);
         }
       } else if (ray.n.y > 0) {
         color = texture[4].getColor(1 - ray.u, 1 - ray.v);
@@ -92,6 +97,7 @@ public class TexturedBlockModel {
         if (hasSpecular) {
           reflectance = texture[4].getReflectanceAt(1 - ray.u, 1 - ray.v);
           roughness = texture[4].getRoughnessAt(1 - ray.u, 1 - ray.v);
+          metalness = texture[4].getMetalnessAt(1 - ray.u, 1 - ray.v);
         }
       } else {
         color = texture[5].getColor(ray.u, ray.v);
@@ -101,6 +107,7 @@ public class TexturedBlockModel {
         if (hasSpecular) {
           reflectance = texture[5].getReflectanceAt(ray.u, ray.v);
           roughness = texture[5].getRoughnessAt(ray.u, ray.v);
+          metalness = texture[5].getMetalnessAt(ray.u, ray.v);
         }
       }
 
@@ -109,6 +116,7 @@ public class TexturedBlockModel {
         ray.emittanceValue = emittance;
         ray.reflectanceValue = reflectance;
         ray.roughnessValue = roughness;
+        ray.metalnessValue = metalness;
         ray.distance += ray.tNext;
         ray.o.scaleAdd(ray.tNext, ray.d);
         return true;
@@ -132,8 +140,9 @@ public class TexturedBlockModel {
       double emittance = 0;
       double reflectance = 0;
       double roughness = 0;
+      float metalness = 0;
       boolean hasEmittance = ray.getCurrentMaterial().emittance > Ray.EPSILON;
-      boolean hasSpecular = ray.getCurrentMaterial().specular > Ray.EPSILON;
+      boolean hasSpecular = ray.getCurrentMaterial().specular > Ray.EPSILON || ray.getCurrentMaterial().metalness > Ray.EPSILON;
       if (ray.n.z < 0) {
         color = texture[index[0]].getColor(ray.u, ray.v);
         if (hasEmittance) {
@@ -142,6 +151,7 @@ public class TexturedBlockModel {
         if (hasSpecular) {
           reflectance = texture[index[0]].getReflectanceAt(ray.u, ray.v);
           roughness = texture[index[0]].getRoughnessAt(ray.u, ray.v);
+          metalness = texture[index[0]].getMetalnessAt(ray.u, ray.v);
         }
       } else if (ray.n.z > 0) {
         color = texture[index[1]].getColor(ray.u, ray.v);
@@ -151,6 +161,7 @@ public class TexturedBlockModel {
         if (hasSpecular) {
           reflectance = texture[index[1]].getReflectanceAt(ray.u, ray.v);
           roughness = texture[index[1]].getRoughnessAt(ray.u, ray.v);
+          metalness = texture[index[1]].getMetalnessAt(ray.u, ray.v);
         }
       } else if (ray.n.x > 0) {
         color = texture[index[2]].getColor(ray.u, ray.v);
@@ -160,6 +171,7 @@ public class TexturedBlockModel {
         if (hasSpecular) {
           reflectance = texture[index[2]].getReflectanceAt(ray.u, ray.v);
           roughness = texture[index[2]].getRoughnessAt(ray.u, ray.v);
+          metalness = texture[index[2]].getMetalnessAt(ray.u, ray.v);
         }
       } else if (ray.n.x < 0) {
         color = texture[index[3]].getColor(ray.u, ray.v);
@@ -169,6 +181,7 @@ public class TexturedBlockModel {
         if (hasSpecular) {
           reflectance = texture[index[3]].getReflectanceAt(ray.u, ray.v);
           roughness = texture[index[3]].getRoughnessAt(ray.u, ray.v);
+          metalness = texture[index[3]].getMetalnessAt(ray.u, ray.v);
         }
       } else if (ray.n.y > 0) {
         color = texture[index[4]].getColor(1 - ray.u, 1 - ray.v);
@@ -178,6 +191,7 @@ public class TexturedBlockModel {
         if (hasSpecular) {
           reflectance = texture[index[4]].getReflectanceAt(1 - ray.u, 1 - ray.v);
           roughness = texture[index[4]].getRoughnessAt(1 - ray.u, 1 - ray.v);
+          metalness = texture[index[4]].getMetalnessAt(1 - ray.u, 1 - ray.v);
         }
       } else {
         color = texture[index[5]].getColor(ray.u, ray.v);
@@ -187,6 +201,7 @@ public class TexturedBlockModel {
         if (hasSpecular) {
           reflectance = texture[index[5]].getReflectanceAt(ray.u, ray.v);
           roughness = texture[index[5]].getRoughnessAt(ray.u, ray.v);
+          metalness = texture[index[5]].getMetalnessAt(ray.u, ray.v);
         }
       }
 
@@ -195,6 +210,7 @@ public class TexturedBlockModel {
         ray.emittanceValue = emittance;
         ray.reflectanceValue = reflectance;
         ray.roughnessValue = roughness;
+        ray.metalnessValue = metalness;
         ray.distance += ray.tNext;
         ray.o.scaleAdd(ray.tNext, ray.d);
         return true;
@@ -219,6 +235,7 @@ public class TexturedBlockModel {
         ray.emittanceValue = texture.getEmittanceAt(ray.u, ray.v);
         ray.reflectanceValue = texture.getReflectanceAt(ray.u, ray.v);
         ray.roughnessValue = texture.getRoughnessAt(ray.u, ray.v);
+        ray.metalnessValue = texture.getMetalnessAt(ray.u, ray.v);
         ray.distance += ray.tNext;
         ray.o.scaleAdd(ray.tNext, ray.d);
         return true;
