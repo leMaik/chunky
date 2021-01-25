@@ -75,7 +75,7 @@ public class SimpleTexture extends TextureLoader {
   public boolean load(ZipFile texturePack, String topLevelDir) {
     boolean loaded = load(topLevelDir + file, texturePack);
 
-    String specularFormat = System.getProperty("chunky.pbr.specular", "oldpbr");
+    String specularFormat = System.getProperty("chunky.pbr.specular", "");
     if (specularFormat.equals("oldpbr") || specularFormat.equals("labpbr")) {
       try (InputStream in = texturePack.getInputStream(new ZipEntry(file + "_s.png"))) {
         if (in != null) {
