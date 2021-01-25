@@ -73,6 +73,7 @@ public class PathTracer implements RayTracer {
           ray.emittanceValue = 0;
           ray.reflectanceValue = 0;
           ray.roughnessValue = 0;
+          ray.metalnessValue = 0;
           hit = true;
         } else if (ray.depth == 0) {
           // Direct sky hit.
@@ -128,7 +129,7 @@ public class PathTracer implements RayTracer {
         continue;
       }
 
-      float pMetal = currentMat.metalness;
+      float pMetal = currentMat.metalness * ray.metalnessValue;
       boolean doMetal = pMetal > Ray.EPSILON && random.nextFloat() < pMetal;
 
       if (doMetal || (pSpecular > Ray.EPSILON && random.nextFloat() < pSpecular)) {
@@ -386,6 +387,7 @@ public class PathTracer implements RayTracer {
       ray.emittanceValue = 0;
       ray.reflectanceValue = 0;
       ray.roughnessValue = 0;
+      ray.metalnessValue = 0;
       if (firstReflection) {
         airDistance = ray.distance;
       }

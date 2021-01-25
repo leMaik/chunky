@@ -23,6 +23,7 @@ import java.util.zip.ZipFile;
 import se.llbit.chunky.resources.BitmapImage;
 import se.llbit.chunky.resources.Texture;
 import se.llbit.chunky.resources.pbr.LabPbrSpecularMap;
+import se.llbit.chunky.resources.pbr.MetalnessMap;
 import se.llbit.chunky.resources.pbr.OldPbrSpecularMap;
 import se.llbit.chunky.resources.pbr.EmissionMap;
 import se.llbit.chunky.resources.pbr.ReflectanceMap;
@@ -81,18 +82,21 @@ public class SimpleTexture extends TextureLoader {
           if (specularFormat.equals("oldpbr")) {
             OldPbrSpecularMap specular = new OldPbrSpecularMap(getTextureOrFirstFrame(in));
             texture.setEmissionMap(specular.hasEmission() ? specular : EmissionMap.EMPTY);
-            texture.setReflectanceMap(specular.hasReflectance() ? specular : ReflectanceMap.EMPTY);
+            texture.setReflectanceMap(ReflectanceMap.DEFAULT);
             texture.setRoughnessMap(specular.hasRoughness() ? specular : RoughnessMap.EMPTY);
+            texture.setMetalnessMap(specular.hasMetalness() ? specular : MetalnessMap.EMPTY);
           } else if (specularFormat.equals("labpbr")) {
             LabPbrSpecularMap specular = new LabPbrSpecularMap(getTextureOrFirstFrame(in));
             texture.setEmissionMap(specular.hasEmission() ? specular : EmissionMap.EMPTY);
             texture.setReflectanceMap(specular.hasReflectance() ? specular : ReflectanceMap.EMPTY);
             texture.setRoughnessMap(specular.hasRoughness() ? specular : RoughnessMap.EMPTY);
+            texture.setMetalnessMap(specular.hasMetalness() ? specular : MetalnessMap.EMPTY);
           }
         } else {
           texture.setEmissionMap(EmissionMap.EMPTY);
           texture.setReflectanceMap(ReflectanceMap.EMPTY);
           texture.setRoughnessMap(RoughnessMap.EMPTY);
+          texture.setMetalnessMap(MetalnessMap.EMPTY);
         }
       } catch (IOException e) {
         // Safe to ignore
