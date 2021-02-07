@@ -203,3 +203,22 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 
 - [x] Glow lichen
 - [ ] Glow item frame
+
+### 21w05a
+
+- [x] Rename copper blocks
+- [x] Updated glow lichen model
+- [x] Flowering azalea leaves
+- [x] Azalea leaves
+- [x] Azalea
+- [x] Flowering azalea
+- [x] Big dripleaf stem
+- [x] Big dripleaf
+- [x] Cave vines body
+- [x] Cave vines head
+- [x] Hanging roots
+- [x] Moss block
+- [x] Moss carpet
+- [x] Rooted dirt
+- [x] Small dripleaf
+- [x] Spore blossom
