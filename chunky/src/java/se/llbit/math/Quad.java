@@ -17,7 +17,6 @@
 package se.llbit.math;
 
 import java.util.Collection;
-
 import se.llbit.chunky.world.Material;
 import se.llbit.math.primitive.Primitive;
 import se.llbit.math.primitive.TexturedTriangle;
@@ -42,6 +41,8 @@ public class Quad {
 
   protected double d, xvl, yvl;
 
+  public final Matrix3 tbn;
+
   /**
    * Create new Quad by copying another quad and applying a transform.
    */
@@ -64,6 +65,17 @@ public class Quad {
     yvl = other.yvl;
     d = -n.dot(o);
     uv.set(other.uv);
+
+    tbn = new Matrix3();
+    tbn.m11 = xv.x;
+    tbn.m21 = xv.y;
+    tbn.m31 = xv.z;
+    tbn.m12 = yv.x;
+    tbn.m22 = yv.y;
+    tbn.m32 = yv.z;
+    tbn.m13 = n.x;
+    tbn.m23 = n.y;
+    tbn.m33 = n.z;
   }
 
   /**
@@ -88,6 +100,17 @@ public class Quad {
     yvl = other.yvl;
     d = -n.dot(o);
     uv.set(other.uv);
+
+    tbn = new Matrix3();
+    tbn.m11 = xv.x;
+    tbn.m21 = xv.y;
+    tbn.m31 = xv.z;
+    tbn.m12 = yv.x;
+    tbn.m22 = yv.y;
+    tbn.m32 = yv.z;
+    tbn.m13 = n.x;
+    tbn.m23 = n.y;
+    tbn.m33 = n.z;
   }
 
   /**
@@ -110,6 +133,17 @@ public class Quad {
     this.uv.set(uv);
     this.uv.y -= uv.x;
     this.uv.w -= uv.z;
+
+    tbn = new Matrix3();
+    tbn.m11 = xv.x;
+    tbn.m21 = xv.y;
+    tbn.m31 = xv.z;
+    tbn.m12 = yv.x;
+    tbn.m22 = yv.y;
+    tbn.m32 = yv.z;
+    tbn.m13 = n.x;
+    tbn.m23 = n.y;
+    tbn.m33 = n.z;
   }
 
   /**
