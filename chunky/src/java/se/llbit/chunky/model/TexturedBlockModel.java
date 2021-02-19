@@ -18,9 +18,11 @@ package se.llbit.chunky.model;
 
 import se.llbit.chunky.block.Air;
 import se.llbit.chunky.resources.Texture;
+import se.llbit.chunky.resources.pbr.NormalMap;
 import se.llbit.math.AABB;
 import se.llbit.math.QuickMath;
 import se.llbit.math.Ray;
+import se.llbit.math.Vector3;
 
 /**
  * A textured block.
@@ -99,6 +101,7 @@ public class TexturedBlockModel {
           roughness = texture[4].getRoughnessAt(1 - ray.u, 1 - ray.v);
           metalness = texture[4].getMetalnessAt(1 - ray.u, 1 - ray.v);
         }
+        NormalMap.apply(ray, new Vector3(1, 0, 1), new Vector3(0, 0, 1), texture[4]);
       } else {
         color = texture[5].getColor(ray.u, ray.v);
         if (hasEmittance) {
@@ -193,6 +196,7 @@ public class TexturedBlockModel {
           roughness = texture[index[4]].getRoughnessAt(1 - ray.u, 1 - ray.v);
           metalness = texture[index[4]].getMetalnessAt(1 - ray.u, 1 - ray.v);
         }
+        NormalMap.apply(ray, new Vector3(1, 0, 1), new Vector3(0, 0, 1), texture[index[4]]);
       } else {
         color = texture[index[5]].getColor(ray.u, ray.v);
         if (hasEmittance) {
@@ -273,6 +277,7 @@ public class TexturedBlockModel {
     if (ray.n.y != 0) {
       ray.u = ray.o.x - bx;
       ray.v = ray.o.z - bz;
+      NormalMap.apply(ray,new Vector3(1,0,0),new Vector3(0,0,1),ray.getCurrentMaterial().getTexture(ray.getBlockData()));
     } else if (ray.n.x != 0) {
       ray.u = ray.o.z - bz;
       ray.v = ray.o.y - by;
