@@ -242,3 +242,9 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 - [x] Polished grimstone slab
 - [x] Polished grimstone stairs
 - [x] Polished grimstone wall
+
+### 21w07a
+- [x] Deepslate (renamed grimstone)
+- [x] Cobbled deepslate
+- [x] Smooth basalt
+- [x] Deepslate iron, gold, diamond, lapis, and redstone ores
