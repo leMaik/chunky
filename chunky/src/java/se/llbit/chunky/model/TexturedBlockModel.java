@@ -277,7 +277,6 @@ public class TexturedBlockModel {
     if (ray.n.y != 0) {
       ray.u = ray.o.x - bx;
       ray.v = ray.o.z - bz;
-      NormalMap.apply(ray,new Vector3(1,0,0),new Vector3(0,0,1),ray.getCurrentMaterial().getTexture(ray.getBlockData()));
     } else if (ray.n.x != 0) {
       ray.u = ray.o.z - bz;
       ray.v = ray.o.y - by;
@@ -290,6 +289,8 @@ public class TexturedBlockModel {
     }
     if (ray.n.y > 0) {
       ray.v = 1 - ray.v;
+      NormalMap.apply(ray, new Vector3(-1, 0, 0), new Vector3(0, 0, -1),
+          ray.getCurrentMaterial().getTexture(ray.getBlockData()));
     }
   }
 }
