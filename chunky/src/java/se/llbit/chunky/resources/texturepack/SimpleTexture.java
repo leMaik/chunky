@@ -22,11 +22,13 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import se.llbit.chunky.resources.BitmapImage;
 import se.llbit.chunky.resources.Texture;
+import se.llbit.chunky.resources.pbr.EmissionMap;
+import se.llbit.chunky.resources.pbr.LabPbrNormalMap;
 import se.llbit.chunky.resources.pbr.LabPbrSpecularMap;
 import se.llbit.chunky.resources.pbr.MetalnessMap;
 import se.llbit.chunky.resources.pbr.NormalMap;
+import se.llbit.chunky.resources.pbr.OldPbrNormalMap;
 import se.llbit.chunky.resources.pbr.OldPbrSpecularMap;
-import se.llbit.chunky.resources.pbr.EmissionMap;
 import se.llbit.chunky.resources.pbr.ReflectanceMap;
 import se.llbit.chunky.resources.pbr.RoughnessMap;
 import se.llbit.resources.ImageLoader;
@@ -103,10 +105,15 @@ public class SimpleTexture extends TextureLoader {
         // Safe to ignore
       }
     }
-    if (System.getProperty("chunky.pbr.normal", "false").equals("true")) {
+    String normalFormat = System.getProperty("chunky.pbr.normal", "");
+    if (normalFormat.equals("oldpbr") || normalFormat.equals("labpbr")) {
       try (InputStream in = texturePack.getInputStream(new ZipEntry(file + "_n.png"))) {
         if (in != null) {
-          texture.setNormalMap(new NormalMap(getTextureOrFirstFrame(in)));
+          if (normalFormat.equals("oldpbr")) {
+            texture.setNormalMap(new OldPbrNormalMap(getTextureOrFirstFrame(in)));
+          } else if (normalFormat.equals("labpbr")) {
+            texture.setNormalMap(new LabPbrNormalMap(getTextureOrFirstFrame(in)));
+          }
         } else {
           texture.setNormalMap(null);
         }
