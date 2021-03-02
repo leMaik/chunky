@@ -78,7 +78,7 @@ public class SimpleTexture extends TextureLoader {
   public boolean load(ZipFile texturePack, String topLevelDir) {
     boolean loaded = load(topLevelDir + file, texturePack);
 
-    String specularFormat = System.getProperty("chunky.pbr.specular", "labpbr");
+    String specularFormat = System.getProperty("chunky.pbr.specular", "oldpbr");
     if (specularFormat.equals("oldpbr") || specularFormat.equals("labpbr")) {
       try (InputStream in = texturePack.getInputStream(new ZipEntry(file + "_s.png"))) {
         if (in != null) {
@@ -105,7 +105,7 @@ public class SimpleTexture extends TextureLoader {
         // Safe to ignore
       }
     }
-    String normalFormat = System.getProperty("chunky.pbr.normal", "");
+    String normalFormat = System.getProperty("chunky.pbr.normal", "labpbr");
     if (normalFormat.equals("oldpbr") || normalFormat.equals("labpbr")) {
       try (InputStream in = texturePack.getInputStream(new ZipEntry(file + "_n.png"))) {
         if (in != null) {
