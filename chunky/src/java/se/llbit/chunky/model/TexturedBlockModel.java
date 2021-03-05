@@ -50,7 +50,8 @@ public class TexturedBlockModel {
       double roughness = 0;
       float metalness = 0;
       boolean hasEmittance = ray.getCurrentMaterial().emittance > Ray.EPSILON;
-      boolean hasSpecular = ray.getCurrentMaterial().specular > Ray.EPSILON || ray.getCurrentMaterial().metalness > Ray.EPSILON;
+      boolean hasSpecular = ray.getCurrentMaterial().specular > Ray.EPSILON
+          || ray.getCurrentMaterial().metalness > Ray.EPSILON;
       if (ray.n.z < 0) {
         color = texture[0].getColor(ray.u, ray.v);
         if (hasEmittance) {
@@ -145,7 +146,8 @@ public class TexturedBlockModel {
       double roughness = 0;
       float metalness = 0;
       boolean hasEmittance = ray.getCurrentMaterial().emittance > Ray.EPSILON;
-      boolean hasSpecular = ray.getCurrentMaterial().specular > Ray.EPSILON || ray.getCurrentMaterial().metalness > Ray.EPSILON;
+      boolean hasSpecular = ray.getCurrentMaterial().specular > Ray.EPSILON
+          || ray.getCurrentMaterial().metalness > Ray.EPSILON;
       if (ray.n.z < 0) {
         color = texture[index[0]].getColor(ray.u, ray.v);
         if (hasEmittance) {
@@ -291,6 +293,20 @@ public class TexturedBlockModel {
       ray.v = 1 - ray.v;
       NormalMap.apply(ray, new Vector3(1, 0, 0), new Vector3(0, 0, -1),
           ray.getCurrentMaterial().getTexture(ray.getBlockData()));
+    } else if (ray.n.y < 0) {
+      NormalMap.apply(ray, new Vector3(-1, 0, 0), new Vector3(0, 0, 1),
+          ray.getCurrentMaterial().getTexture(ray.getBlockData()));
+    } else if (ray.n.x < 0) {
+      NormalMap.apply(ray, new Vector3(0, 0, -1), new Vector3(0, 1, 0),
+          ray.getCurrentMaterial().getTexture(ray.getBlockData()));
+    } else if (ray.n.x > 0) {
+      NormalMap.apply(ray, new Vector3(0, 0, 1), new Vector3(0, 1, 0),
+          ray.getCurrentMaterial().getTexture(ray.getBlockData()));
+    } else if (ray.n.z < 0) {
+      NormalMap.apply(ray, new Vector3(1, 0, 0), new Vector3(0, 1, 0),
+          ray.getCurrentMaterial().getTexture(ray.getBlockData()));
+    } else if (ray.n.z > 0) {
+      NormalMap.apply(ray, new Vector3(-1, 0, 0), new Vector3(0, 1, 0),
           ray.getCurrentMaterial().getTexture(ray.getBlockData()));
     }
   }
