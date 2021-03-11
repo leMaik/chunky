@@ -4,7 +4,7 @@ layout: default
 
 # Supported blocks
 
-Here's a list of the newer blocks that Chunky currently supports. If something is missing, please [create a new issue](https://github.com/leMaik/chunky/issues) in the GitHub repository.
+Here's a list of the newer blocks that Chunky currently supports. If something is missing, please [create a new issue](https://github.com/chunky-dev/chunky/issues) in the GitHub repository.
 
 ## 1.13
 
@@ -148,6 +148,8 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 
 ## 1.17
 
+_The [latest Chunky snapshot](/installation) is required for rendering the new blocks and the taller 1.17 worlds._
+
 ### 20w45a
 
 - [x] Cake with candle (including 16 colored candles)
@@ -243,8 +245,16 @@ Here's a list of the newer blocks that Chunky currently supports. If something i
 - [x] Polished grimstone stairs
 - [x] Polished grimstone wall
 
-### 21w07a
+### 21w08a
+
 - [x] Deepslate (renamed grimstone)
 - [x] Cobbled deepslate
 - [x] Smooth basalt
 - [x] Deepslate iron, gold, diamond, lapis, and redstone ores
+
+### 21w10a
+
+- [x] Cracked deepslate bricks
+- [x] Cracked deepslate tiles
+- [x] Deepslate copper, coal, and emerald ores
+- [x] Infested deepslate
