@@ -18,8 +18,8 @@
 package se.llbit.chunky.entity;
 
 import org.apache.commons.math3.util.FastMath;
-import se.llbit.json.Json;
 import se.llbit.json.JsonObject;
+import se.llbit.math.Transform;
 import se.llbit.math.Vector3;
 import se.llbit.util.JsonUtil;
 
@@ -29,30 +29,44 @@ import se.llbit.util.JsonUtil;
  * <p>A poseable entity contains several named parts that can be individually posed.
  */
 public interface Poseable {
+
   /**
    * @return an array of the names of the parts of this entity.
    */
   String[] partNames();
 
   double getScale();
+
   void setScale(double value);
 
-  default boolean hasHead() { return true; }
-  default double getHeadScale() { return 1; }
-  default void setHeadScale(double value) {};
+  default boolean hasHead() {
+    return true;
+  }
+
+  default double getHeadScale() {
+    return 1;
+  }
+
+  default void setHeadScale(double value) {
+  }
+
+  ;
 
   Vector3 getPosition();
 
   default void lookAt(Vector3 target) {
+    Vector3 allPose = getPose("all");
     Vector3 dir = new Vector3(target);
-    Vector3 face = new Vector3(getPosition());
-    face.add(0, 28 / 16., 0);
+    Vector3 face = new Vector3();
+    Vector3 headLocation = new Vector3(0, 28 / 16., 0);
+    Transform.NONE.translate(0, 28 / 16., 0).rotateX(allPose.x).rotateY(-allPose.y)
+        .rotateZ(allPose.z).translate(getPosition()).apply(face);
+    //face.add(headLocation);
     dir.sub(face);
     dir.normalize();
-    double headYaw = getPose("head").y;
-    getPose().set("rotation", Json.of(FastMath.atan2(dir.x, dir.z) + Math.PI - headYaw));
-    double pitch = Math.asin(dir.y);
-    getPose().add("head", JsonUtil.vec3ToJson(new Vector3(pitch, headYaw, 0)));
+    double pitch = Math.asin(dir.y) - allPose.x;
+    getPose().set("head", JsonUtil.vec3ToJson(
+        new Vector3(pitch, FastMath.atan2(dir.x, dir.z) + Math.PI - allPose.y, 0)));
   }
 
 

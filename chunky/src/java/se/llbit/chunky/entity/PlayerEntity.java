@@ -822,7 +822,7 @@ public class PlayerEntity extends Entity implements Poseable, Geared {
     pose.set("rotation", Json.of((random.nextFloat() - 0.5) * QuickMath.TAU));
     double headYaw = 0.4 * (random.nextFloat() - 0.5) * QuickMath.HALF_PI;
     double pitch = (random.nextFloat() - 0.5) * QuickMath.HALF_PI;
-    pose.add("head", JsonUtil.vec3ToJson(new Vector3(pitch, headYaw, 0)));
+    pose.set("head", JsonUtil.vec3ToJson(new Vector3(pitch, headYaw, 0)));
   }
 
   @Override public String[] partNames() {
