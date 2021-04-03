@@ -22,9 +22,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.util.converter.NumberStringConverter;
 
@@ -39,15 +41,34 @@ public abstract class Adjuster<T extends Number> extends HBox {
   protected final TextField valueField = new TextField();
   protected final Property<Number> value;
   private ChangeListener<Number> listener;
+  private double dragStart;
 
   protected Adjuster(Property<Number> value) {
     this.value = value;
     nameLbl.textProperty().bind(Bindings.concat(name, ":"));
+    nameLbl.setOnMousePressed(this::handleDragStart);
+    nameLbl.setOnMouseDragged(this::handleDragged);
+    nameLbl.setCursor(Cursor.H_RESIZE);
     setAlignment(Pos.CENTER_LEFT);
     setSpacing(10);
     valueField.setPrefWidth(103);
     valueField.textProperty().bindBidirectional(value, new NumberStringConverter());
     getChildren().addAll(nameLbl, valueField);
+  }
+
+  private void handleDragStart(MouseEvent mouseEvent) {
+    dragStart = mouseEvent.getX();
+  }
+
+  private void handleDragged(MouseEvent mouseEvent) {
+    double delta = (mouseEvent.getX() - dragStart);
+    if (mouseEvent.isShiftDown()) {
+      delta *= 5;
+    } else if (mouseEvent.isAltDown()) {
+      delta *= 0.1;
+    }
+    setAndUpdate(clamp(value.getValue().doubleValue() + delta));
+    dragStart = mouseEvent.getX();
   }
 
   public void setName(String name) {
