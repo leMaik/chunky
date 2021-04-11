@@ -24,6 +24,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Control;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import se.llbit.chunky.PersistentSettings;
@@ -51,6 +53,12 @@ public class ChunkyFx extends Application {
       stage.setTitle(Chunky.getMainWindowTitle());
       Scene scene = new Scene(root);
       stage.setScene(scene);
+      scene.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
+        // prevent the menu bar from getting highlighted when pressing Alt (interferes with the adjusters)
+        if (e.getCode() == KeyCode.ALT) {
+          e.consume();
+        }
+      });
       controller.setApplication(this);
       stage.getIcons().add(new Image(getClass().getResourceAsStream("/chunky-icon.png")));
       stage.setOnCloseRequest(event -> {
