@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 public class BigDripleafStemModel extends QuadModel {
 
+  //region Big Dripleaf Stem
   private static final Quad[] quadsNorth =
       Model.join(
           Model.rotateY(new Quad[]{
@@ -42,40 +43,29 @@ public class BigDripleafStemModel extends QuadModel {
               },
               Math.toRadians(-45), new Vector3(0.5, 0, 12 / 16.0)) // TODO rescale
       );
+  //endregion
 
   private static final Texture[] textures = new Texture[quadsNorth.length];
-  static {
-    Arrays.fill(textures, Texture.bigDripleafStem);
-  }
-
-  private static final Quad[][] orientedQuads = new Quad[4][];
-
-  static {
-    orientedQuads[0] = quadsNorth;
-    orientedQuads[1] = Model.rotateY(orientedQuads[0]);
-    orientedQuads[2] = Model.rotateY(orientedQuads[1]);
-    orientedQuads[3] = Model.rotateY(orientedQuads[2]);
-  }
+  static { Arrays.fill(textures, Texture.bigDripleafStem); }
 
   private final Quad[] quads;
 
   public BigDripleafStemModel(String facing) {
-    int orientation;
     switch (facing) {
-      case "east":
-        orientation = 1;
-        break;
-      case "south":
-        orientation = 2;
-        break;
-      case "west":
-        orientation = 3;
-        break;
       case "north":
       default:
-        orientation = 0;
+        quads = quadsNorth;
+        break;
+      case "east":
+        quads = Model.rotateY(quadsNorth, -Math.toRadians(90));
+        break;
+      case "south":
+        quads = Model.rotateY(quadsNorth, -Math.toRadians(180));
+        break;
+      case "west":
+        quads = Model.rotateY(quadsNorth, -Math.toRadians(270));
+        break;
     }
-    quads = orientedQuads[orientation];
   }
 
   @Override

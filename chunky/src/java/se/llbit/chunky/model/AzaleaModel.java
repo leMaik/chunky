@@ -7,6 +7,7 @@ import se.llbit.math.Vector4;
 
 public class AzaleaModel extends QuadModel {
 
+  //region Azalea Model
   private static final Quad[] quads = Model.join(
       new Quad[]{
           // top
@@ -102,6 +103,7 @@ public class AzaleaModel extends QuadModel {
           )
       }, Math.toRadians(45))
   );
+  //endregion
 
   private final Texture[] textures;
 

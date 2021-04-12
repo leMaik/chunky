@@ -24,7 +24,7 @@ import se.llbit.math.Vector4;
 import java.util.Arrays;
 
 public class BedModel extends QuadModel {
-  // Facing south.
+  //region Bed Foot
   private static final Quad[] foot = {
       // Mattress:
       new Quad(
@@ -105,7 +105,9 @@ public class BedModel extends QuadModel {
           new Vector3(0, 3 / 16.0, 3 / 16.0),
           new Vector4(56 / 64.0, 59 / 64.0, 49 / 64.0, 46 / 64.0)),
   };
+  //endregion
 
+  //region Bed Head
   private static final Quad[] head = {
       // Mattress:
       new Quad(
@@ -186,17 +188,16 @@ public class BedModel extends QuadModel {
           new Vector3(13 / 16.0, 3 / 16.0, 16 / 16.0),
           new Vector4(50 / 64.0, 53 / 64.0, 52 / 64.0, 55 / 64.0)),
    };
+  //endregion
 
-  private final Texture[] colors;
-  private Quad[] quads;
+  private final Texture[] textures;
+  private final Quad[] quads;
 
   public BedModel(boolean isHead, int facing, Texture color) {
-    quads = isHead ? head : foot;
-    for (int i = 0; i < facing; i++)
-      quads = Model.rotateY(quads);
+    quads = Model.rotateY(isHead ? head : foot, -Math.toRadians(90 * facing));
 
-    colors = new Texture[quads.length];
-    Arrays.fill(colors, color);
+    textures = new Texture[quads.length];
+    Arrays.fill(textures, color);
   }
 
   @Override
@@ -206,6 +207,6 @@ public class BedModel extends QuadModel {
 
   @Override
   public Texture[] getTextures() {
-    return colors;
+    return textures;
   }
 }

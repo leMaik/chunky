@@ -24,7 +24,7 @@ import se.llbit.math.Vector4;
 import java.util.Arrays;
 
 public class ButtonModel extends QuadModel {
-  private static Quad[] attachedSouth = {
+  private static final Quad[] attachedSouth = {
       // front
       new Quad(new Vector3(.6875, .375, .875), new Vector3(.3125, .375, .875),
           new Vector3(.6875, .625, .875), new Vector4(.6875, .3125, .375, .625)),
@@ -48,7 +48,6 @@ public class ButtonModel extends QuadModel {
       // bottom
       new Quad(new Vector3(.3125, .375, .875), new Vector3(.6875, .375, .875),
           new Vector3(.3125, .375, 1), new Vector4(.3125, .6875, .875, 1)),
-
   };
 
   private static Quad[] quads;

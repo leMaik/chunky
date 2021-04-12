@@ -2,7 +2,6 @@ package se.llbit.chunky.model;
 
 import se.llbit.chunky.resources.Texture;
 import se.llbit.math.Quad;
-import se.llbit.math.Ray;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
@@ -263,56 +262,43 @@ public class BigDripleafModel extends QuadModel {
   );
   //#endregion
 
-  private static final Quad[][][] orientedVariantQuads = new Quad[3][4][];
-
   private static final Texture[] textures;
 
   static {
-    orientedVariantQuads[0] = Model.rotateYNESW(bigDripleafNorth);
-    orientedVariantQuads[1] = Model.rotateYNESW(bigDripleafPartialTiltNorth);
-    orientedVariantQuads[2] = Model.rotateYNESW(bigDripleafFullTiltNorth);
-
     Texture top = Texture.bigDripleafTop;
     Texture tip = Texture.bigDripleafTip;
     Texture side = Texture.bigDripleafSide;
     Texture stem = Texture.bigDripleafStem;
-    textures = new Texture[]{top, top, tip, tip, side, side, side, side, stem, stem, stem, stem};
+    textures = new Texture[] {top, top, tip, tip, side, side, side, side, stem, stem, stem, stem};
   }
 
-  private final Quad[] quads;
+  private Quad[] quads;
 
   public BigDripleafModel(String facing, String tilt) {
-    int orientation;
-    switch (facing) {
-      case "east":
-        orientation = 1;
-        break;
-      case "south":
-        orientation = 2;
-        break;
-      case "west":
-        orientation = 3;
-        break;
-      case "north":
-      default:
-        orientation = 0;
-    }
-
-    int tiltIndex;
     switch (tilt) {
       case "partial":
-        tiltIndex = 1;
+        quads = bigDripleafPartialTiltNorth;
         break;
       case "full":
-        tiltIndex = 2;
+        quads = bigDripleafFullTiltNorth;
         break;
       case "none":
       case "unstable":
       default:
-        tiltIndex = 0;
+        quads = bigDripleafNorth;
     }
 
-    quads = orientedVariantQuads[tiltIndex][orientation];
+    switch (facing) {
+      case "east":
+        quads = Model.rotateY(quads, -Math.toRadians(90));
+        break;
+      case "south":
+        quads = Model.rotateY(quads, -Math.toRadians(180));
+        break;
+      case "west":
+        quads = Model.rotateY(quads, -Math.toRadians(270));
+        break;
+    }
   }
 
   @Override

@@ -25,7 +25,7 @@ import se.llbit.math.AABB;
  * @author Jesper Öqvist <jesper@llbit.se>
  */
 public class AnvilModel extends AABBModel {
-  private static final AABB[][] boxes = {
+  private static final AABB[][] anvilBoxes = {
       // north-south
       {
         new AABB(3 / 16., 13 / 16., 10 / 16., 1, 0, 1),
@@ -49,15 +49,11 @@ public class AnvilModel extends AABBModel {
       Texture.anvilTopDamaged2
   };
 
-  private final int orientation;
-  private final int damage;
+  private final AABB[] boxes;
   private final Texture[][] textures;
   private final UVMapping[][] mapping;
 
   public AnvilModel(int orientation, int damage) {
-    this.orientation = orientation;
-    this.damage = damage;
-
     Texture side = Texture.anvilSide;
     Texture top = topTexture[damage];
     this.textures = new Texture[][] {
@@ -69,19 +65,16 @@ public class AnvilModel extends AABBModel {
 
     // Default mapping (all nones)
     this.mapping = new UVMapping[4][6];
-    if (this.orientation == 1) {
+    if (orientation == 1) {
       this.mapping[0][4] = UVMapping.ROTATE_90;
     }
+
+    boxes = anvilBoxes[orientation];
   }
 
   @Override
   public AABB[] getBoxes() {
-    // north-south
-    if (orientation == 0)
-      return boxes[0];
-
-    // east-west
-    return boxes[1];
+    return this.boxes;
   }
 
   @Override
