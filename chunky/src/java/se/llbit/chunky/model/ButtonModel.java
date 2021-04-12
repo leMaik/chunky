@@ -50,8 +50,8 @@ public class ButtonModel extends QuadModel {
           new Vector3(.3125, .375, 1), new Vector4(.3125, .6875, .875, 1)),
   };
 
-  private static Quad[] quads;
-  private static Texture[] textures;
+  private final Quad[] quads;
+  private final Texture[] textures;
 
   public ButtonModel(String face, String facing, Texture tex) {
     textures = new Texture[attachedSouth.length];

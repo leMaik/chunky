@@ -10,24 +10,24 @@ public class BellModel extends QuadModel {
   private static final Texture bar = Texture.darkOakPlanks;
   private static final Texture post = Texture.stone;
 
-  private static final Texture[] texBell = new Texture[] {
+  private static final Texture[] texBellFloor = new Texture[] {
+      bar, bar, bar, bar, post, post, post, post, post, post, post, post, post, post, post, post,
       bell, bell, bell, bell, bell, bell, bell, bell, bell, bell, bell
   };
 
-  private static final Texture[] texBellFloor = new Texture[] {
-      bar, bar, bar, bar, post, post, post, post, post, post, post, post, post, post, post, post
-  };
-
   private static final Texture[] texBellWall = new Texture[] {
-      bar, bar, bar, bar, bar, bar
+      bar, bar, bar, bar, bar, bar,
+      bell, bell, bell, bell, bell, bell, bell, bell, bell, bell, bell
   };
 
   private static final Texture[] texBellDoubleWall = new Texture[] {
-      bar, bar, bar, bar, bar, bar
+      bar, bar, bar, bar, bar, bar,
+      bell, bell, bell, bell, bell, bell, bell, bell, bell, bell, bell
   };
 
   private static final Texture[] texBellCeiling = new Texture[] {
-      bar, bar, bar, bar, bar
+      bar, bar, bar, bar, bar,
+      bell, bell, bell, bell, bell, bell, bell, bell, bell, bell, bell
   };
 
   //region Bell Body
@@ -319,8 +319,8 @@ public class BellModel extends QuadModel {
   };
   //endregion
 
+  private final Texture[] textures;
   private Quad[] quads;
-  private Texture[] textures;
 
   public BellModel(String facing, String attachment) {
     int orientation;
@@ -375,9 +375,6 @@ public class BellModel extends QuadModel {
     }
 
     this.quads = Model.join(quads, quadsBell);
-    this.textures = new Texture[this.quads.length];
-    System.arraycopy(textures, 0, this.textures, 0, textures.length);
-    System.arraycopy(texBell, 0, this.textures, textures.length, texBell.length);
   }
 
   @Override
