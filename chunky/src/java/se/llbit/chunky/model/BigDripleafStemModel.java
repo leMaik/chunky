@@ -2,11 +2,12 @@ package se.llbit.chunky.model;
 
 import se.llbit.chunky.resources.Texture;
 import se.llbit.math.Quad;
-import se.llbit.math.Ray;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class BigDripleafStemModel {
+import java.util.Arrays;
+
+public class BigDripleafStemModel extends QuadModel {
 
   private static final Quad[] quadsNorth =
       Model.join(
@@ -42,6 +43,11 @@ public class BigDripleafStemModel {
               Math.toRadians(-45), new Vector3(0.5, 0, 12 / 16.0)) // TODO rescale
       );
 
+  private static final Texture[] textures = new Texture[quadsNorth.length];
+  static {
+    Arrays.fill(textures, Texture.bigDripleafStem);
+  }
+
   private static final Quad[][] orientedQuads = new Quad[4][];
 
   static {
@@ -51,40 +57,34 @@ public class BigDripleafStemModel {
     orientedQuads[3] = Model.rotateY(orientedQuads[2]);
   }
 
-  public static boolean intersect(Ray ray, String facing) {
-    boolean hit = false;
-    ray.t = Double.POSITIVE_INFINITY;
+  private final Quad[] quads;
 
-    for (Quad quad : orientedQuads[getOrientationIndex(facing)]) {
-      if (quad.intersect(ray)) {
-        float[] color = Texture.bigDripleafStem.getColor(ray.u, ray.v);
-        if (color[3] > Ray.EPSILON) {
-          ray.color.set(color);
-          ray.t = ray.tNext;
-          ray.n.set(quad.n);
-          hit = true;
-        }
-      }
-    }
-
-    if (hit) {
-      ray.distance += ray.t;
-      ray.o.scaleAdd(ray.t, ray.d);
-    }
-    return hit;
-  }
-
-  private static int getOrientationIndex(String facing) {
+  public BigDripleafStemModel(String facing) {
+    int orientation;
     switch (facing) {
       case "east":
-        return 1;
+        orientation = 1;
+        break;
       case "south":
-        return 2;
+        orientation = 2;
+        break;
       case "west":
-        return 3;
+        orientation = 3;
+        break;
       case "north":
       default:
-        return 0;
+        orientation = 0;
     }
+    quads = orientedQuads[orientation];
+  }
+
+  @Override
+  public Quad[] getQuads() {
+    return quads;
+  }
+
+  @Override
+  public Texture[] getTextures() {
+    return textures;
   }
 }

@@ -6,7 +6,7 @@ import se.llbit.math.Ray;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class BigDripleafModel {
+public class BigDripleafModel extends QuadModel {
 
   //#region big_dripleaf
   private static final Quad[] bigDripleafNorth = Model.join(
@@ -279,56 +279,49 @@ public class BigDripleafModel {
     textures = new Texture[]{top, top, tip, tip, side, side, side, side, stem, stem, stem, stem};
   }
 
-  public static boolean intersect(Ray ray, String facing, String tilt) {
-    boolean hit = false;
-    ray.t = Double.POSITIVE_INFINITY;
+  private final Quad[] quads;
 
-    Quad[] quads = orientedVariantQuads[getModelIndex(tilt)][getOrientationIndex(facing)];
-
-    for (int i = 0; i < quads.length; i++) {
-      Quad quad = quads[i];
-      if (quad.intersect(ray)) {
-        float[] color = textures[i].getColor(ray.u, ray.v);
-        if (color[3] > Ray.EPSILON) {
-          ray.color.set(color);
-          ray.t = ray.tNext;
-          ray.n.set(quad.n);
-          hit = true;
-        }
-      }
-    }
-
-    if (hit) {
-      ray.distance += ray.t;
-      ray.o.scaleAdd(ray.t, ray.d);
-    }
-    return hit;
-  }
-
-  private static int getOrientationIndex(String facing) {
+  public BigDripleafModel(String facing, String tilt) {
+    int orientation;
     switch (facing) {
       case "east":
-        return 1;
+        orientation = 1;
+        break;
       case "south":
-        return 2;
+        orientation = 2;
+        break;
       case "west":
-        return 3;
+        orientation = 3;
+        break;
       case "north":
       default:
-        return 0;
+        orientation = 0;
     }
-  }
 
-  private static int getModelIndex(String tilt) {
+    int tiltIndex;
     switch (tilt) {
       case "partial":
-        return 1;
+        tiltIndex = 1;
+        break;
       case "full":
-        return 2;
+        tiltIndex = 2;
+        break;
       case "none":
       case "unstable":
       default:
-        return 0;
+        tiltIndex = 0;
     }
+
+    quads = orientedVariantQuads[tiltIndex][orientation];
+  }
+
+  @Override
+  public Texture[] getTextures() {
+    return textures;
+  }
+
+  @Override
+  public Quad[] getQuads() {
+    return quads;
   }
 }
