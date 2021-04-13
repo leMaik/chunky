@@ -6,17 +6,19 @@ import se.llbit.chunky.resources.Texture;
 import se.llbit.math.Ray;
 
 public class Scaffolding extends MinecraftBlockTranslucent {
+    private final ScaffoldingModel model;
     private final boolean bottom;
 
     public Scaffolding(boolean bottom) {
         super("scaffolding", Texture.scaffoldingSide);
-        this.bottom = bottom;
         localIntersect = true;
+        this.model = new ScaffoldingModel(bottom);
+        this.bottom = bottom;
     }
 
     @Override
     public boolean intersect(Ray ray, Scene scene) {
-        return ScaffoldingModel.intersect(ray, this.bottom);
+        return model.intersect(ray, scene);
     }
 
     @Override
