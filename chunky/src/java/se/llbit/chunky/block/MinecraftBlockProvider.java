@@ -2945,7 +2945,7 @@ public class MinecraftBlockProvider implements BlockProvider {
   private static Block snowCovered(Tag tag, Block block) {
     String snowy = tag.get("Properties").get("snowy").stringValue("false");
     if (snowy.equals("true")) {
-      block = new SnowCovered(block);
+      block = new TexturedBlock(block.name, Texture.snowSide, Texture.snowBlock, Texture.dirt);
     }
     return block;
   }
