@@ -4,7 +4,6 @@ import se.llbit.chunky.plugin.PluginApi;
 import se.llbit.chunky.renderer.scene.Scene;
 import se.llbit.chunky.resources.Texture;
 import se.llbit.chunky.resources.pbr.NormalMap;
-import se.llbit.log.Log;
 import se.llbit.math.Quad;
 import se.llbit.math.Ray;
 
@@ -20,7 +19,7 @@ public abstract class QuadModel implements BlockModel {
   public abstract Texture[] getTextures();
 
   @PluginApi
-  public TintType[] getTintedQuads() {
+  public Tint[] getTints() {
     return null;
   }
 
@@ -31,7 +30,7 @@ public abstract class QuadModel implements BlockModel {
 
     Quad[] quads = getQuads();
     Texture[] textures = getTextures();
-    TintType[] tintedQuads = getTintedQuads();
+    Tint[] tintedQuads = getTints();
 
     float[] color = null;
     double emittanceValue = 0;
@@ -46,28 +45,8 @@ public abstract class QuadModel implements BlockModel {
       if (quad.intersect(ray)) {
         float[] c = textures[i].getColor(ray.u, ray.v);
         if (c[3] > Ray.EPSILON) {
-          TintType tintType = tintedQuads == null ? TintType.NONE : tintedQuads[i];
-          if (tintType != TintType.NONE) {
-            float[] biomeColor;
-            switch (tintType) {
-              case BIOME_FOLIAGE:
-                biomeColor = ray.getBiomeFoliageColor(scene);
-                break;
-              case BIOME_GRASS:
-                biomeColor = ray.getBiomeGrassColor(scene);
-                break;
-              case BIOME_WATER:
-                biomeColor = ray.getBiomeWaterColor(scene);
-                break;
-              default:
-                Log.warn("Unsupported TintType: " + tintType);
-                biomeColor = new float[]{1, 1, 1};
-                break;
-            }
-            c[0] *= biomeColor[0];
-            c[1] *= biomeColor[1];
-            c[2] *= biomeColor[2];
-          }
+          Tint tint = tintedQuads == null ? Tint.NONE : tintedQuads[i];
+          tint.tint(c, ray, scene);
           color = c;
           hitQuad = quad;
           hitTexture = textures[i];
