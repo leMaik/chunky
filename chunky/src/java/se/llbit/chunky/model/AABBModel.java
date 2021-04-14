@@ -46,8 +46,7 @@ public abstract class AABBModel implements BlockModel {
 
   @PluginApi
   public UVMapping[][] getUVMapping() {
-    Texture[][] textureSize = this.getTextures();
-    return new UVMapping[textureSize.length][textureSize[0].length];
+    return null;
   }
 
   @Override
@@ -64,26 +63,32 @@ public abstract class AABBModel implements BlockModel {
         Tint[] tintedFacesBox = tintedFaces != null ? tintedFaces[i] : null;
         if (ray.n.y > 0) { // top
           ray.v = 1 - ray.v;
-          if (intersectFace(ray, scene, textures[i][4], mapping[i][4],
+          if (intersectFace(ray, scene, textures[i][4],
+              mapping != null ? mapping[i][4] : null,
               tintedFacesBox != null ? tintedFacesBox[4] : Tint.NONE)) {
             hit = true;
             NormalMap.apply(ray, new Vector3(1, 0, 0), new Vector3(0, 0, -1),
                 ray.getCurrentMaterial().getTexture(ray.getBlockData()));
           }
         } else if (ray.n.y < 0) { // bottom
-          hit = intersectFace(ray, scene, textures[i][5], mapping[i][5],
+          hit = intersectFace(ray, scene, textures[i][5],
+              mapping != null ? mapping[i][4] : null,
               tintedFacesBox != null ? tintedFacesBox[5] : Tint.NONE) || hit;
         } else if (ray.n.z < 0) { // north
-          hit = intersectFace(ray, scene, textures[i][0], mapping[i][0],
+          hit = intersectFace(ray, scene, textures[i][0],
+              mapping != null ? mapping[i][4] : null,
               tintedFacesBox != null ? tintedFacesBox[0] : Tint.NONE) || hit;
         } else if (ray.n.z > 0) { // south
-          hit = intersectFace(ray, scene, textures[i][2], mapping[i][2],
+          hit = intersectFace(ray, scene, textures[i][2],
+              mapping != null ? mapping[i][4] : null,
               tintedFacesBox != null ? tintedFacesBox[2] : Tint.NONE) || hit;
         } else if (ray.n.x < 0) { // west
-          hit = intersectFace(ray, scene, textures[i][3], mapping[i][3],
+          hit = intersectFace(ray, scene, textures[i][3],
+              mapping != null ? mapping[i][4] : null,
               tintedFacesBox != null ? tintedFacesBox[3] : Tint.NONE) || hit;
         } else if (ray.n.x > 0) { // east
-          hit = intersectFace(ray, scene, textures[i][1], mapping[i][1],
+          hit = intersectFace(ray, scene, textures[i][1],
+              mapping != null ? mapping[i][4] : null,
               tintedFacesBox != null ? tintedFacesBox[1] : Tint.NONE) || hit;
         }
         if (hit) {
