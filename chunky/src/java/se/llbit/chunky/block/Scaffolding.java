@@ -1,11 +1,12 @@
 package se.llbit.chunky.block;
 
+import se.llbit.chunky.model.BlockModel;
 import se.llbit.chunky.model.ScaffoldingModel;
 import se.llbit.chunky.renderer.scene.Scene;
 import se.llbit.chunky.resources.Texture;
 import se.llbit.math.Ray;
 
-public class Scaffolding extends MinecraftBlockTranslucent {
+public class Scaffolding extends MinecraftBlockTranslucent implements ModelBlock {
     private final ScaffoldingModel model;
     private final boolean bottom;
 
@@ -24,5 +25,10 @@ public class Scaffolding extends MinecraftBlockTranslucent {
     @Override
     public String description() {
         return "bottom=" + bottom;
+    }
+
+    @Override
+    public BlockModel getModel() {
+        return model;
     }
 }
