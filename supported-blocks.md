@@ -258,3 +258,35 @@ _The [latest Chunky snapshot](/installation) is required for rendering the new b
 - [x] Cracked deepslate tiles
 - [x] Deepslate copper, coal, and emerald ores
 - [x] Infested deepslate
+
+### 21w11a
+
+- [x] Powered lightning rod
+- [x] Small dripleaf (orientations)
+
+### 21w13a
+
+- [x] Light block
+
+### 21w14a
+
+- [x] Waxed oxidized copper
+- [x] Waxed oxidized cut copper slab
+- [x] Waxed oxidized cut copper stairs
+- [x] Waxed oxidized cut copper
+
+### 21w15a
+
+- [x] Raw copper block
+- [x] Raw gold block
+- [x] Raw iron block
+
+### 21w16a
+
+- [x] Infested deepslate (axis)
+
+### 1.17-pre1
+
+- [ ] Lit candle textures
+- [ ] Potted azalea bush
+- [ ] Potted flowering azalea bush
