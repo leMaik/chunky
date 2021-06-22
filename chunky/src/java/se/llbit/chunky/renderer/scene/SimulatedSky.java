@@ -29,9 +29,9 @@ public interface SimulatedSky {
   boolean updateSun(Sun sun, double horizonOffset);
 
   /**
-   * Calculate the sky color for a given ray.
+   * Calculate the sky color for a given direction.
    */
-  Vector3 calcIncidentLight(Ray ray);
+  Vector3 calcIncidentLight(Vector3 direction);
 
   /**
    * Get the friendly name.

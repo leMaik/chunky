@@ -18,7 +18,6 @@ package se.llbit.chunky.renderer.scene;
 
 import org.apache.commons.math3.util.FastMath;
 import se.llbit.math.QuickMath;
-import se.llbit.math.Ray;
 import se.llbit.math.Vector3;
 
 import static java.lang.Math.PI;
@@ -84,10 +83,9 @@ public class NishitaSky implements SimulatedSky {
   }
 
   @Override
-  public Vector3 calcIncidentLight(Ray ray) {
+  public Vector3 calcIncidentLight(Vector3 direction) {
     // Render from just above the surface of "earth"
-    Vector3 origin = new Vector3(0, ray.o.y + EARTH_RADIUS + 1, 0);
-    Vector3 direction = ray.d;
+    Vector3 origin = new Vector3(0, EARTH_RADIUS + 1, 0);
     direction.y += horizonOffset;
     direction.normalize();
 
@@ -196,7 +194,8 @@ public class NishitaSky implements SimulatedSky {
       currentDist += segmentLength;
     }
 
-    Vector3 color = new Vector3(
+    Vector3 color = direction;
+    color.set(
         (sumR.x* BETA_R.x*phaseR + sumM.x* BETA_M.x*phaseM) * sunIntensity * 5,
         (sumR.y* BETA_R.y*phaseR + sumM.y* BETA_M.y*phaseM) * sunIntensity * 5,
         (sumR.z* BETA_R.z*phaseR + sumM.z* BETA_M.z*phaseM) * sunIntensity * 5
@@ -213,10 +212,10 @@ public class NishitaSky implements SimulatedSky {
   }
 
   /** Calculate the distance from <code>origin</code> to the edge of a sphere centered at (0, 0, 0) in <code>direction</code>.*/
-  private double sphereIntersect(Vector3 origin, Vector3 direction, double sphere_radius) {
+  private double sphereIntersect(Vector3 origin, Vector3 direction, double sphereRadius) {
     double a = direction.lengthSquared();
     double b = 2 * direction.dot(origin);
-    double c = origin.lengthSquared() - sphere_radius*sphere_radius;
+    double c = origin.lengthSquared() - sphereRadius*sphereRadius;
 
     if (b == 0) {
       if (a == 0) {
