@@ -20,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.util.Iterator;
 import java.util.Set;
@@ -32,9 +33,8 @@ import se.llbit.log.Log;
  * Abstract region representation. Tracks loaded chunks and their timestamps.
  *
  * <p>If an error occurs it will usually be reported to STDERR instead of using
- * the logging framework, because the error dialogs can be so many for a
- * single corrupted region. Corrupted chunks are illustrated by a black square
- * with a red X and red outline in the map view.
+ * the logging framework, because the error dialogs can be so many for a single corrupted region.
+ * Corrupted chunks are illustrated by a black square with a red X and red outline in the map view.
  *
  * @author Jesper Öqvist <jesper@llbit.se>
  */
@@ -62,7 +62,7 @@ public class Region implements Iterable<Chunk> {
   /**
    * Create new region
    *
-   * @param pos   the region position
+   * @param pos the region position
    */
   public Region(ChunkPosition pos, World world) {
     this.world = world;
@@ -172,7 +172,8 @@ public class Region implements Iterable<Chunk> {
     return position;
   }
 
-  @Override public String toString() {
+  @Override
+  public String toString() {
     return "Region " + position.toString();
   }
 
@@ -193,18 +194,21 @@ public class Region implements Iterable<Chunk> {
    * Opens an input stream for the given chunk.
    *
    * @param chunkPos chunk position for the chunk to read
-   * @return Chunk data source. The InputStream of the data source is
-   * {@code null} if the chunk could not be read.
+   * @return Chunk data source. The InputStream of the data source is {@code null} if the chunk
+   * could not be read.
    */
   public ChunkDataSource getChunkData(ChunkPosition chunkPos) {
     File regionDirectory = world.getRegionDirectory();
     File regionFile = new File(regionDirectory, fileName);
+    File entitiesFile = new File(world.getEntitiesDirectory(), fileName);
     ChunkDataSource data = null;
-    if (regionFile.exists()) {
+    if (entitiesFile.exists() && regionFile.exists()) {
+      data = getChunkData(regionFile, entitiesFile, chunkPos);
+    } else if (regionFile.exists()) {
       data = getChunkData(regionFile, chunkPos);
     }
     if (data == null) {
-      data = new ChunkDataSource((int) System.currentTimeMillis(), null);
+      data = new ChunkDataSource((int) System.currentTimeMillis(), null, null);
     }
     chunkTimestamps[(chunkPos.x & 31) + (chunkPos.z & 31) * 32] = data.timestamp;
     return data;
@@ -216,6 +220,16 @@ public class Region implements Iterable<Chunk> {
    * @return {@code null} if the chunk could not be loaded
    */
   public static ChunkDataSource getChunkData(File regionFile, ChunkPosition chunkPos) {
+    try {
+      return new ChunkDataSource(0, getChunkDataBuf(regionFile, chunkPos), null);
+    } catch (IOException e) {
+      System.err.println("Failed to read chunk: " + e.getMessage());
+      return null;
+    }
+  }
+
+  private static InputStream getChunkDataBuf(File regionFile, ChunkPosition chunkPos)
+      throws IOException {
     int x = chunkPos.x & 31;
     int z = chunkPos.z & 31;
     int index = x + z * 32;
@@ -232,7 +246,9 @@ public class Region implements Iterable<Chunk> {
       file.seek(SECTOR_SIZE + 4 * index);
       int timestamp = file.readInt();
       if (length < sectorOffset * SECTOR_SIZE + 4) {
-        System.err.printf("Chunk %s is outside of region file %s! Expected chunk data at offset %d but file length is %d.%n", chunkPos, regionFile.getName(), sectorOffset * SECTOR_SIZE, length);
+        System.err.printf(
+            "Chunk %s is outside of region file %s! Expected chunk data at offset %d but file length is %d.%n",
+            chunkPos, regionFile.getName(), sectorOffset * SECTOR_SIZE, length);
         return null;
       }
       file.seek(sectorOffset * SECTOR_SIZE);
@@ -245,14 +261,16 @@ public class Region implements Iterable<Chunk> {
       }
 
       if (length < sectorOffset * SECTOR_SIZE + 4 + chunkSize) {
-        System.err.printf("Chunk %s is outside of region file %s! Expected %d bytes at offset %d but file length is %d.%n", chunkPos, regionFile.getName(), chunkSize, sectorOffset * SECTOR_SIZE, length);
+        System.err.printf(
+            "Chunk %s is outside of region file %s! Expected %d bytes at offset %d but file length is %d.%n",
+            chunkPos, regionFile.getName(), chunkSize, sectorOffset * SECTOR_SIZE, length);
         return null;
       }
 
       byte type = file.readByte();
       if (type != 1 && type != 2) {
         System.err.println("Error: unknown chunk data compression method: " + type + "!");
-        return null;
+        //return null;
       }
 
       if (chunkSize <= 0) {
@@ -264,10 +282,28 @@ public class Region implements Iterable<Chunk> {
       file.read(buf);
       ByteArrayInputStream in = new ByteArrayInputStream(buf);
       if (type == 1) {
-        return new ChunkDataSource(timestamp, new GZIPInputStream(in));
+        return new GZIPInputStream(in);
+      } else if (type == 2) {
+        return new InflaterInputStream(in);
       } else {
-        return new ChunkDataSource(timestamp, new InflaterInputStream(in));
+        return in;
       }
+    }
+  }
+
+  /**
+   * Read chunk data from region file.
+   *
+   * @return {@code null} if the chunk could not be loaded
+   */
+  public static ChunkDataSource getChunkData(File regionFile, File entitiesRegionFile,
+      ChunkPosition chunkPos) {
+    int x = chunkPos.x & 31;
+    int z = chunkPos.z & 31;
+    int index = x + z * 32;
+
+    try {
+      return new ChunkDataSource(0, getChunkDataBuf(regionFile, chunkPos), getChunkDataBuf(entitiesRegionFile, chunkPos));
     } catch (IOException e) {
       System.err.println("Failed to read chunk: " + e.getMessage());
       return null;
@@ -361,19 +397,23 @@ public class Region implements Iterable<Chunk> {
     return timestamp != chunkTimestamps[(chunkPos.x & 31) + (chunkPos.z & 31) * 32];
   }
 
-  @Override public Iterator<Chunk> iterator() {
+  @Override
+  public Iterator<Chunk> iterator() {
     return new Iterator<Chunk>() {
       private int index = 0;
 
-      @Override public boolean hasNext() {
+      @Override
+      public boolean hasNext() {
         return index < NUM_CHUNKS;
       }
 
-      @Override public Chunk next() {
+      @Override
+      public Chunk next() {
         return chunks[index++];
       }
 
-      @Override public void remove() {
+      @Override
+      public void remove() {
         chunks[index] = EmptyChunk.INSTANCE;
       }
     };

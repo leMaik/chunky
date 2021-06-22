@@ -18,7 +18,9 @@ package se.llbit.chunky.world;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -112,18 +114,43 @@ public class Chunk {
     Region region = world.getRegion(position.getRegionPosition());
     ChunkDataSource data = region.getChunkData(position);
     dataTimestamp = data.timestamp;
+    Map<String, Tag> results = new HashMap<>();
     if (data.inputStream != null) {
       try (DataInputStream in = data.inputStream) {
-        Map<String, Tag> result = NamedTag.quickParse(in, request);
-        for (String key : request) {
-          if (!result.containsKey(key)) {
-            result.put(key, new ErrorTag(""));
-          }
-        }
-        return result;
+        results = NamedTag.quickParse(in, request);
       } catch (IOException e) {
         // Ignored.
       }
+    }
+    if (data.entityInputStream != null) {
+      try (DataInputStream in = data.entityInputStream) {
+        Set<String> entityRequest = new HashSet<>();
+        if (request.contains(LEVEL_ENTITIES)) {
+          entityRequest.add(LEVEL_ENTITIES);
+        }
+        if (request.contains(LEVEL_TILEENTITIES)) {
+          entityRequest.add(LEVEL_TILEENTITIES);
+        }
+        Map<String, Tag> result = NamedTag.quickParse(in, entityRequest);
+        for (String key : entityRequest) {
+          if (result.containsKey(key)) {
+            results.put(key, result.get(key));
+          } else if (!results.containsKey(key)) {
+            results.put(key, new ErrorTag(""));
+          }
+        }
+      } catch (IOException e) {
+        // Ignored.
+      }
+    } else if (data.inputStream != null) {
+      for (String key : request) {
+        if (!results.containsKey(key)) {
+          results.put(key, new ErrorTag(""));
+        }
+      }
+    }
+    if (data.inputStream != null || data.entityInputStream != null) {
+      return results;
     }
     return null;
   }

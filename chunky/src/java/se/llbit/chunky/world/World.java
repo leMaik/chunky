@@ -329,6 +329,13 @@ public class World implements Comparable<World> {
   }
 
   /**
+   * @return File object pointing to the entity region file directory
+   */
+  public synchronized File getEntitiesDirectory() {
+    return new File(getDataDirectory(), "entities");
+  }
+
+  /**
    * @return File object pointing to the region file directory for
    * the given dimension
    */

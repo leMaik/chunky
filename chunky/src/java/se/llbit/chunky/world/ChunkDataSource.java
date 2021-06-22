@@ -29,13 +29,19 @@ import java.io.InputStream;
 public class ChunkDataSource {
   public final int timestamp;
   public final DataInputStream inputStream;
+  public DataInputStream entityInputStream;
 
-  public ChunkDataSource(int timestamp, InputStream in) {
+  public ChunkDataSource(int timestamp, InputStream in, InputStream entityIn) {
     this.timestamp = timestamp;
     if (in != null) {
       this.inputStream = new DataInputStream(new FastBufferedInputStream(in));
     } else {
       this.inputStream = null;
+    }
+    if (entityIn != null) {
+      this.entityInputStream = new DataInputStream(new FastBufferedInputStream(entityIn));
+    } else {
+      this.entityInputStream = null;
     }
   }
 }
