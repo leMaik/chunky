@@ -26,7 +26,7 @@ import se.llbit.math.Vector4;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class RedstoneWireModel extends QuadModel {
+public class RedstoneWireModel implements QuadModel {
   //region Model
   private static final Quad[] model = {
       // 0000 no connection

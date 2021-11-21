@@ -21,7 +21,7 @@ import se.llbit.math.*;
 
 import java.util.Arrays;
 
-public class EndPortalFrameModel extends QuadModel {
+public class EndPortalFrameModel implements QuadModel {
     private static final Quad[] endPortalQuadsNorth = new Quad[]{
             new Quad(
                     new Vector3(0 / 16.0, 13 / 16.0, 16 / 16.0),

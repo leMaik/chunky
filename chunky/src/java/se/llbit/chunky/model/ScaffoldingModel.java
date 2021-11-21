@@ -5,7 +5,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class ScaffoldingModel extends QuadModel {
+public class ScaffoldingModel implements QuadModel {
   private static final Texture top = Texture.scaffoldingTop;
   private static final Texture side = Texture.scaffoldingSide;
   private static final Texture bottom = Texture.scaffoldingBottom;

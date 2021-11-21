@@ -21,7 +21,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class CactusModel extends QuadModel {
+public class CactusModel implements QuadModel {
   private static final Quad[] quads = {
       // front
       new Quad(new Vector3(1, 0, .0625), new Vector3(0, 0, .0625), new Vector3(1, 1, .0625),

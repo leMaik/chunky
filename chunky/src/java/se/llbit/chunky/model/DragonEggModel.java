@@ -23,7 +23,7 @@ import se.llbit.math.Vector4;
 
 import java.util.Arrays;
 
-public class DragonEggModel extends QuadModel {
+public class DragonEggModel implements QuadModel {
   //region Dragon Egg
   private static final Quad[] quads =
       new Quad[] {

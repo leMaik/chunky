@@ -27,7 +27,7 @@ import java.util.Arrays;
  * This block model is used to render blocks which can face east, west, north, south,
  * with the same texture assignments as glazed terracotta blocks.
  */
-public class TerracottaModel extends QuadModel {
+public class TerracottaModel implements QuadModel {
 
   //region Model
   private static final Quad[] north = new Quad[] {

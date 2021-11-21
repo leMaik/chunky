@@ -7,7 +7,7 @@ import se.llbit.math.Vector4;
 
 import java.util.Arrays;
 
-public class CandleModel extends QuadModel {
+public class CandleModel implements QuadModel {
 
   //region Candle Model
   private static final Quad[][] candleModel = new Quad[][]{

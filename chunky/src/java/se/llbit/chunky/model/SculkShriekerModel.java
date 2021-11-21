@@ -5,7 +5,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class SculkShriekerModel extends QuadModel {
+public class SculkShriekerModel implements QuadModel {
   private static final Quad[] quads = new Quad[]{
     // bottom_slab
     new Quad(

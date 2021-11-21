@@ -5,7 +5,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class StemModel extends QuadModel {
+public class StemModel implements QuadModel {
   private static final Texture[] textures = {Texture.stemStraight, Texture.stemStraight};
   private static final Tint[][] stemColors = {
       {new Tint(0xFF00E210), new Tint(0xFF00E210)},

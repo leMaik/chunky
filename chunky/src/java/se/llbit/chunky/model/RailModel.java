@@ -26,7 +26,7 @@ import se.llbit.math.Vector4;
  *
  * @author Jesper Öqvist <jesper@llbit.se>
  */
-public class RailModel extends QuadModel {
+public class RailModel implements QuadModel {
   private static final Quad[] rails = {
       // Flat north-south.
       new Quad(new Vector3(0, 0, 0), new Vector3(1, 0, 0), new Vector3(0, 0, 1),

@@ -5,7 +5,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class StonecutterModel extends QuadModel {
+public class StonecutterModel implements QuadModel {
 
   private static final Texture bottom = Texture.stonecutterBottom;
   private static final Texture top = Texture.stonecutterTop;

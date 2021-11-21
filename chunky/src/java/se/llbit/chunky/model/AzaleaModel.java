@@ -5,7 +5,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class AzaleaModel extends QuadModel {
+public class AzaleaModel implements QuadModel {
 
   //region Azalea Model
   private static final Quad[] quads = Model.join(

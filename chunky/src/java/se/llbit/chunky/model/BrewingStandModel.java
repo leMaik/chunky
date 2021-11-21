@@ -21,7 +21,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class BrewingStandModel extends QuadModel {
+public class BrewingStandModel implements QuadModel {
   //region quads
   private static final Quad[] baseQuads = new Quad[] {
       new Quad(

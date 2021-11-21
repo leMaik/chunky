@@ -23,7 +23,7 @@ import se.llbit.math.Vector4;
 
 import java.util.Arrays;
 
-public class PressurePlateModel extends QuadModel {
+public class PressurePlateModel implements QuadModel {
   private static final Quad[] quads = {
       // front
       new Quad(new Vector3(15 / 16., 0, 1 / 16.), new Vector3(1 / 16., 0, 1 / 16.),

@@ -8,7 +8,7 @@ import se.llbit.math.Vector4;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class GlowLichenModel extends QuadModel {
+public class GlowLichenModel implements QuadModel {
 
   private static final Quad[] glowLichen = {
       // North

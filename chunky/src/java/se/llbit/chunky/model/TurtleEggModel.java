@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class TurtleEggModel extends QuadModel {
+public class TurtleEggModel implements QuadModel {
   //region EGG
   private static final Quad[][] egg_models = {
       {

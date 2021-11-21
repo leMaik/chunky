@@ -32,7 +32,7 @@ import java.util.Arrays;
  *
  * @author Jesper Öqvist <jesper@llbit.se>
  */
-public class LeverModel extends QuadModel {
+public class LeverModel implements QuadModel {
   private static final Quad[] base = {
       // front
       new Quad(new Vector3(.75, 0, .3125), new Vector3(.25, 0, .3125),

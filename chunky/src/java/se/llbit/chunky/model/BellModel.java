@@ -5,7 +5,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class BellModel extends QuadModel {
+public class BellModel extends AbstractQuadModel {
   private static final Texture bell = Texture.bellBody;
   private static final Texture bar = Texture.darkOakPlanks;
   private static final Texture post = Texture.stone;
@@ -319,9 +319,6 @@ public class BellModel extends QuadModel {
   };
   //endregion
 
-  private final Texture[] textures;
-  private Quad[] quads;
-
   public BellModel(String facing, String attachment) {
     int orientation;
     switch (facing) {
@@ -375,15 +372,5 @@ public class BellModel extends QuadModel {
     }
 
     this.quads = Model.join(quads, quadsBell);
-  }
-
-  @Override
-  public Quad[] getQuads() {
-    return quads;
-  }
-
-  @Override
-  public Texture[] getTextures() {
-    return textures;
   }
 }

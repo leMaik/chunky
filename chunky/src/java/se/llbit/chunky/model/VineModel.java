@@ -25,7 +25,7 @@ import se.llbit.math.Vector4;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class VineModel extends QuadModel {
+public class VineModel implements QuadModel {
   private static final Quad[] model = {
       // North
       new Quad(new Vector3(0, 0, 0.8 / 16), new Vector3(1, 0, 0.8 / 16),

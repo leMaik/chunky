@@ -5,7 +5,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class JigsawModel extends QuadModel {
+public class JigsawModel extends AbstractQuadModel {
   //region Jigsaw
   private static final Quad[] quadsNorthUp = {
       new Quad(
@@ -76,9 +76,6 @@ public class JigsawModel extends QuadModel {
     orientedQuads[7] = Model.rotateY(orientedQuads[8]);
   }
 
-  private final Quad[] quads;
-  private final Texture[] textures;
-
   public JigsawModel(String orientation) {
     switch (orientation) {
       case "up":
@@ -110,16 +107,6 @@ public class JigsawModel extends QuadModel {
         break;
     }
     quads = orientedQuads[getOrientationIndex(orientation)];
-  }
-
-  @Override
-  public Quad[] getQuads() {
-    return quads;
-  }
-
-  @Override
-  public Texture[] getTextures() {
-    return textures;
   }
 
   private static int getOrientationIndex(String facing) {

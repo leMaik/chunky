@@ -21,7 +21,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class PistonExtensionModel extends QuadModel {
+public class PistonExtensionModel extends AbstractQuadModel {
   private static final Quad[][] extension = {
       // down
       {},
@@ -100,21 +100,8 @@ public class PistonExtensionModel extends QuadModel {
       Texture.pistonSide, Texture.pistonSide,
   };
 
-  private final Quad[] quads;
-  private final Texture[] textures;
-
   public PistonExtensionModel(boolean sticky, int facing) {
     quads = extension[facing];
     textures = sticky ? textureSticky : textureNormal;
-  }
-
-  @Override
-  public Quad[] getQuads() {
-    return quads;
-  }
-
-  @Override
-  public Texture[] getTextures() {
-    return textures;
   }
 }

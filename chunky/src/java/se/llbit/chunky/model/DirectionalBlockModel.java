@@ -26,7 +26,7 @@ import se.llbit.math.Vector4;
  * This block model is used to render blocks which can face east, west, north, south, up and down.
  * For example, command blocks and observer blocks.
  */
-public class DirectionalBlockModel extends QuadModel {
+public class DirectionalBlockModel implements QuadModel {
   // Facing up:
   private static final Quad[] up = new Quad[] {
       // Bottom face.

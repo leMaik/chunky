@@ -29,7 +29,7 @@ import java.util.Arrays;
  *
  * @author Jesper Öqvist <jesper@llbit.se>
  */
-public class CocoaPlantModel extends QuadModel {
+public class CocoaPlantModel implements QuadModel {
   //region Large
   private static final Quad[] large = {
       // front

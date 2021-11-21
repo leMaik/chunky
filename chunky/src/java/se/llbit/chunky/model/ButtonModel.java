@@ -23,7 +23,7 @@ import se.llbit.math.Vector4;
 
 import java.util.Arrays;
 
-public class ButtonModel extends QuadModel {
+public class ButtonModel extends AbstractQuadModel {
   private static final Quad[] attachedSouth = {
       // front
       new Quad(new Vector3(.6875, .375, .875), new Vector3(.3125, .375, .875),
@@ -49,9 +49,6 @@ public class ButtonModel extends QuadModel {
       new Quad(new Vector3(.3125, .375, .875), new Vector3(.6875, .375, .875),
           new Vector3(.3125, .375, 1), new Vector4(.3125, .6875, .875, 1)),
   };
-
-  private final Quad[] quads;
-  private final Texture[] textures;
 
   public ButtonModel(String face, String facing, Texture tex) {
     textures = new Texture[attachedSouth.length];
@@ -82,15 +79,5 @@ public class ButtonModel extends QuadModel {
       default:
         quads = Model.rotateX(attachedSouth);
     }
-  }
-
-  @Override
-  public Quad[] getQuads() {
-    return quads;
-  }
-
-  @Override
-  public Texture[] getTextures() {
-    return textures;
   }
 }

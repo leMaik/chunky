@@ -21,7 +21,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class TripwireHookModel extends QuadModel {
+public class TripwireHookModel implements QuadModel {
 
   private static final Texture hookT = Texture.tripwireHook;
   private static final Texture wood = Texture.oakPlanks;

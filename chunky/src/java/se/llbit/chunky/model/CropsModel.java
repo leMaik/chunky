@@ -23,7 +23,7 @@ import se.llbit.math.Vector4;
 
 import java.util.Arrays;
 
-public class CropsModel extends QuadModel {
+public class CropsModel extends AbstractQuadModel {
   private static final Quad[] quads = {
       new Quad(new Vector3(1, 0, .25), new Vector3(0, 0, .25),
           new Vector3(1, 1, .25), new Vector4(1, 0, 0, 1), true),
@@ -38,8 +38,6 @@ public class CropsModel extends QuadModel {
           new Vector3(.75, 1, 1), new Vector4(1, 0, 0, 1), true),
   };
 
-  private final Texture[] textures;
-
   public CropsModel(Texture texture) {
     textures = new Texture[quads.length];
     Arrays.fill(textures, texture);
@@ -48,10 +46,5 @@ public class CropsModel extends QuadModel {
   @Override
   public Quad[] getQuads() {
     return quads;
-  }
-
-  @Override
-  public Texture[] getTextures() {
-    return textures;
   }
 }

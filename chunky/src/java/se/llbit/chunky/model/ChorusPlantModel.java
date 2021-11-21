@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 // TODO: Improve rendering of chorus plants - pseudorandom plant part selection.
-public class ChorusPlantModel extends QuadModel {
+public class ChorusPlantModel implements QuadModel {
   static final Quad[] noside_n = {
       new Quad(
           new Vector3(12 / 16.0, 4 / 16.0, 4 / 16.0),

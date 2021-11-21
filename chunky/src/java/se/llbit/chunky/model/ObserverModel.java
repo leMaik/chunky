@@ -22,7 +22,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class ObserverModel extends QuadModel {
+public class ObserverModel implements QuadModel {
 
   // Facing up:
   private static final Quad[] observer = new Quad[] {

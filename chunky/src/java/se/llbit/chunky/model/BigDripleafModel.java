@@ -5,7 +5,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class BigDripleafModel extends QuadModel {
+public class BigDripleafModel implements QuadModel {
 
   //#region big_dripleaf
   private static final Quad[] bigDripleafNorth = Model.join(

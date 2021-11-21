@@ -7,7 +7,7 @@ import se.llbit.math.Vector4;
 
 import java.util.Arrays;
 
-public class SculkSensorModel extends QuadModel {
+public class SculkSensorModel implements QuadModel {
 
   private static final Texture bottom = Texture.sculkSensorBottom;
   private static final Texture side = Texture.sculkSensorSide;

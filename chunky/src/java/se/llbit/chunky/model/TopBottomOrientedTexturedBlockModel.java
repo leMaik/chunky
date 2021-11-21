@@ -5,7 +5,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class TopBottomOrientedTexturedBlockModel extends QuadModel {
+public class TopBottomOrientedTexturedBlockModel implements QuadModel {
   private static final Quad[] side = {
       // north
       new Quad(new Vector3(1, 0, 0), new Vector3(0, 0, 0), new Vector3(1, 1, 0),

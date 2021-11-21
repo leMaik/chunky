@@ -11,7 +11,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class TripwireModel extends QuadModel {
+public class TripwireModel extends AbstractQuadModel {
 
   //region tripwireN
   private static final Quad[] tripwireN = {
@@ -366,22 +366,9 @@ public class TripwireModel extends QuadModel {
     model[CONNECTED_WEST] = Model.rotateY(model[CONNECTED_SOUTH]);
   }
 
-  private final Quad[] quads;
-  private final Texture[] textures;
-
   public TripwireModel(int connections) {
     quads = model[connections];
     textures = new Texture[quads.length];
     Arrays.fill(textures, Texture.tripwire);
-  }
-
-  @Override
-  public Quad[] getQuads() {
-    return quads;
-  }
-
-  @Override
-  public Texture[] getTextures() {
-    return textures;
   }
 }

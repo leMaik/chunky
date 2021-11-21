@@ -21,7 +21,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class LadderModel extends QuadModel {
+public class LadderModel implements QuadModel {
   private static final Quad[] model = {
       // West.
       new Quad(new Vector3(0.95, 0, 0), new Vector3(0.95, 0, 1), new Vector3(0.95, 1, 0),

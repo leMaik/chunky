@@ -22,7 +22,7 @@ import se.llbit.math.Ray;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class TorchModel extends QuadModel {
+public class TorchModel implements QuadModel {
 
   private static final Quad[] quadsGround = new Quad[]{
       new Quad(

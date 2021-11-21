@@ -23,7 +23,7 @@ import se.llbit.math.Vector4;
 
 import java.util.Arrays;
 
-public class RedstoneRepeaterModel extends QuadModel {
+public class RedstoneRepeaterModel implements QuadModel {
   //region Body
   private static final Quad[] north = {
       // Front.

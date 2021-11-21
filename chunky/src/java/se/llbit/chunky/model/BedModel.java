@@ -23,7 +23,7 @@ import se.llbit.math.Vector4;
 
 import java.util.Arrays;
 
-public class BedModel extends QuadModel {
+public class BedModel implements QuadModel {
   //region Bed Foot
   private static final Quad[] foot = {
       // Mattress:

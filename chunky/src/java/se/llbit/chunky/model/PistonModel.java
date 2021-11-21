@@ -21,7 +21,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class PistonModel extends QuadModel {
+public class PistonModel implements QuadModel {
   private static final Quad[][] retracted = {
       // down
       {},

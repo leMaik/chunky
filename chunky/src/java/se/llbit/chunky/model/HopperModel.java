@@ -26,7 +26,7 @@ import se.llbit.math.Vector4;
  *
  * @author Jesper Öqvist <jesper@llbit.se>
  */
-public class HopperModel extends QuadModel {
+public class HopperModel implements QuadModel {
   private static final Texture top = Texture.hopperTop;
   private static final Texture side = Texture.hopperOutside;
   private static final Texture inside = Texture.hopperInside;

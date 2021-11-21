@@ -5,7 +5,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class ConduitModel extends QuadModel {
+public class ConduitModel implements QuadModel {
   private static final Quad[] quads = {
       // cube1
       new Quad(

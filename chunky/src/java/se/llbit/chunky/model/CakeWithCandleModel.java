@@ -7,7 +7,7 @@ import se.llbit.math.Vector4;
 
 import java.util.Arrays;
 
-public class CakeWithCandleModel extends QuadModel {
+public class CakeWithCandleModel implements QuadModel {
 
   private static final Texture bottom = Texture.cakeBottom;
   private static final Texture top = Texture.cakeTop;

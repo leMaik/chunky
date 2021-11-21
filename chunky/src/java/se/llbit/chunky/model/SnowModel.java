@@ -19,7 +19,7 @@ package se.llbit.chunky.model;
 import se.llbit.chunky.resources.Texture;
 import se.llbit.math.*;
 
-public class SnowModel extends QuadModel {
+public class SnowModel implements QuadModel {
   protected static final Quad[][] model = new Quad[8][];
 
   static {

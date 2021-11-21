@@ -21,7 +21,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class CakeModel extends QuadModel {
+public class CakeModel extends AbstractQuadModel {
     private static final Quad[][] cake = new Quad[7][];
 
     static {
@@ -56,9 +56,6 @@ public class CakeModel extends QuadModel {
         }
     }
 
-    private final Quad[] quads;
-    private final Texture[] textures;
-
     public CakeModel(int bites) {
         this.quads = cake[bites];
 
@@ -67,15 +64,5 @@ public class CakeModel extends QuadModel {
         Texture bottom = Texture.cakeBottom;
         Texture inside = Texture.cakeInside;
         textures = new Texture[]{side, side, bites == 0 ? side : inside, side, top, bottom};
-    }
-
-    @Override
-    public Quad[] getQuads() {
-        return quads;
-    }
-
-    @Override
-    public Texture[] getTextures() {
-        return textures;
     }
 }

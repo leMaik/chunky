@@ -7,7 +7,7 @@ import se.llbit.math.Vector4;
 
 import java.util.Arrays;
 
-public class LightningRodModel extends QuadModel {
+public class LightningRodModel implements QuadModel {
 
   //region Model
   private static final Quad[] lightningRod = new Quad[] {

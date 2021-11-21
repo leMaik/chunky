@@ -23,7 +23,7 @@ import se.llbit.math.Vector4;
 
 import java.util.Arrays;
 
-public class ComparatorModel extends QuadModel {
+public class ComparatorModel implements QuadModel {
   // The comparator base-plate facing north:
   private static final Quad[] north = {
       // Front face.

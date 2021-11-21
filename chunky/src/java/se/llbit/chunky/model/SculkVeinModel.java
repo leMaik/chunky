@@ -8,7 +8,7 @@ import se.llbit.math.Vector4;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SculkVeinModel extends QuadModel {
+public class SculkVeinModel implements QuadModel {
 
   private static final Quad[] sculkVein = {
       // North

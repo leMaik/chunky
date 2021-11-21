@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class MangrovePropaguleModel extends QuadModel {
+public class MangrovePropaguleModel implements QuadModel {
   //region Propagule model
   private static final Quad[] propaguleModel = Model.join(
     Model.rotateY(

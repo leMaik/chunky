@@ -22,7 +22,7 @@ import se.llbit.math.Ray;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class SpriteModel extends QuadModel {
+public class SpriteModel implements QuadModel {
 
   protected static final Quad[] quads =
       {new Quad(new Vector3(0, 0, 0), new Vector3(1, 0, 1), new Vector3(0, 1, 0),

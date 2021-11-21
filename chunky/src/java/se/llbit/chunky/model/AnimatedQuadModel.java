@@ -8,7 +8,7 @@ import se.llbit.math.Ray;
 import se.llbit.math.Vector3;
 import se.llbit.util.MinecraftPRNG;
 
-public abstract class AnimatedQuadModel extends QuadModel {
+public abstract class AnimatedQuadModel implements QuadModel {
   public final static class AnimationMode {
     public final int framerate;
     public final boolean positional;
@@ -72,6 +72,9 @@ public abstract class AnimatedQuadModel extends QuadModel {
     }
 
     if (hit) {
+      final double E0 = -Ray.EPSILON;
+      final double E1 = 1 + Ray.EPSILON;
+
       double px = ray.o.x - Math.floor(ray.o.x + ray.d.x * Ray.OFFSET) + ray.d.x * ray.tNext;
       double py = ray.o.y - Math.floor(ray.o.y + ray.d.y * Ray.OFFSET) + ray.d.y * ray.tNext;
       double pz = ray.o.z - Math.floor(ray.o.z + ray.d.z * Ray.OFFSET) + ray.d.z * ray.tNext;

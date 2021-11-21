@@ -5,7 +5,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class GrindstoneModel extends QuadModel {
+public class GrindstoneModel implements QuadModel {
   private static final Texture pivot = Texture.grindstonePivot;
   private static final Texture round = Texture.grindstoneRound;
   private static final Texture side = Texture.grindstoneSide;

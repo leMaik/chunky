@@ -7,7 +7,7 @@ import se.llbit.math.Vector4;
 
 import java.util.Arrays;
 
-public class BigDripleafStemModel extends QuadModel {
+public class BigDripleafStemModel implements QuadModel {
 
   //region Big Dripleaf Stem
   private static final Quad[] quadsNorth =

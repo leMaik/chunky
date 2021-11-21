@@ -6,7 +6,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class BambooModel extends QuadModel {
+public class BambooModel implements QuadModel {
 
   private static final Texture[] tex = new Texture[]{
       Texture.bambooStalk, Texture.bambooStalk, Texture.bambooStalk, Texture.bambooStalk,

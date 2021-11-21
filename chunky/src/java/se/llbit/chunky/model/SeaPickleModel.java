@@ -7,7 +7,7 @@ import se.llbit.math.Transform;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class SeaPickleModel extends QuadModel {
+public class SeaPickleModel implements QuadModel {
 
   //region seaPickle1
   private static final Quad[] seaPickle1 = {

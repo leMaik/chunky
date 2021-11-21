@@ -23,7 +23,7 @@ import se.llbit.math.Vector4;
 
 import java.util.Arrays;
 
-public class EndRodModel extends QuadModel {
+public class EndRodModel extends AbstractQuadModel {
   private static final Quad[] up = {
       // Side faces.
       new Quad(new Vector3(7 / 16., 1 / 16., 9 / 16.), new Vector3(9 / 16., 1 / 16., 9 / 16.),
@@ -78,15 +78,8 @@ public class EndRodModel extends QuadModel {
   private final static Texture[] textures = new Texture[up.length];
   static { Arrays.fill(textures, Texture.endRod); }
 
-  private final Quad[] quads;
-
   public EndRodModel(int facing) {
     quads = orientations[facing];
-  }
-
-  @Override
-  public Quad[] getQuads() {
-    return quads;
   }
 
   @Override

@@ -5,7 +5,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class ChainModel extends QuadModel {
+public class ChainModel implements QuadModel {
   private static final Quad[] quadsY =
       Model.rotateY(
           new Quad[] {

@@ -23,7 +23,7 @@ import se.llbit.math.Vector4;
 
 import java.util.Arrays;
 
-public class DoorModel extends QuadModel {
+public class DoorModel implements QuadModel {
   protected static final Quad[][] faces = {
     {
       // front

@@ -5,7 +5,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class NetherPortalModel extends QuadModel {
+public class NetherPortalModel extends AbstractQuadModel {
   private final static Quad[] quadNS = {
       new Quad(
           new Vector3(16 / 16.0, 0, 6 / 16.0),
@@ -27,8 +27,6 @@ public class NetherPortalModel extends QuadModel {
   };
 
   private final static Texture[] textures = { Texture.portal };
-
-  private final Quad[] quads;
 
   public NetherPortalModel(String axis) {
     quads = axis.equals("z") ? quadEW : quadNS;

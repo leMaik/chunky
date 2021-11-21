@@ -28,7 +28,7 @@ import java.util.Arrays;
  *
  * @author Jesper Öqvist <jesper@llbit.se>
  */
-public class FlowerPotModel extends QuadModel {
+public class FlowerPotModel implements QuadModel {
   public enum Kind {
     NONE,
     POPPY,

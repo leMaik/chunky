@@ -21,7 +21,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class SunFlowerModel extends QuadModel {
+public class SunFlowerModel implements QuadModel {
   private final static Quad[] bottom = {
       new Quad(new Vector3(0, 0, 0), new Vector3(1, 0, 1), new Vector3(0, 1, 0),
           new Vector4(0, 1, 0, 1)),

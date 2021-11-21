@@ -5,7 +5,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class BarrelModel extends QuadModel {
+public class BarrelModel extends AbstractQuadModel {
   private static final Quad[] sides = {
       // north
       new Quad(new Vector3(1, 0, 0), new Vector3(0, 0, 0), new Vector3(1, 1, 0),
@@ -32,9 +32,6 @@ public class BarrelModel extends QuadModel {
           new Vector4(0, 1, 0, 1)),
   };
 
-  private final Quad[] quads;
-  private final Texture[] textures;
-
   public BarrelModel(String facing, String open) {
     textures = new Texture[] {Texture.barrelSide, Texture.barrelSide, Texture.barrelSide, Texture.barrelSide,
         open.equals("true") ? Texture.barrelOpen : Texture.barrelTop, Texture.barrelBottom};
@@ -59,15 +56,5 @@ public class BarrelModel extends QuadModel {
         quads = Model.rotateY(Model.rotateX(sides));
         break;
     }
-  }
-
-  @Override
-  public Quad[] getQuads() {
-    return quads;
-  }
-
-  @Override
-  public Texture[] getTextures() {
-    return textures;
   }
 }

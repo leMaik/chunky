@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class IronBarsModel extends QuadModel {
+public class IronBarsModel implements QuadModel {
 
   private static final Quad[] core = {
       new Quad(new Vector3(.5, 1, 7 / 16.), new Vector3(.5, 1, 9 / 16.),

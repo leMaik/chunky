@@ -24,7 +24,7 @@ import se.llbit.math.Vector4;
 
 import java.util.Arrays;
 
-public class EndPortalModel extends QuadModel {
+public class EndPortalModel implements QuadModel {
   private static final Quad[] quads = {
       new Quad(new Vector3(1, .75, 0), new Vector3(0, .75, 0), new Vector3(1, .75, 1),
           new Vector4(1, 0, 0, 1), true)

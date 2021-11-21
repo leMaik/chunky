@@ -5,7 +5,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class AttachedStemModel extends QuadModel {
+public class AttachedStemModel implements QuadModel {
   private static final Quad[] growth = new Quad[2];
   private static final Quad[] ripe = {
       new Quad(new Vector3(0, 0, .5), new Vector3(1, 0, .5), new Vector3(0, 1, .5),

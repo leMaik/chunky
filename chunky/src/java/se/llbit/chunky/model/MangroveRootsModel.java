@@ -5,7 +5,7 @@ import se.llbit.math.Quad;
 import se.llbit.math.Vector3;
 import se.llbit.math.Vector4;
 
-public class MangroveRootsModel extends QuadModel {
+public class MangroveRootsModel implements QuadModel {
   private static final Texture side = Texture.mangroveRootsSide;
   private static final Texture top = Texture.mangroveRootsTop;
 

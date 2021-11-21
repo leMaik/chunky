@@ -3,7 +3,7 @@ package se.llbit.chunky.model;
 import se.llbit.chunky.resources.Texture;
 import se.llbit.math.*;
 
-public class ComposterModel extends QuadModel {
+public class ComposterModel implements QuadModel {
   private static final Texture top = Texture.composterTop;
   private static final Texture bottom = Texture.composterBottom;
   private static final Texture side = Texture.composterSide;

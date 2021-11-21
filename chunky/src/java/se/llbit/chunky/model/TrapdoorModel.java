@@ -23,7 +23,7 @@ import se.llbit.math.Vector4;
 
 import java.util.Arrays;
 
-public class TrapdoorModel extends QuadModel {
+public class TrapdoorModel implements QuadModel {
   //region Model
   private static final Quad[][] faces = {
       // low

@@ -26,7 +26,7 @@ import se.llbit.math.Vector4;
  *
  * @author Jesper Öqvist <jesper@llbit.se>
  */
-public class ChestModel extends QuadModel {
+public class ChestModel implements QuadModel {
   //region Single Chest
   protected static final Quad[] single = {
       // north

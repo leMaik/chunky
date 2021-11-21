@@ -16,14 +16,16 @@
  */
 package se.llbit.chunky.model;
 
-import se.llbit.chunky.resources.Texture;
-import se.llbit.math.*;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Consumer;
+import se.llbit.chunky.resources.Texture;
+import se.llbit.math.Quad;
+import se.llbit.math.Transform;
+import se.llbit.math.Vector3;
+import se.llbit.math.Vector4;
 
-public class GlassPaneModel extends QuadModel {
+public class GlassPaneModel extends AbstractQuadModel {
   //region quads
   private static final Quad[] core = {
       // Top
@@ -111,9 +113,6 @@ public class GlassPaneModel extends QuadModel {
   }
   //endregion
 
-  private final Quad[] quads;
-  private final Texture[] textures;
-
   public GlassPaneModel(Texture top, Texture side, boolean north, boolean south, boolean east, boolean west) {
     ArrayList<Quad> quads = new ArrayList<>();
     ArrayList<Texture> textures = new ArrayList<>();
@@ -147,15 +146,5 @@ public class GlassPaneModel extends QuadModel {
 
     this.quads = quads.toArray(new Quad[0]);
     this.textures = textures.toArray(new Texture[0]);
-  }
-
-  @Override
-  public Quad[] getQuads() {
-    return quads;
-  }
-
-  @Override
-  public Texture[] getTextures() {
-    return textures;
   }
 }
