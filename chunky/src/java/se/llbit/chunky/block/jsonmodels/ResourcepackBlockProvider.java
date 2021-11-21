@@ -23,11 +23,11 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.commons.math3.util.FastMath;
-import se.llbit.chunky.block.Air;
+import se.llbit.chunky.block.minecraft.Air;
 import se.llbit.chunky.block.Block;
 import se.llbit.chunky.block.BlockProvider;
 import se.llbit.chunky.block.MinecraftBlock;
-import se.llbit.chunky.block.UnknownBlock;
+import se.llbit.chunky.block.minecraft.UnknownBlock;
 import se.llbit.chunky.entity.Entity;
 import se.llbit.chunky.renderer.scene.Scene;
 import se.llbit.chunky.resources.AnimatedTexture;
