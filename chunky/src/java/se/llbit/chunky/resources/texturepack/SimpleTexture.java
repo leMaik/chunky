@@ -105,7 +105,7 @@ public class SimpleTexture extends TextureLoader {
         // Safe to ignore
       }
     }
-    String normalFormat = System.getProperty("chunky.pbr.normal", "");
+    String normalFormat = System.getProperty("chunky.pbr.normal", "labpbr");
     if (normalFormat.equals("oldpbr") || normalFormat.equals("labpbr")) {
       try (InputStream in = texturePack.getInputStream(new ZipEntry(file + "_n.png"))) {
         if (in != null) {
