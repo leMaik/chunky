@@ -56,6 +56,11 @@ public class PaintingBackTexture extends TextureLoader {
   }
 
   @Override
+  public void reset() {
+    texture.reset();
+  }
+
+  @Override
   public boolean load(ZipFile texturePack, String topLevelDir) {
     return load(topLevelDir + file, texturePack);
   }
