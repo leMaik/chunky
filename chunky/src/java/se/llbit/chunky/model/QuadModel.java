@@ -5,9 +5,7 @@ import se.llbit.chunky.renderer.scene.Scene;
 import se.llbit.chunky.resources.Texture;
 import se.llbit.chunky.resources.pbr.NormalMap;
 import se.llbit.math.Quad;
-import se.llbit.math.QuickMath;
 import se.llbit.math.Ray;
-import se.llbit.math.Vector3;
 
 /**
  * A block model that is made out of textured quads.
@@ -40,10 +38,6 @@ public abstract class QuadModel implements BlockModel {
     Tint[] tintedQuads = getTints();
 
     float[] color = null;
-    double emittanceValue = 0;
-    double reflectanceValue = 0;
-    double roughnessValue = 0;
-    float metalnessValue = 0;
     Quad hitQuad = null;
     Texture hitTexture = null;
 
@@ -63,10 +57,6 @@ public abstract class QuadModel implements BlockModel {
             
           hitQuad = quad;
           hitTexture = textures[i];
-          emittanceValue = hitTexture.getEmittanceAt(ray.u, ray.v);
-          reflectanceValue = hitTexture.getReflectanceAt(ray.u, ray.v);
-          roughnessValue = hitTexture.getRoughnessAt(ray.u, ray.v);
-          metalnessValue = hitTexture.getMetalnessAt(ray.u, ray.v);
           hit = true;
         }
       }
@@ -83,13 +73,14 @@ public abstract class QuadModel implements BlockModel {
 
       NormalMap.apply(ray, hitQuad, hitTexture);
       ray.color.set(color);
-      ray.emittanceValue = emittanceValue;
-      ray.reflectanceValue = reflectanceValue;
-      ray.roughnessValue = roughnessValue;
-      ray.metalnessValue = metalnessValue;
+      ray.emittanceValue = hitTexture.getEmittanceAt(ray.u, ray.v);
+      ray.reflectanceValue = hitTexture.getReflectanceAt(ray.u, ray.v);
+      ray.roughnessValue = hitTexture.getRoughnessAt(ray.u, ray.v);
+      ray.metalnessValue = hitTexture.getMetalnessAt(ray.u, ray.v);
       ray.distance += ray.t;
       ray.o.scaleAdd(ray.t, ray.d);
     }
+
     return hit;
   }
 }
