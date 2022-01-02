@@ -3,7 +3,9 @@ package se.llbit.chunky.model;
 import se.llbit.chunky.plugin.PluginApi;
 import se.llbit.chunky.renderer.scene.Scene;
 import se.llbit.chunky.resources.Texture;
+import se.llbit.chunky.resources.pbr.NormalMap;
 import se.llbit.math.AABB;
+import se.llbit.math.Matrix3;
 import se.llbit.math.Ray;
 import se.llbit.math.Vector3;
 
@@ -33,6 +35,16 @@ public abstract class AABBModel implements BlockModel {
     FLIP_V
   }
 
+  protected final static Matrix3[] tbnMatrices = new Matrix3[6];
+  static {
+    tbnMatrices[4] = NormalMap.getTbn(new Vector3(1, 0, 0), new Vector3(0, 0, -1));
+    tbnMatrices[5] = NormalMap.getTbn(new Vector3(1, 0, 0), new Vector3(0, 0, 1));
+    tbnMatrices[0] = NormalMap.getTbn(new Vector3(-1, 0, 0), new Vector3(0, 1, 0));
+    tbnMatrices[2] = NormalMap.getTbn(new Vector3(1, 0, 0), new Vector3(0, 1, 0));
+    tbnMatrices[3] = NormalMap.getTbn(new Vector3(0, 0, 1), new Vector3(0, 1, 0));
+    tbnMatrices[1] = NormalMap.getTbn(new Vector3(0, 0, -1), new Vector3(0, 1, 0));
+  }
+
   @PluginApi
   public abstract AABB[] getBoxes();
 
@@ -56,53 +68,56 @@ public abstract class AABBModel implements BlockModel {
     UVMapping[][] mapping = getUVMapping();
     Tint[][] tintedFaces = getTints();
 
-    boolean hit = false;
+    Texture hitTexture = null;
+    int hitSide = 0;
+
     ray.t = Double.POSITIVE_INFINITY;
     for (int i = 0; i < boxes.length; ++i) {
       if (boxes[i].intersect(ray)) {
         Tint[] tintedFacesBox = tintedFaces != null ? tintedFaces[i] : null;
         Vector3 n = ray.getNormal();
+
+        int side = -1;
         if (n.y > 0) { // top
           ray.v = 1 - ray.v;
-          if (intersectFace(ray, scene, textures[i][4],
-              mapping != null ? mapping[i][4] : null,
-              tintedFacesBox != null ? tintedFacesBox[4] : Tint.NONE)) {
-            hit = true;
-          }
+          side = 4;
         } else if (n.y < 0) { // bottom
-          hit = intersectFace(ray, scene, textures[i][5],
-              mapping != null ? mapping[i][4] : null,
-              tintedFacesBox != null ? tintedFacesBox[5] : Tint.NONE) || hit;
+          side = 5;
         } else if (n.z < 0) { // north
-          hit = intersectFace(ray, scene, textures[i][0],
-              mapping != null ? mapping[i][4] : null,
-              tintedFacesBox != null ? tintedFacesBox[0] : Tint.NONE) || hit;
+          side = 0;
         } else if (n.z > 0) { // south
-          hit = intersectFace(ray, scene, textures[i][2],
-              mapping != null ? mapping[i][4] : null,
-              tintedFacesBox != null ? tintedFacesBox[2] : Tint.NONE) || hit;
+          side = 2;
         } else if (n.x < 0) { // west
-          hit = intersectFace(ray, scene, textures[i][3],
-              mapping != null ? mapping[i][4] : null,
-              tintedFacesBox != null ? tintedFacesBox[3] : Tint.NONE) || hit;
+          side = 3;
         } else if (n.x > 0) { // east
-          hit = intersectFace(ray, scene, textures[i][1],
-              mapping != null ? mapping[i][4] : null,
-              tintedFacesBox != null ? tintedFacesBox[1] : Tint.NONE) || hit;
+          side = 1;
         }
-        if (hit) {
-          ray.t = ray.tNext;
+
+        if (side != -1) {
+          boolean hit = intersectFace(ray, scene, textures[i][side],
+              mapping != null ? mapping[i][side] : null,
+              tintedFacesBox != null ? tintedFacesBox[side] : Tint.NONE);
+          hitTexture = hit ? textures[i][side] : hitTexture;
+          hitSide = hit ? side : hitSide;
+          ray.t = hit ? ray.tNext: ray.t;
         }
       }
     }
-    if (hit) {
+
+    if (hitTexture != null) {
       if (ray.getCurrentMaterial().opaque) {
         ray.color.w = 1;
       }
+      NormalMap.apply(ray, tbnMatrices[hitSide], hitTexture);
+      ray.emittanceValue = hitTexture.getEmittanceAt(ray.u, ray.v);
+      ray.reflectanceValue = hitTexture.getReflectanceAt(ray.u, ray.v);
+      ray.roughnessValue = hitTexture.getRoughnessAt(ray.u, ray.v);
+      ray.metalnessValue = hitTexture.getMetalnessAt(ray.u, ray.v);
       ray.distance += ray.t;
       ray.o.scaleAdd(ray.t, ray.d);
     }
-    return hit;
+
+    return hitTexture != null;
   }
 
   private boolean intersectFace(Ray ray, Scene scene, Texture texture, UVMapping mapping,
