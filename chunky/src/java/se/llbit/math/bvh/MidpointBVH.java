@@ -29,125 +29,128 @@ import java.util.*;
 import java.util.function.IntConsumer;
 
 public class MidpointBVH extends BinaryBVH {
-    public static void registerImplementation() {
-        Factory.addBVHBuilder(new Factory.BVHBuilder() {
-            @Override
-            public BVH create(Collection<Entity> entities, Vector3 worldOffset, TaskTracker.Task task) {
-                task.update(1000, 0);
-                double entityScaler = 500.0 / entities.size();
-                int done = 0;
+  public static void registerImplementation() {
+    Factory.addBVHBuilder(new Factory.BVHBuilder() {
+      @Override
+      public BVH create(Collection<Entity> entities, Vector3 worldOffset, TaskTracker.Task task) {
+        task.update(1000, 0);
+        double entityScaler = 500.0 / entities.size();
+        int done = 0;
 
-                List<Primitive> primitives = new ArrayList<>();
-                for (Entity entity : entities) {
-                    primitives.addAll(entity.primitives(worldOffset));
+        List<Primitive> primitives = new ArrayList<>();
+        for (Entity entity : entities) {
+          primitives.addAll(entity.primitives(worldOffset));
 
-                    done++;
-                    task.updateInterval((int) (done * entityScaler), 1);
-                }
-                Primitive[] allPrimitives = primitives.toArray(new Primitive[0]);
-                primitives = null; // Allow the collection to be garbage collected during construction when only the array is used
-
-                double primitiveScaler = 500.0 / allPrimitives.length;
-                return new MidpointBVH(allPrimitives, i -> task.updateInterval((int) (i * primitiveScaler) + 500, 1));
-            }
-
-            @Override
-            public String getName() {
-                return "MIDPOINT";
-            }
-
-            @Override
-            public String getDescription() {
-                return "Fast and simple, but not optimal BVH building method.";
-            }
-        });
-    }
-
-    public MidpointBVH(Primitive[] primitives, IntConsumer task) {
-        Node root = constructMidpointSplit(primitives, task);
-        pack(root);
-        Log.info("Built MIDPOINT BVH with depth " + this.depth);
-    }
-
-    private enum Action {
-        PUSH,
-        MERGE,
-    }
-
-    /**
-     * Simple BVH construction using splitting by major axis.
-     *
-     * @return root node of constructed BVH
-     */
-    private Node constructMidpointSplit(Primitive[] primitives, IntConsumer task) {
-        int progress = 0;
-
-        Stack<Node> nodes = new Stack<>();
-        Stack<Action> actions = new Stack<>();
-        Stack<Primitive[]> chunks = new Stack<>();
-        chunks.push(primitives);
-        actions.push(Action.PUSH);
-        while (!actions.isEmpty()) {
-            Action action = actions.pop();
-            if (action == Action.MERGE) {
-                nodes.push(new Group(nodes.pop(), nodes.pop()));
-            } else {
-                Primitive[] chunk = chunks.pop();
-                if (chunk.length < SPLIT_LIMIT) {
-                    nodes.push(new Leaf(chunk));
-
-                    progress += chunk.length;
-                    task.accept(progress);
-                } else {
-                    splitMidpointMajorAxis(chunk, actions, chunks);
-                }
-            }
+          done++;
+          task.updateInterval((int) (done * entityScaler), 1);
         }
-        return nodes.pop();
-    }
+        Primitive[] allPrimitives = primitives.toArray(new Primitive[0]);
+        primitives = null; // Allow the collection to be garbage collected during construction when only the array is used
 
-    /**
-     * Split a chunk on the major axis.
-     */
-    private void splitMidpointMajorAxis(Primitive[] chunk, Stack<Action> actions,
-                                        Stack<Primitive[]> chunks) {
-        AABB bb = bb(chunk);
-        double xl = bb.xmax - bb.xmin;
-        double yl = bb.ymax - bb.ymin;
-        double zl = bb.zmax - bb.zmin;
-        double splitPos;
-        Selector selector;
-        if (xl >= yl && xl >= zl) {
-            splitPos = bb.xmin + (bb.xmax - bb.xmin) / 2;
-            selector = selectX;
-            Chunky.getCommonThreads().submit(() -> Arrays.parallelSort(chunk, cmpX)).join();
-        } else if (yl >= xl && yl >= zl) {
-            splitPos = bb.ymin + (bb.ymax - bb.ymin) / 2;
-            selector = selectY;
-            Chunky.getCommonThreads().submit(() -> Arrays.parallelSort(chunk, cmpY)).join();
+        double primitiveScaler = 500.0 / allPrimitives.length;
+        return new MidpointBVH(allPrimitives, i -> task.updateInterval((int) (i * primitiveScaler) + 500, 1));
+      }
+
+      @Override
+      public String getId() {
+        return "MIDPOINT";
+      }
+
+      @Override
+      public String getName() {
+        return getId();
+      }
+
+      @Override
+      public String getDescription() {
+        return "Fast and simple, but not optimal BVH building method.";
+      }
+    });
+  }
+
+  public MidpointBVH(Primitive[] primitives, IntConsumer task) {
+    Node root = constructMidpointSplit(primitives, task);
+    pack(root);
+    Log.info("Built MIDPOINT BVH with depth " + this.depth);
+  }
+
+  private enum Action {
+    PUSH, MERGE,
+  }
+
+  /**
+   * Simple BVH construction using splitting by major axis.
+   *
+   * @return root node of constructed BVH
+   */
+  private Node constructMidpointSplit(Primitive[] primitives, IntConsumer task) {
+    int progress = 0;
+
+    Stack<Node> nodes = new Stack<>();
+    Stack<Action> actions = new Stack<>();
+    Stack<Primitive[]> chunks = new Stack<>();
+    chunks.push(primitives);
+    actions.push(Action.PUSH);
+    while (!actions.isEmpty()) {
+      Action action = actions.pop();
+      if (action == Action.MERGE) {
+        nodes.push(new Group(nodes.pop(), nodes.pop()));
+      } else {
+        Primitive[] chunk = chunks.pop();
+        if (chunk.length < SPLIT_LIMIT) {
+          nodes.push(new Leaf(chunk));
+
+          progress += chunk.length;
+          task.accept(progress);
         } else {
-            splitPos = bb.zmin + (bb.zmax - bb.zmin) / 2;
-            selector = selectZ;
-            Chunky.getCommonThreads().submit(() -> Arrays.parallelSort(chunk, cmpZ)).join();
+          splitMidpointMajorAxis(chunk, actions, chunks);
         }
-
-        int split;
-        int end = chunk.length;
-        for (split = 1; split < end; ++split) {
-            if (!selector.select(chunk[split].bounds(), splitPos)) {
-                break;
-            }
-        }
-
-        actions.push(Action.MERGE);
-        Primitive[] cons = new Primitive[split];
-        System.arraycopy(chunk, 0, cons, 0, split);
-        chunks.push(cons);
-        actions.push(Action.PUSH);
-
-        cons = new Primitive[end - split];
-        System.arraycopy(chunk, split, cons, 0, end - split);
-        chunks.push(cons);
-        actions.push(Action.PUSH);
+      }
     }
+    return nodes.pop();
+  }
+
+  /**
+   * Split a chunk on the major axis.
+   */
+  private void splitMidpointMajorAxis(Primitive[] chunk, Stack<Action> actions, Stack<Primitive[]> chunks) {
+    AABB bb = bb(chunk);
+    double xl = bb.xmax - bb.xmin;
+    double yl = bb.ymax - bb.ymin;
+    double zl = bb.zmax - bb.zmin;
+    double splitPos;
+    Selector selector;
+    if (xl >= yl && xl >= zl) {
+      splitPos = bb.xmin + (bb.xmax - bb.xmin) / 2;
+      selector = selectX;
+      Chunky.getCommonThreads().submit(() -> Arrays.parallelSort(chunk, cmpX)).join();
+    } else if (yl >= xl && yl >= zl) {
+      splitPos = bb.ymin + (bb.ymax - bb.ymin) / 2;
+      selector = selectY;
+      Chunky.getCommonThreads().submit(() -> Arrays.parallelSort(chunk, cmpY)).join();
+    } else {
+      splitPos = bb.zmin + (bb.zmax - bb.zmin) / 2;
+      selector = selectZ;
+      Chunky.getCommonThreads().submit(() -> Arrays.parallelSort(chunk, cmpZ)).join();
+    }
+
+    int split;
+    int end = chunk.length;
+    for (split = 1; split < end; ++split) {
+      if (!selector.select(chunk[split].bounds(), splitPos)) {
+        break;
+      }
+    }
+
+    actions.push(Action.MERGE);
+    Primitive[] cons = new Primitive[split];
+    System.arraycopy(chunk, 0, cons, 0, split);
+    chunks.push(cons);
+    actions.push(Action.PUSH);
+
+    cons = new Primitive[end - split];
+    System.arraycopy(chunk, split, cons, 0, end - split);
+    chunks.push(cons);
+    actions.push(Action.PUSH);
+  }
 }

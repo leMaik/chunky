@@ -177,8 +177,8 @@ public class AdvancedTab extends ScrollPane implements RenderControlsTab, Initia
 
     ArrayList<String> bvhNames = new ArrayList<>();
     StringBuilder bvhMethodBuilder = new StringBuilder();
-    for (BVH.Factory.BVHBuilder builder : BVH.Factory.getImplementations()) {
-      bvhNames.add(builder.getName());
+    for (Registerable builder : BVH.Factory.getImplementations()) {
+      bvhNames.add(builder.getId());
       bvhMethodBuilder.append(builder.getName());
       bvhMethodBuilder.append(": ");
       bvhMethodBuilder.append(builder.getDescription());
