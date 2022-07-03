@@ -458,7 +458,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
 
       JsonModel block = new JsonModel(blockName, Texture.air);
       JsonObject blockDefinition = this.getModel(resourcePacks, model);
-      block.applyDefinition(blockDefinition, name -> this.getTexture(resourcePacks, name));
+      block.applyDefinition(blockDefinition, name -> this.getTexture(resourcePacks, name), false);
       String parentName = blockDefinition.get("parent").stringValue("block/block");
       if (parentName.equals("block/cube_all") || parentName.equals("minecraft:block/cube_all")) {
         // System.out.println("optimized block/cube_all");
@@ -476,8 +476,9 @@ public class ResourcepackBlockProvider implements BlockProvider {
       try {
         while (!blockDefinition.get("parent").isUnknown()) {
           parentName = blockDefinition.get("parent").stringValue("block/block");
+          boolean ignoreParentElements = blockDefinition.get("elements").isArray();
           blockDefinition = this.getModel(resourcePacks, parentName);
-          block.applyDefinition(blockDefinition, name -> this.getTexture(resourcePacks, name));
+          block.applyDefinition(blockDefinition, name -> this.getTexture(resourcePacks, name), ignoreParentElements);
           if (parentName.equals("block/cube_all") || parentName
               .equals("minecraft:block/cube_all")) {
             // System.out.println("optimized block/cube_all");
@@ -799,7 +800,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
       return qb;
     }
 
-    public void applyDefinition(JsonObject modelDefinition, Function<String, Texture> getTexture) {
+    public void applyDefinition(JsonObject modelDefinition, Function<String, Texture> getTexture, boolean ignoreElements) {
       if (modelDefinition.get("textures").isObject()) {
         for (JsonMember texture : modelDefinition.get("textures").object().members) {
           if (texture.getValue().stringValue("").charAt(0) == '#') {
@@ -817,7 +818,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
         }
       }
 
-      if (modelDefinition.get("elements").isArray()) {
+      if (!ignoreElements && modelDefinition.get("elements").isArray()) {
         for (JsonValue e : modelDefinition.get("elements").array()) {
           JsonModelElement element = new JsonModelElement(this, e.asObject());
           // prepend to make overlays work (e.g. for the grass block)
