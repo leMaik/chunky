@@ -49,6 +49,7 @@ import se.llbit.math.Vector4;
 import se.llbit.math.primitive.Primitive;
 import se.llbit.nbt.Tag;
 import se.llbit.resources.ImageLoader;
+import se.llbit.util.FileSystemUtil;
 
 public class ResourcepackBlockProvider implements BlockProvider {
   private final Map<String, BlockVariants> blocks = new HashMap<>();
@@ -61,8 +62,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
                .map(
                  f -> {
                    try {
-                     return FileSystems.newFileSystem(
-                       URI.create("jar:" + f.toURI()), Collections.emptyMap());
+                     return FileSystemUtil.getZipFileSystem(f);
                    } catch (IOException e) {
                      throw new RuntimeException("Could not open resource pack " + f, e);
                    }
