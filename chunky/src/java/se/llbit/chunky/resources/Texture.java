@@ -1680,4 +1680,13 @@ public class Texture {
   public BitmapImage getBitmap() {
     return image;
   }
+
+  public boolean hasOpacity() {
+    for (int i = 0; i < image.data.length; i++) {
+      if (image.data[i] >>> 24 < 255) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
