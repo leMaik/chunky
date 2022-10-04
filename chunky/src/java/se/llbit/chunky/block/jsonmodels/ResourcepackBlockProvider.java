@@ -458,7 +458,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
       JsonObject blockDefinition = this.getModel(resourcePacks, model);
       block.applyDefinition(blockDefinition, name -> this.getTexture(resourcePacks, name), false);
       String parentName = blockDefinition.get("parent").stringValue("block/block");
-      if (parentName.equals("block/cube_all") || parentName.equals("minecraft:block/cube_all")) {
+      if ((parentName.equals("block/cube_all") || parentName.equals("minecraft:block/cube_all")) && !block.textures.get("all").hasOpacity()) {
         // System.out.println("optimized block/cube_all");
         return new MinecraftBlock(blockName, block.textures.get("all"));
       } else if (parentName.equals("block/cube") || parentName.equals("minecraft:block/cube")) {
@@ -477,8 +477,8 @@ public class ResourcepackBlockProvider implements BlockProvider {
           boolean ignoreParentElements = blockDefinition.get("elements").isArray();
           blockDefinition = this.getModel(resourcePacks, parentName);
           block.applyDefinition(blockDefinition, name -> this.getTexture(resourcePacks, name), ignoreParentElements);
-          if (parentName.equals("block/cube_all") || parentName
-              .equals("minecraft:block/cube_all")) {
+          if ((parentName.equals("block/cube_all") || parentName
+              .equals("minecraft:block/cube_all")) && !block.textures.get("all").hasOpacity()) {
             // System.out.println("optimized block/cube_all");
             return new MinecraftBlock(blockName, block.textures.get("all"));
           } else if (parentName.equals("block/cube") || parentName.equals("minecraft:block/cube")) {
