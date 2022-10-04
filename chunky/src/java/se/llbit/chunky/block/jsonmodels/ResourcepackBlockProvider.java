@@ -4,15 +4,12 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,12 +20,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.commons.math3.util.FastMath;
-import se.llbit.chunky.block.Air;
-import se.llbit.chunky.block.Block;
-import se.llbit.chunky.block.BlockProvider;
-import se.llbit.chunky.block.MinecraftBlock;
-import se.llbit.chunky.block.UnknownBlock;
+import se.llbit.chunky.block.*;
 import se.llbit.chunky.entity.Entity;
+import se.llbit.chunky.model.Tint;
 import se.llbit.chunky.renderer.scene.Scene;
 import se.llbit.chunky.resources.AnimatedTexture;
 import se.llbit.chunky.resources.BitmapImage;
@@ -189,7 +183,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
                           throw new RuntimeException("Unsupported block " + fqBlockName);
                         }
 
-                        blocks.put(assetsName + ":" + blockName, variants);
+                        blocks.put(fqBlockName, variants);
                       } catch (IOException | SyntaxError | RuntimeException e) {
                         System.out.println(
                           "Could not load block "
@@ -374,7 +368,9 @@ public class ResourcepackBlockProvider implements BlockProvider {
       if (applicableParts.size() == 1) {
         return applicableParts.get(0);
       }
-      return new MultipartJsonModel(name, applicableParts.toArray(new JsonModel[0]));
+      MultipartJsonModel block = new MultipartJsonModel(name, applicableParts.toArray(new JsonModel[0]));
+      block.tints = MinecraftBlockProvider.getHardCodedTints(name);
+      return block;
     }
   }
 
@@ -457,6 +453,8 @@ public class ResourcepackBlockProvider implements BlockProvider {
       }
 
       JsonModel block = new JsonModel(blockName, Texture.air);
+      block.tints = MinecraftBlockProvider.getHardCodedTints(blockName);
+
       JsonObject blockDefinition = this.getModel(resourcePacks, model);
       block.applyDefinition(blockDefinition, name -> this.getTexture(resourcePacks, name), false);
       String parentName = blockDefinition.get("parent").stringValue("block/block");
@@ -516,7 +514,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
       if (texture.length() < 2) {
         throw new RuntimeException(face.toCompactString());
       }
-      this.texture = face.get("texture").stringValue("").substring(1);
+      this.texture = texture.substring(1);
       this.tintindex = face.get("tintindex").intValue(-1);
       int rotation = face.get("rotation").intValue(0);
       JsonArray uv = face.get("uv").isArray() ? face.get("uv").array() : null;
@@ -776,6 +774,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
     private boolean supportsOpacity = true; // some blocks, e.g. tinted_cross/cross only support full or zero opacity and fractional values are ignored
     private Map<String, Texture> textures = new HashMap<>();
     private List<JsonModelElement> elements = new ArrayList<>();
+    private Tint[] tints;
     private boolean isBlockEntity = false;
 
     public JsonModel(String name, Texture texture) {
@@ -796,7 +795,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
           .map(f -> this.textures.get(f.texture))
           .toArray(Texture[]::new);
       Quad[] quads = Arrays.stream(faces)
-          .map(f -> f.tintindex >= 0 ? new TintedQuad(f.quad, f.tintindex) : f.quad)
+          .map(f -> tints != null && tints.length > 0 && f.tintindex >= 0 ? new TintedQuad(f.quad, getTint(f.tintindex)) : f.quad)
           .toArray(Quad[]::new);
 
       QuadBlock qb = new QuadBlock(name, this.textures.getOrDefault("up", Texture.unknown), quads,
@@ -853,6 +852,13 @@ public class ResourcepackBlockProvider implements BlockProvider {
         ray.o.scaleAdd(ray.t, ray.d);
       }
       return hit;
+    }
+
+    private Tint getTint(int tintIndex) {
+      if (this.tints != null && tintIndex >= 0 && tintIndex < this.tints.length) {
+        return this.tints[tintIndex];
+      }
+      return Tint.NONE;
     }
 
     @Override
@@ -957,6 +963,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
 
   private static class MultipartJsonModel extends Block {
     private final JsonModel[] parts;
+    private Tint[] tints;
 
     public MultipartJsonModel(String name, JsonModel[] parts) {
       super(name, parts.length > 0 ? parts[0].texture : Texture.EMPTY_TEXTURE);
@@ -994,12 +1001,19 @@ public class ResourcepackBlockProvider implements BlockProvider {
       }
 
       QuadBlock qb = new QuadBlock(name, upTexture,
-          faces.stream().map(f -> f.tintindex >= 0 ? new TintedQuad(f.quad, f.tintindex) : f.quad)
+          faces.stream().map(f -> tints != null && tints.length > 0 && f.tintindex >= 0 ? new TintedQuad(f.quad, this.getTint(f.tintindex)) : f.quad)
               .toArray(Quad[]::new),
           textures.toArray(
               new Texture[0]), isEntity());
       qb.opaque = opaque;
       return qb;
+    }
+
+    private Tint getTint(int tintIndex) {
+      if (this.tints != null && tintIndex >= 0 && tintIndex < this.tints.length) {
+        return this.tints[tintIndex];
+      }
+      return Tint.NONE;
     }
 
     @Override
