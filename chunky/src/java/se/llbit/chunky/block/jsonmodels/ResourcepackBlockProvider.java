@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.math3.util.FastMath;
 import se.llbit.chunky.block.*;
 import se.llbit.chunky.entity.Entity;
+import se.llbit.chunky.model.RedstoneWireModel;
 import se.llbit.chunky.model.Tint;
 import se.llbit.chunky.renderer.scene.Scene;
 import se.llbit.chunky.resources.AnimatedTexture;
@@ -376,7 +377,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
         return applicableParts.get(0);
       }
       MultipartJsonModel block = new MultipartJsonModel(name, applicableParts.toArray(new JsonModel[0]));
-      block.tints = MinecraftBlockProvider.getHardCodedTints(name);
+      block.tints = replaceBlockSpecificTints(MinecraftBlockProvider.getHardCodedTints(name), properties);
       return block;
     }
   }
@@ -1135,5 +1136,17 @@ public class ResourcepackBlockProvider implements BlockProvider {
       return buf;
     }
     return buf;
+  }
+
+  private static Tint[] replaceBlockSpecificTints(Tint[] tints, Tag properties) {
+    if (tints != null && Arrays.stream(tints).anyMatch(tint -> tint == Tint.REDSTONE_WIRE)) {
+      tints = Arrays.copyOf(tints, tints.length);
+      for (int i = 0; i < tints.length; i++) {
+        if (tints[i] == Tint.REDSTONE_WIRE) {
+          tints[i] = RedstoneWireModel.wireTints[BlockProvider.stringToInt(properties.get("power"), 0)];
+        }
+      }
+    }
+    return tints;
   }
 }
