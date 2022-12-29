@@ -17,7 +17,7 @@
       <Label text="Postprocessing filter:" />
       <ChoiceBox fx:id="postprocessingFilter" prefWidth="150.0" />
     </HBox>
-    <TitledPane fx:id="postprocessingFilterDetailsPane" animated="false" text="Postprocessing filter details" />
+    <TitledPane fx:id="postprocessingFilterDetailsPane" animated="false" text="Postprocessing filter settings" />
     <Text strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="275"
       text="Postprocessing affects performance when Render Preview tab is visible. Switching to the Map tab mitigates this." />
     <padding>
