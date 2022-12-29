@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
@@ -16,6 +17,7 @@
       <Label text="Postprocessing filter:" />
       <ChoiceBox fx:id="postprocessingFilter" prefWidth="150.0" />
     </HBox>
+    <TitledPane fx:id="postprocessingFilterDetailsPane" animated="false" text="Postprocessing filter details" />
     <Text strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="275"
       text="Postprocessing affects performance when Render Preview tab is visible. Switching to the Map tab mitigates this." />
     <padding>

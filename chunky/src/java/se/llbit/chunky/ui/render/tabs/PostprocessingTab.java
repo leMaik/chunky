@@ -19,11 +19,10 @@ package se.llbit.chunky.ui.render.tabs;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Separator;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import se.llbit.chunky.renderer.postprocessing.PostProcessingFilter;
 import se.llbit.chunky.renderer.postprocessing.PostProcessingFilters;
@@ -32,6 +31,8 @@ import se.llbit.chunky.resources.BitmapImage;
 import se.llbit.chunky.ui.DoubleAdjuster;
 import se.llbit.chunky.ui.controller.RenderControlsFxController;
 import se.llbit.chunky.ui.render.RenderControlsTab;
+import se.llbit.chunky.ui.render.settings.HableToneMappingFilterSettings;
+import se.llbit.chunky.ui.render.settings.UE4ToneMappingFilterSettings;
 import se.llbit.util.ProgressListener;
 import se.llbit.util.TaskTracker;
 
@@ -46,6 +47,10 @@ public class PostprocessingTab extends ScrollPane implements RenderControlsTab, 
 
   @FXML private DoubleAdjuster exposure;
   @FXML private ChoiceBox<PostProcessingFilter> postprocessingFilter;
+  @FXML private TitledPane postprocessingFilterDetailsPane;
+
+  private final HableToneMappingFilterSettings hableToneMappingFilterSettingsBox = new HableToneMappingFilterSettings();
+  private final UE4ToneMappingFilterSettings UE4ToneMappingFilterSettingsBox = new UE4ToneMappingFilterSettings();
 
   public PostprocessingTab() throws IOException {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("PostprocessingTab.fxml"));
@@ -57,6 +62,8 @@ public class PostprocessingTab extends ScrollPane implements RenderControlsTab, 
   @Override public void setController(RenderControlsFxController controller) {
     this.controller = controller;
     scene = controller.getRenderController().getSceneManager().getScene();
+    hableToneMappingFilterSettingsBox.setRenderController(controller.getRenderController());
+    UE4ToneMappingFilterSettingsBox.setRenderController(controller.getRenderController());
   }
 
   @Override public void update(Scene scene) {
@@ -73,6 +80,11 @@ public class PostprocessingTab extends ScrollPane implements RenderControlsTab, 
   }
 
   @Override public void initialize(URL location, ResourceBundle resources) {
+    Label noOptions = new Label("The selected postprocessing filter has no configuration options available.");
+    VBox noOptionsBox = new VBox(10.0);
+    noOptionsBox.setPadding(new Insets(10, 10, 10, 10));
+    noOptionsBox.getChildren().addAll(noOptions);
+
     postprocessingFilter.setTooltip(new Tooltip("Set the postprocessing filter to be used on the image."));
     postprocessingFilter.getItems().add(PostProcessingFilters.NONE);
     postprocessingFilter.getItems().add(new PostprocessingSeparator());
@@ -82,11 +94,34 @@ public class PostprocessingTab extends ScrollPane implements RenderControlsTab, 
       }
     }
     postprocessingFilter.getSelectionModel().select(Scene.DEFAULT_POSTPROCESSING_FILTER);
+    postprocessingFilterDetailsPane.setContent(noOptionsBox);
     postprocessingFilter.getSelectionModel().selectedItemProperty().addListener(
         (observable, oldValue, newValue) -> {
           scene.setPostprocess(newValue);
           scene.postProcessFrame(new TaskTracker(ProgressListener.NONE));
           controller.getCanvas().forceRepaint();
+          System.out.println(newValue.getId());
+          switch (newValue.getId()) {
+            case "NONE":
+            case "TONEMAP2":
+            case "GAMMA":
+            case "TONEMAP1": {
+              postprocessingFilterDetailsPane.setContent(noOptionsBox);
+              break;
+            }
+            case "TONEMAP3": {
+              hableToneMappingFilterSettingsBox.setFilter(scene.getPostProcessingFilter());
+              postprocessingFilterDetailsPane.setContent(hableToneMappingFilterSettingsBox);
+              hableToneMappingFilterSettingsBox.update();
+              break;
+            }
+            case "UE4_FILMIC": {
+              UE4ToneMappingFilterSettingsBox.setFilter(scene.getPostProcessingFilter());
+              postprocessingFilterDetailsPane.setContent(UE4ToneMappingFilterSettingsBox);
+              UE4ToneMappingFilterSettingsBox.update();
+              break;
+            }
+          }
         });
     postprocessingFilter.setConverter(new StringConverter<PostProcessingFilter>() {
       @Override
