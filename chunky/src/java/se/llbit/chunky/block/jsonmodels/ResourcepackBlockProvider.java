@@ -476,7 +476,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
       String parentName = blockDefinition.get("parent").stringValue("block/block");
       if ((parentName.equals("block/cube_all") || parentName.equals("minecraft:block/cube_all")) && !block.textures.get("all").hasOpacity()) {
         // System.out.println("optimized block/cube_all");
-        return new MinecraftBlock(blockName, block.textures.get("all"));
+        return new JsonBlock(blockName, block.textures.get("all"));
       } else if (parentName.equals("block/cube") || parentName.equals("minecraft:block/cube")) {
         // System.out.println("optimized block/cube");
         block.opaque = true;
@@ -496,7 +496,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
           if ((parentName.equals("block/cube_all") || parentName
               .equals("minecraft:block/cube_all")) && !block.textures.get("all").hasOpacity()) {
             // System.out.println("optimized block/cube_all");
-            return new MinecraftBlock(blockName, block.textures.get("all"));
+            return new JsonBlock(blockName, block.textures.get("all"));
           } else if (parentName.equals("block/cube") || parentName.equals("minecraft:block/cube")) {
             // System.out.println("optimized block/cube");
             block.opaque = true;

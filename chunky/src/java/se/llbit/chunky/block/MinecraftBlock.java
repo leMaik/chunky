@@ -4,7 +4,7 @@ import se.llbit.chunky.resources.Texture;
 import se.llbit.chunky.world.Material;
 
 /**
- * A simple opaque block with a single texture.
+ * A simple opaque block with a single texture. This is in the `minecraft` namespace.
  */
 public class MinecraftBlock extends Block {
   public static final Material STONE = new MinecraftBlock("stone", Texture.stone);
