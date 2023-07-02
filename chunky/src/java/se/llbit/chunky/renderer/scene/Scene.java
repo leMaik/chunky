@@ -90,8 +90,6 @@ public class Scene implements JsonSerializable, Refreshable {
   /** The current Scene Description Format (SDF) version. */
   public static final int SDF_VERSION = 9;
 
-  protected static final double fSubSurface = 0.3;
-
   /** Minimum canvas width. */
   public static final int MIN_CANVAS_WIDTH = 20;
 

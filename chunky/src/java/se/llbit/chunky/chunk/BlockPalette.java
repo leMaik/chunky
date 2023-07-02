@@ -577,6 +577,39 @@ public class BlockPalette {
     materialProperties.put("minecraft:sculk_catalyst", block -> {
       block.emittance = 1.0f / 15f * 6;
     });
+    materialProperties.put("minecraft:grass", block -> {
+      block.subSurfaceScattering = 0.9f;
+    });
+    materialProperties.put("minecraft:pink_petals", block -> {
+      block.subSurfaceScattering = 0.9f;
+    });
+    materialProperties.put("minecraft:mangrove_leaves", block -> {
+      block.subSurfaceScattering = 0.99f;
+    });
+    materialProperties.put("minecraft:oak_leaves", block -> {
+      block.subSurfaceScattering = 0.99f;
+    });
+    materialProperties.put("minecraft:spruce_leaves", block -> {
+      block.subSurfaceScattering = 0.99f;
+    });
+    materialProperties.put("minecraft:birch_leaves", block -> {
+      block.subSurfaceScattering = 0.99f;
+    });
+    materialProperties.put("minecraft:jungle_leaves", block -> {
+      block.subSurfaceScattering = 0.99f;
+    });
+    materialProperties.put("minecraft:acacia_leaves", block -> {
+      block.subSurfaceScattering = 0.99f;
+    });
+    materialProperties.put("minecraft:dark_oak_leaves", block -> {
+      block.subSurfaceScattering = 0.99f;
+    });
+    materialProperties.put("minecraft:azalea_leaves", block -> {
+      block.subSurfaceScattering = 0.99f;
+    });
+    materialProperties.put("minecraft:flowering_azalea_leaves", block -> {
+      block.subSurfaceScattering = 0.99f;
+    });
     return materialProperties;
   }
 

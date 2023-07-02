@@ -210,12 +210,12 @@ public class PathTracer implements RayTracer {
               double directLightB = 0;
 
               boolean frontLight = reflected.d.dot(ray.getNormal()) > 0;
+              boolean subSurfaceScattering = currentMat.subSurfaceScattering > Ray.EPSILON && random.nextFloat() < currentMat.subSurfaceScattering;
 
-              if (frontLight || (currentMat.subSurfaceScattering
-                  && random.nextFloat() < Scene.fSubSurface)) {
+              if (frontLight || subSurfaceScattering) {
 
                 if (!frontLight) {
-                  reflected.o.scaleAdd(-Ray.OFFSET, ray.getNormal());
+                   reflected.o.scaleAdd(-Ray.OFFSET, ray.getNormal());
                 }
 
                 reflected.setCurrentMaterial(reflected.getPrevMaterial(), reflected.getPrevData());

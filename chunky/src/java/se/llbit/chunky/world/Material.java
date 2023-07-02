@@ -76,9 +76,9 @@ public abstract class Material {
   public float metalness = 0;
 
   /**
-   * Subsurface scattering property.
+   * Subsurface scattering coefficient controlling how much light goes through this block.
    */
-  public boolean subSurfaceScattering = false;
+  public float subSurfaceScattering = 0;
 
   /**
    * Base texture.
@@ -104,7 +104,7 @@ public abstract class Material {
     specular = 0;
     emittance = 0;
     roughness = 0;
-    subSurfaceScattering = false;
+    subSurfaceScattering = 0;
   }
 
   public void getColor(Ray ray) {
