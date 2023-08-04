@@ -161,7 +161,7 @@ public class OctreeFileFormat {
    * Save octrees and grass/foliage/water textures to a file.
    */
   public static void store(DataOutputStream out, Octree octree,
-                           Octree waterTree, BlockPalette palette,
+                           BlockPalette palette,
                            BiomeStructure grassColors,
                            BiomeStructure foliageColors,
                            BiomeStructure waterColors)
@@ -169,7 +169,6 @@ public class OctreeFileFormat {
     out.writeInt(OCTREE_VERSION);
     palette.write(out);
     octree.store(out);
-    waterTree.store(out);
     if (grassColors != null) {
       out.writeUTF(grassColors.biomeFormat());
       grassColors.store(out);
