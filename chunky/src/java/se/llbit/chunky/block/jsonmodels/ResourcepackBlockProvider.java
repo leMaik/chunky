@@ -1,35 +1,15 @@
 package se.llbit.chunky.block.jsonmodels;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.FileSystem;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 import org.apache.commons.math3.util.FastMath;
-import se.llbit.chunky.block.MinecraftBlockProvider;
-import se.llbit.chunky.block.minecraft.Air;
 import se.llbit.chunky.block.Block;
 import se.llbit.chunky.block.BlockProvider;
 import se.llbit.chunky.block.MinecraftBlock;
+import se.llbit.chunky.block.MinecraftBlockProvider;
+import se.llbit.chunky.block.minecraft.Air;
 import se.llbit.chunky.block.minecraft.UnknownBlock;
 import se.llbit.chunky.entity.Entity;
-import se.llbit.chunky.model.RedstoneWireModel;
 import se.llbit.chunky.model.Tint;
+import se.llbit.chunky.model.minecraft.RedstoneWireModel;
 import se.llbit.chunky.renderer.scene.Scene;
 import se.llbit.chunky.resources.AnimatedTexture;
 import se.llbit.chunky.resources.BitmapImage;
@@ -37,22 +17,25 @@ import se.llbit.chunky.resources.ResourcePackLoader;
 import se.llbit.chunky.resources.Texture;
 import se.llbit.chunky.world.Material;
 import se.llbit.chunky.world.material.TextureMaterial;
-import se.llbit.json.JsonArray;
-import se.llbit.json.JsonMember;
-import se.llbit.json.JsonObject;
-import se.llbit.json.JsonParser;
+import se.llbit.json.*;
 import se.llbit.json.JsonParser.SyntaxError;
-import se.llbit.json.JsonValue;
-import se.llbit.math.Quad;
-import se.llbit.math.Ray;
-import se.llbit.math.Transform;
-import se.llbit.math.Vector3;
-import se.llbit.math.Vector4;
+import se.llbit.math.*;
 import se.llbit.math.primitive.Primitive;
 import se.llbit.nbt.Tag;
 import se.llbit.resources.ImageLoader;
-import se.llbit.util.FileSystemUtil;
 import se.llbit.util.Pair;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ResourcepackBlockProvider implements BlockProvider {
   private final Map<String, BlockVariants> blocks = new HashMap<>();
@@ -1112,7 +1095,7 @@ public class ResourcepackBlockProvider implements BlockProvider {
   public static class MultiFileSystem implements AutoCloseable {
     private final Pair<File, FileSystem>[] fileSystems;
 
-    MultiFileSystem(Pair<File, FileSystem>... fileSystems) {
+    MultiFileSystem(Pair<File, FileSystem>[] fileSystems) {
       this.fileSystems = fileSystems;
     }
 
