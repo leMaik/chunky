@@ -235,15 +235,21 @@ public class SynchronousSceneManager implements SceneProvider, SceneManager {
 
   @Override public void loadFreshChunks(World world, Collection<ChunkPosition> chunksToLoad) {
     synchronized (scene) {
+      int yClipMin = scene.getYClipMin();
+      int yClipMax = scene.getYClipMax();
       scene.clear();
-      scene.loadChunks(taskTracker, world, chunksToLoad);
       scene.resetScene(null, context.getChunky().getSceneFactory());
+      scene.setYClipMin(yClipMin);
+      scene.setYClipMax(yClipMax);
       context.setSceneDirectory(new File(context.getChunky().options.sceneDir, scene.name));
+      scene.loadChunks(taskTracker, world, chunksToLoad);
       scene.refresh();
       scene.setResetReason(ResetReason.SCENE_LOADED);
       scene.setRenderMode(RenderMode.PREVIEW);
     }
+    System.out.println(scene.getYClipMin()+" min, 2 max "+scene.getYClipMax());
     onSceneLoaded.run();
+    System.out.println(scene.getYClipMin()+" min, 3 max "+scene.getYClipMax());
   }
 
   @Override public void loadChunks(World world, Collection<ChunkPosition> chunksToLoad) {
@@ -253,9 +259,9 @@ public class SynchronousSceneManager implements SceneProvider, SceneManager {
       if (prevChunkCount == 0) {
         scene.moveCameraToCenter();
       }
-      scene.refresh();
       scene.setResetReason(ResetReason.SCENE_LOADED);
       scene.setRenderMode(RenderMode.PREVIEW);
+      scene.refresh();
     }
     onChunksLoaded.run();
   }
@@ -263,9 +269,9 @@ public class SynchronousSceneManager implements SceneProvider, SceneManager {
   @Override public void reloadChunks() {
     synchronized (scene) {
       scene.reloadChunks(taskTracker);
-      scene.refresh();
       scene.setResetReason(ResetReason.SCENE_LOADED);
       scene.setRenderMode(RenderMode.PREVIEW);
+      scene.refresh();
     }
     onChunksLoaded.run();
   }
