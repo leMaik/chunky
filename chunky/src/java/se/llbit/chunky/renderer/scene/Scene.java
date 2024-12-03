@@ -58,6 +58,7 @@ import se.llbit.log.Log;
 import se.llbit.math.*;
 import se.llbit.math.structures.Position2IntStructure;
 import se.llbit.nbt.CompoundTag;
+import se.llbit.nbt.StringTag;
 import se.llbit.nbt.Tag;
 import se.llbit.util.*;
 import se.llbit.util.annotation.NotNull;
@@ -73,6 +74,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -774,6 +777,77 @@ public class Scene implements JsonSerializable, Refreshable {
    * connectedness.
    */
   public synchronized void loadChunks(TaskTracker taskTracker, World world, Collection<ChunkPosition> chunksToLoad) {
+    {
+      BiomeStructure.Factory biomeStructureFactory = BiomeStructure.get(this.biomeStructureImplementation);
+      palette = new BlockPalette();
+      worldOctree = new Octree(octreeImplementation, 1);
+      waterOctree = new Octree(octreeImplementation, 1);
+
+      grassTexture = biomeStructureFactory.create();
+      foliageTexture = biomeStructureFactory.create();
+      waterTexture = biomeStructureFactory.create();
+
+      if (emitterSamplingStrategy != EmitterSamplingStrategy.NONE)
+        emitterGrid = new Grid(gridSize);
+
+      yMin = 0;
+      yMax = 0;
+
+      String humanTag = "minecraft:warped_fence_gate[facing=east,in_wall=true,open=true]";
+      Matcher m = Pattern.compile("([a-zA-Z0-9_]+):([a-zA-Z0-9_]+)(?:\\[(.+)])?").matcher(humanTag);
+      if (m.matches()) {
+        CompoundTag tag = new CompoundTag();
+        tag.add("Name", new StringTag(m.group(1) + ":" + m.group(2)));
+        String propertiesString = m.group(3);
+        if (propertiesString != null) {
+          CompoundTag properties = new CompoundTag();
+          tag.add("Properties", properties);
+
+          // Split the properties and parse each key=value pair
+          String[] pairs = propertiesString.split(",");
+          for (String pair : pairs) {
+            String[] keyValue = pair.split("=");
+            if (keyValue.length == 2) {
+              properties.add(keyValue[0], new StringTag(keyValue[1]));
+            }
+          }
+        }
+        worldOctree.set(palette.put(tag), 0, 0, 0);
+      }
+
+
+      grassTexture.compact();
+      foliageTexture.compact();
+      waterTexture.compact();
+
+    worldOctree.endFinalization();
+    waterOctree.endFinalization();
+
+    grassTexture.endFinalization();
+    foliageTexture.endFinalization();
+    waterTexture.endFinalization();
+
+    entities.loadDataFromOctree(worldOctree, palette, origin);
+
+    if (emitterGrid != null)
+    emitterGrid.prepare();
+
+  chunks = Collections.singleton(new ChunkPosition(0, 0));
+    camera.setWorldSize(1 << 1);
+    camera.setProjectionMode(ProjectionMode.PARALLEL);
+    camera.setPosition(new Vector3(0,0,0));
+      camera.setView(Math.toRadians(-45),Math.toRadians(-45),0); // top view
+      camera.setView(Math.toRadians(-225),Math.toRadians(-135),0); // bottom view
+    camera.setFoV(3.0);
+    setTransparentSky(true);
+
+      refresh();
+      refresh();
+
+      if(true)
+        return;
+    }
+
     if (world == null)
       return;
 
