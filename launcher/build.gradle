@@ -10,8 +10,8 @@ configurations {
 }
 
 dependencies {
-  bundled 'org.apache.maven:maven-artifact:3.9.9'
-  bundled 'commons-cli:commons-cli:1.6.0'
+  bundled 'org.apache.maven:maven-artifact:3.10.1'
+  bundled 'commons-cli:commons-cli:1.11.0'
 
   implementation project(':lib')
 
